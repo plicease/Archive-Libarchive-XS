@@ -1,0 +1,8 @@
+Alien::Libarchive
+Exporter
+File::Basename
+File::Spec
+FindBin
+Module::Build
+Test::More
+XSLoader
