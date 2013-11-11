@@ -2,10 +2,6 @@
 
 Perl bindings to libarchive via XS
 
-# METHODS
-
-## archive\_read\_next\_header( $archive, $entry )
-
 # AUTHOR
 
 Graham Ollis <plicease@cpan.org>

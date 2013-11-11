@@ -8,12 +8,6 @@ use Alien::Libarchive;
 # ABSTRACT: Perl bindings to libarchive via XS
 # VERSION
 
-=head1 METHODS
-
-=head2 archive_read_next_header( $archive, $entry )
-
-=cut
-
 our @EXPORT_OK = qw(
   archive_read_new
   archive_read_support_filter_all
