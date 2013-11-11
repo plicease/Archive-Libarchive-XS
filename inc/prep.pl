@@ -5,7 +5,7 @@ use Alien::Libarchive;
 use Path::Class qw( file dir );
 
 my $alien = Alien::Libarchive->new;
-my @macros = grep { $_ !~ /H_INCLUDED$/ } $alien->_macro_list;
+my @macros = grep { $_ ne 'ARCHIVE_VERSION_STRING' } grep { $_ !~ /H_INCLUDED$/ } $alien->_macro_list;
 
 do { # xs
   my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS.xs ))->absolute;

@@ -611,10 +611,6 @@ _constant(name)
         else if(!strcmp(name, "ARCHIVE_VERSION_NUMBER"))
           RETVAL = ARCHIVE_VERSION_NUMBER;
 #endif
-#ifdef ARCHIVE_VERSION_STRING
-        else if(!strcmp(name, "ARCHIVE_VERSION_STRING"))
-          RETVAL = ARCHIVE_VERSION_STRING;
-#endif
 #ifdef ARCHIVE_WARN
         else if(!strcmp(name, "ARCHIVE_WARN"))
           RETVAL = ARCHIVE_WARN;
