@@ -58,9 +58,114 @@ TODO: a NULL filename represents standard input.
 
 Enable all available decompression filters.
 
+=head2 archive_read_support_filter_bzip2($archive)
+
+Enable bzip2 decompression filter.
+
+=head2 archive_read_support_filter_compress($archive)
+
+Enable compress decompression filter.
+
+=head2 archive_read_support_filter_grzip($archive)
+
+Enable grzip decompression filter.
+
+=head2 archive_read_support_filter_gzip($archive)
+
+Enable gzip decompression filter.
+
+=head2 archive_read_support_filter_lrzip($archive)
+
+Enable lrzip decompression filter.
+
+=head2 archive_read_support_filter_lzip($archive)
+
+Enable lzip decompression filter.
+
+=head2 archive_read_support_filter_lzma($archive)
+
+Enable lzma decompression filter.
+
+=head2 archive_read_support_filter_lzop($archive)
+
+Enable lzop decompression filter.
+
+=head2 archive_read_support_filter_none($archive)
+
+Enable none decompression filter.
+
+=head2 archive_read_support_filter_program(archive, command)
+
+Data is feed through the specified external program before being
+dearchived.  Note that this disables automatic detection of the
+compression format, so it makes no sense to specify this in
+conjunction with any other decompression option.
+
+TODO: also support archive_read_support_filter_program_signature
+
+=head2 archive_read_support_format_7zip($archive)
+
+Enable 7zip archive format.
+
 =head2 archive_read_support_format_all($archive)
 
 Enable all available archive formats.
+
+=head2 archive_read_support_format_ar($archive)
+
+Enable ar archive format.
+
+=head2 archive_read_support_format_by_code($archive, $code)
+
+Enables a single format specified by the format code.
+
+=head2 archive_read_support_format_cab($archive)
+
+Enable cab archive format.
+
+=head2 archive_read_support_format_cpio($archive)
+
+Enable cpio archive format.
+
+=head2 archive_read_support_format_empty($archive)
+
+Enable empty archive format.
+
+=head2 archive_read_support_format_gnutar($archive)
+
+Enable gnutar archive format.
+
+=head2 archive_read_support_format_iso9660($archive)
+
+Enable iso9660 archive format.
+
+=head2 archive_read_support_format_lha($archive)
+
+Enable lha archive format.
+
+=head2 archive_read_support_format_mtree($archive)
+
+Enable mtree archive format.
+
+=head2 archive_read_support_format_rar($archive)
+
+Enable rar archive format.
+
+=head2 archive_read_support_format_raw($archive)
+
+Enable raw archive format.
+
+=head2 archive_read_support_format_tar($archive)
+
+Enable tar archive format.
+
+=head2 archive_read_support_format_xar($archive)
+
+Enable xar archive format.
+
+=head2 archive_read_support_format_zip($archive)
+
+Enable zip archive format.
 
 =head2 archive_version_number
 
@@ -80,7 +185,32 @@ archive_read_new
 archive_read_next_header
 archive_read_open_filename
 archive_read_support_filter_all
+archive_read_support_filter_bzip2
+archive_read_support_filter_compress
+archive_read_support_filter_grzip
+archive_read_support_filter_gzip
+archive_read_support_filter_lrzip
+archive_read_support_filter_lzip
+archive_read_support_filter_lzma
+archive_read_support_filter_lzop
+archive_read_support_filter_none
+archive_read_support_filter_program
+archive_read_support_format_7zip
 archive_read_support_format_all
+archive_read_support_format_ar
+archive_read_support_format_by_code
+archive_read_support_format_cab
+archive_read_support_format_cpio
+archive_read_support_format_empty
+archive_read_support_format_gnutar
+archive_read_support_format_iso9660
+archive_read_support_format_lha
+archive_read_support_format_mtree
+archive_read_support_format_rar
+archive_read_support_format_raw
+archive_read_support_format_tar
+archive_read_support_format_xar
+archive_read_support_format_zip
 archive_version_number
 archive_version_string
 );

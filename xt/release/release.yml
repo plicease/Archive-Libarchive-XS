@@ -6,6 +6,21 @@ pod_spelling_system:
     - libarchive
     - perlish
     - TODO
+    - grzip
+    - lrzip
+    - lzip
+    - lzma
+    - lzop
+    - bzip
+    - dearchived
+    - ar
+    - cpio
+    - gnutar
+    - iso
+    - lha
+    - mtree
+    - rar
+    - xar
 
 pod_coverage:
   # format is "Class#method" or "Class", regex allowed

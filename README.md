@@ -52,9 +52,114 @@ TODO: a NULL filename represents standard input.
 
 Enable all available decompression filters.
 
+## archive\_read\_support\_filter\_bzip2($archive)
+
+Enable bzip2 decompression filter.
+
+## archive\_read\_support\_filter\_compress($archive)
+
+Enable compress decompression filter.
+
+## archive\_read\_support\_filter\_grzip($archive)
+
+Enable grzip decompression filter.
+
+## archive\_read\_support\_filter\_gzip($archive)
+
+Enable gzip decompression filter.
+
+## archive\_read\_support\_filter\_lrzip($archive)
+
+Enable lrzip decompression filter.
+
+## archive\_read\_support\_filter\_lzip($archive)
+
+Enable lzip decompression filter.
+
+## archive\_read\_support\_filter\_lzma($archive)
+
+Enable lzma decompression filter.
+
+## archive\_read\_support\_filter\_lzop($archive)
+
+Enable lzop decompression filter.
+
+## archive\_read\_support\_filter\_none($archive)
+
+Enable none decompression filter.
+
+## archive\_read\_support\_filter\_program(archive, command)
+
+Data is feed through the specified external program before being
+dearchived.  Note that this disables automatic detection of the
+compression format, so it makes no sense to specify this in
+conjunction with any other decompression option.
+
+TODO: also support archive\_read\_support\_filter\_program\_signature
+
+## archive\_read\_support\_format\_7zip($archive)
+
+Enable 7zip archive format.
+
 ## archive\_read\_support\_format\_all($archive)
 
 Enable all available archive formats.
+
+## archive\_read\_support\_format\_ar($archive)
+
+Enable ar archive format.
+
+## archive\_read\_support\_format\_by\_code($archive, $code)
+
+Enables a single format specified by the format code.
+
+## archive\_read\_support\_format\_cab($archive)
+
+Enable cab archive format.
+
+## archive\_read\_support\_format\_cpio($archive)
+
+Enable cpio archive format.
+
+## archive\_read\_support\_format\_empty($archive)
+
+Enable empty archive format.
+
+## archive\_read\_support\_format\_gnutar($archive)
+
+Enable gnutar archive format.
+
+## archive\_read\_support\_format\_iso9660($archive)
+
+Enable iso9660 archive format.
+
+## archive\_read\_support\_format\_lha($archive)
+
+Enable lha archive format.
+
+## archive\_read\_support\_format\_mtree($archive)
+
+Enable mtree archive format.
+
+## archive\_read\_support\_format\_rar($archive)
+
+Enable rar archive format.
+
+## archive\_read\_support\_format\_raw($archive)
+
+Enable raw archive format.
+
+## archive\_read\_support\_format\_tar($archive)
+
+Enable tar archive format.
+
+## archive\_read\_support\_format\_xar($archive)
+
+Enable xar archive format.
+
+## archive\_read\_support\_format\_zip($archive)
+
+Enable zip archive format.
 
 ## archive\_version\_number
 
