@@ -58,6 +58,18 @@ No more operations are possible
 Clears any error information left over from a previous call Not
 generally used in client code.
 
+=head2 archive_compression($archive)
+
+Return the compression code for the given archive.
+
+=head2 archive_compression_name($archive)
+
+Returns a text description of the current compression suitable for display.
+
+=head2 archive_copy_error($archive1, $archive2)
+
+Copies error information from one archive to another.
+
 =head2 archive_entry_pathname($entry)
 
 Retrieve the pathname of the entry.
@@ -78,6 +90,20 @@ message here is usually more specific than that obtained from
 passing the result of C<archive_errno> to C<strerror>.
 
 Return type is a string.
+
+=head2 archive_format($archive)
+
+Returns a numeric code indicating the format of the current archive
+entry.  This value is set by a successful call to
+C<archive_read_next_header>.  Note that it is common for this value
+to change from entry to entry.  For example, a tar archive might
+have several entries that utilize GNU tar extensions and several
+entries that do not.  These entries will have different format
+codes.
+
+=head2 archive_format_name($archive)
+
+A textual description of the format of the current entry.
 
 =head2 archive_read_data_skip($archive)
 
@@ -239,9 +265,14 @@ Returns a string value.
 
 our @EXPORT_OK = qw(
 archive_clear_error
+archive_compression
+archive_compression_name
+archive_copy_error
 archive_entry_pathname
 archive_errno
 archive_error_string
+archive_format
+archive_format_name
 archive_read_data_skip
 archive_read_free
 archive_read_new

@@ -35,6 +35,11 @@ foreach my $format (qw( tar tar.gz tar.bz2 xar zip ))
 
     is archive_entry_pathname($entry), "foo/foo.txt", 'archive_entry_pathname($entry) = foo/foo.txt';
 
+    note "archive_compression      = " . archive_compression($a);
+    note "archive_compression_name = " . archive_compression_name($a);
+    note "archive_format           = " . archive_format($a);
+    note "archive_format_name      = " . archive_format_name($a);
+
     $r = archive_read_data_skip($a);
     is $r, ARCHIVE_OK, "r = ARCHIVE_OK (archive_read_data_skip 1)";
 

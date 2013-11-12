@@ -48,6 +48,18 @@ with one of the following values:
 Clears any error information left over from a previous call Not
 generally used in client code.
 
+## archive\_compression($archive)
+
+Return the compression code for the given archive.
+
+## archive\_compression\_name($archive)
+
+Returns a text description of the current compression suitable for display.
+
+## archive\_copy\_error($archive1, $archive2)
+
+Copies error information from one archive to another.
+
 ## archive\_entry\_pathname($entry)
 
 Retrieve the pathname of the entry.
@@ -68,6 +80,20 @@ message here is usually more specific than that obtained from
 passing the result of `archive_errno` to `strerror`.
 
 Return type is a string.
+
+## archive\_format($archive)
+
+Returns a numeric code indicating the format of the current archive
+entry.  This value is set by a successful call to
+`archive_read_next_header`.  Note that it is common for this value
+to change from entry to entry.  For example, a tar archive might
+have several entries that utilize GNU tar extensions and several
+entries that do not.  These entries will have different format
+codes.
+
+## archive\_format\_name($archive)
+
+A textual description of the format of the current entry.
 
 ## archive\_read\_data\_skip($archive)
 

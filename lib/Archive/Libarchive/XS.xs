@@ -70,6 +70,63 @@ void
 archive_clear_error(archive)
     struct archive *archive;
 
+=head2 archive_copy_error($archive1, $archive2)
+
+Copies error information from one archive to another.
+
+=cut
+
+void
+archive_copy_error(archive1, archive2)
+    struct archive *archive1;
+    struct archive *archive2;
+
+=head2 archive_compression($archive)
+
+Return the compression code for the given archive.
+
+=cut
+
+int
+archive_compression(archive)
+    struct archive *archive;
+
+=head2 archive_compression_name($archive)
+
+Returns a text description of the current compression suitable for display.
+
+=cut
+
+const char *
+archive_compression_name(archive);
+    struct archive *archive;
+
+=head2 archive_format($archive)
+
+Returns a numeric code indicating the format of the current archive
+entry.  This value is set by a successful call to
+C<archive_read_next_header>.  Note that it is common for this value
+to change from entry to entry.  For example, a tar archive might
+have several entries that utilize GNU tar extensions and several
+entries that do not.  These entries will have different format
+codes.
+
+=cut
+
+int
+archive_format(archive)
+    struct archive *archive;
+
+=head2 archive_format_name($archive)
+
+A textual description of the format of the current entry.
+
+=cut
+
+const char *
+archive_format_name(archive)
+    struct archive *archive;
+
 =head2 archive_read_support_filter_all($archive)
 
 Enable all available decompression filters.
