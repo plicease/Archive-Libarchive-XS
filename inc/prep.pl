@@ -33,35 +33,42 @@ do { # xs
 };
 
 
-do { # xs
+do {
+  use Pod::Abstract;
+  use Mojo::Template;
+  use JSON qw( to_json );
+  my $mt = Mojo::Template->new;
+  
+  my $pa = Pod::Abstract->load_file(
+    file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS.xs ))->stringify
+  );
+  
+  $_->detach for $pa->select('//#cut');
+  
+  my %functions;
+  
+  foreach my $pod ($pa->children)
+  {
+    if($pod->pod =~ /^=head2 ([A-Za-z_]+)/)
+    {
+      my $name = $1;
+      $functions{$name} = $pod->pod;
+      $functions{$name} =~ s/\s+$//;
+    }
+    else
+    {
+      die "error parsing " .  $pod->text;
+    }
+  }
+  
+  $mt->prepend(qq{
+    use JSON qw( from_json );
+    my \$functions = from_json(q[} . to_json(\%functions) . qq{]);
+    my \$constants = from_json(q[} . to_json(\@macros) . qq{] );
+  });
+  
+  my $perl = $mt->render( scalar file(__FILE__)->parent->file(qw( XS.pm.template ))->slurp );
+
   my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS.pm ))->absolute;
-  my @perl = $file->slurp;
-
-  my $buffer;
-
-  $buffer .= shift @perl while @perl > 0 && $perl[0] !~ /^=head1 CONSTANTS/;
-  $buffer .= shift @perl while @perl > 0 && $perl[0] !~ /^=over 4/;
-  shift @perl while @perl > 0 && $perl[0] !~ /^=cut/;
-
-  $buffer .= "=over 4\n\n";
-  foreach my $macro (@macros)
-  {
-    $buffer .= "=item $macro\n\n";
-  }
-  $buffer .= "=back\n\n";
-  
-  $buffer .= shift @perl while @perl > 0 && $perl[0] !~ /CONSTANT AUTOGEN BEGIN/;
-  $buffer .= "# CONSTANT AUTOGEN BEGIN\nqw(\n";
-  shift @perl while @perl > 0 && $perl[0] !~ /CONSTANT AUTOGEN END/;
-  
-  foreach my $macro (@macros)
-  {
-    $buffer .= "$macro\n";
-  }
-  
-  $buffer .= ")\n";
-  $buffer .= join '', @perl;
-  
-  $file->spew($buffer);
+  $file->spew($perl);
 };
-

@@ -2,6 +2,67 @@
 
 Perl bindings to libarchive via XS
 
+# SYNOPSIS
+
+    use Archive::Libarchive::XS;
+
+# DESCRIPTION
+
+This module provides a functional interface to libarchive.
+
+# FUNCTIONS
+
+## archive\_entry\_pathname($entry)
+
+Retrieve the pathname of the entry
+
+## archive\_read\_data\_skip($archive)
+
+FIXME
+
+## archive\_read\_free($archive)
+
+Invokes `archive_read_close` if it was not invoked manually, then
+release all resources.
+
+## archive\_read\_new
+
+Allocates and initializes a archive object suitable for reading from an archive.
+Returns an instance of [Archive::Libarchive::XS::archive](https://metacpan.org/pod/Archive::Libarchive::XS::archive)
+
+TODO: handle the unusual circumstance when this would return C NULL pointer.
+
+## archive\_read\_next\_header($archive, $entry)
+
+Read the header for the next entry and return an entry object
+($entry will be an instance of [Archive::Libarchive::XS::archive_entry](https://metacpan.org/pod/Archive::Libarchive::XS::archive_entry)).
+
+TODO: maybe use archive\_read\_next\_header2
+
+## archive\_read\_open\_filename($archive, $filename, $block\_size)
+
+Like `archive_read_open`, except that it accepts a simple filename
+and a block size.  This function is safe for use with tape drives
+or other blocked devices.
+
+TODO: a NULL filename represents standard input.
+
+## archive\_read\_support\_filter\_all($archive)
+
+FIXME
+
+## archive\_read\_support\_format\_all($archive)
+
+FIXME
+
+## archive\_version\_number
+
+Return the libarchive version as an integer
+
+## archive\_version\_string
+
+Return the libarchive as a version.
+
 # CONSTANTS
 
 If provided by your libarchive library, these constants will be available and
@@ -147,6 +208,17 @@ constants using the `:const` export tag).
 - ARCHIVE\_RETRY
 - ARCHIVE\_VERSION\_NUMBER
 - ARCHIVE\_WARN
+
+# SEE ALSO
+
+The intent of this module is to provide a low level fairly thin direct
+interface to the libarchive interface, on which a more Perlish OO layer
+could be written.
+
+- [Archive::Peek::Libarchive](https://metacpan.org/pod/Archive::Peek::Libarchive)
+- [Archive::Extract::Libarchive](https://metacpan.org/pod/Archive::Extract::Libarchive)
+
+    Both of these provide a higher level perlish interface to libarchive.
 
 # AUTHOR
 

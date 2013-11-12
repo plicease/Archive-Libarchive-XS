@@ -8,19 +8,80 @@ use Alien::Libarchive;
 # ABSTRACT: Perl bindings to libarchive via XS
 # VERSION
 
+=head1 SYNOPSIS
+
+ use Archive::Libarchive::XS;
+
+=head1 DESCRIPTION
+
+This module provides a functional interface to libarchive.
+
+=head1 FUNCTIONS
+
+=head2 archive_entry_pathname($entry)
+
+Retrieve the pathname of the entry
+
+=head2 archive_read_data_skip($archive)
+
+FIXME
+
+=head2 archive_read_free($archive)
+
+Invokes C<archive_read_close> if it was not invoked manually, then
+release all resources.
+
+=head2 archive_read_new
+
+Allocates and initializes a archive object suitable for reading from an archive.
+Returns an instance of L<Archive::Libarchive::XS::archive>
+
+TODO: handle the unusual circumstance when this would return C NULL pointer.
+
+=head2 archive_read_next_header($archive, $entry)
+
+Read the header for the next entry and return an entry object
+($entry will be an instance of L<Archive::Libarchive::XS::archive_entry>).
+
+TODO: maybe use archive_read_next_header2
+
+=head2 archive_read_open_filename($archive, $filename, $block_size)
+
+Like C<archive_read_open>, except that it accepts a simple filename
+and a block size.  This function is safe for use with tape drives
+or other blocked devices.
+
+TODO: a NULL filename represents standard input.
+
+=head2 archive_read_support_filter_all($archive)
+
+FIXME
+
+=head2 archive_read_support_format_all($archive)
+
+FIXME
+
+=head2 archive_version_number
+
+Return the libarchive version as an integer
+
+=head2 archive_version_string
+
+Return the libarchive as a version.
+
+=cut
+
 our @EXPORT_OK = qw(
-  archive_read_new
-  archive_read_support_filter_all
-  archive_read_support_format_all
-  archive_read_open_filename
-  archive_error_string
-  archive_read_next_header
-  archive_entry_pathname
-  archive_read_data_skip
-  archive_read_free  
-  archive_version_string
-  archive_version_number
-  archive_entry_pathname
+archive_entry_pathname
+archive_read_data_skip
+archive_read_free
+archive_read_new
+archive_read_next_header
+archive_read_open_filename
+archive_read_support_filter_all
+archive_read_support_format_all
+archive_version_number
+archive_version_string
 );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK, const => []);
 
@@ -317,9 +378,7 @@ constants using the C<:const> export tag).
 
 =cut
 
-foreach my $const (
-# CONSTANT AUTOGEN BEGIN
-qw(
+foreach my $const (qw(
 AE_IFBLK
 AE_IFCHR
 AE_IFDIR
@@ -459,9 +518,7 @@ ARCHIVE_READDISK_RESTORE_ATIME
 ARCHIVE_RETRY
 ARCHIVE_VERSION_NUMBER
 ARCHIVE_WARN
-)
-# CONSTANT AUTOGEN END
-) {
+)) {
   my $value = eval { _constant($const) };
   if($@)
   {
@@ -478,3 +535,21 @@ ARCHIVE_WARN
 
 
 1;
+
+=head1 SEE ALSO
+
+The intent of this module is to provide a low level fairly thin direct
+interface to the libarchive interface, on which a more Perlish OO layer
+could be written.
+
+=over 4
+
+=item L<Archive::Peek::Libarchive>
+
+=item L<Archive::Extract::Libarchive>
+
+Both of these provide a higher level perlish interface to libarchive.
+
+=back
+
+=cut

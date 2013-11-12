@@ -1,0 +1,91 @@
+package Archive::Libarchive::XS;
+
+use strict;
+use warnings;
+use base qw( Exporter );
+use Alien::Libarchive;
+
+# ABSTRACT: Perl bindings to libarchive via XS
+# VERSION
+
+=head1 SYNOPSIS
+
+ use Archive::Libarchive::XS;
+
+=head1 DESCRIPTION
+
+This module provides a functional interface to libarchive.
+
+=head1 FUNCTIONS
+
+% foreach my $function (sort keys %$functions) {
+<%= $functions->{$function} %>
+
+% }
+=cut
+
+our @EXPORT_OK = qw(
+% foreach my $function (sort keys %$functions) {
+<%= $function %>
+% }
+);
+our %EXPORT_TAGS = ( all => \@EXPORT_OK, const => []);
+
+require XSLoader;
+XSLoader::load('Archive::Libarchive::XS', $VERSION);
+
+=head1 CONSTANTS
+
+If provided by your libarchive library, these constants will be available and
+exportable from the L<Archive::Libarchive::XS> (you may import all available
+constants using the C<:const> export tag).
+
+=over 4
+
+% foreach my $constant (@$constants) {
+=item <%= $constant %>
+
+% }
+=back
+
+=cut
+
+foreach my $const (qw(
+% foreach my $constant (@$constants) {
+<%= $constant %>
+% }
+)) {
+  my $value = eval { _constant($const) };
+  if($@)
+  {
+    warn "no constant $const";
+    next;
+  }
+
+  push @{ $EXPORT_TAGS{const} }, $const;
+  push @EXPORT_OK, $const;
+  no strict 'refs';
+  # what is the best way to do actually do this?
+  *{"Archive::Libarchive::XS::$const"} = eval qq{ sub { $value } };
+}
+
+
+1;
+
+=head1 SEE ALSO
+
+The intent of this module is to provide a low level fairly thin direct
+interface to the libarchive interface, on which a more Perlish OO layer
+could be written.
+
+=over 4
+
+=item L<Archive::Peek::Libarchive>
+
+=item L<Archive::Extract::Libarchive>
+
+Both of these provide a higher level perlish interface to libarchive.
+
+=back
+
+=cut

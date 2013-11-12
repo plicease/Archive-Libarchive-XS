@@ -8,26 +8,73 @@
 
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 
+=head2 archive_read_new
+
+Allocates and initializes a archive object suitable for reading from an archive.
+Returns an instance of L<Archive::Libarchive::XS::archive>
+
+TODO: handle the unusual circumstance when this would return C NULL pointer.
+
+=cut
+
 struct archive *
 archive_read_new();
+
+=head2 archive_read_free($archive)
+
+Invokes C<archive_read_close> if it was not invoked manually, then
+release all resources.
+
+=cut
 
 int
 archive_read_free(archive)
     struct archive *archive;
 
+=head2 archive_read_support_filter_all($archive)
+
+FIXME
+
+=cut
+
 int
 archive_read_support_filter_all(archive)
     struct archive *archive;
 
+=head2 archive_read_support_format_all($archive)
+
+FIXME
+
+=cut
+
 int
 archive_read_support_format_all(archive)
     struct archive *archive;
+
+=head2 archive_read_open_filename($archive, $filename, $block_size)
+
+Like C<archive_read_open>, except that it accepts a simple filename
+and a block size.  This function is safe for use with tape drives
+or other blocked devices.
+
+TODO: a NULL filename represents standard input.
+
+=cut
 
 int
 archive_read_open_filename(archive, filename, block_size)
     struct archive *archive;
     const char *filename;
     size_t block_size;
+
+=head2 archive_read_next_header($archive, $entry)
+
+Read the header for the next entry and return an entry object
+($entry will be an instance of L<Archive::Libarchive::XS::archive_entry>).
+
+TODO: maybe use archive_read_next_header2
+
+=cut
 
 int
 archive_read_next_header(archive, out)
@@ -42,15 +89,39 @@ archive_read_next_header(archive, out)
     RETVAL
     out
 
+=head2 archive_read_data_skip($archive)
+
+FIXME
+
+=cut
+
 int
 archive_read_data_skip(archive)
     struct archive *archive;
 
+=head2 archive_version_string
+
+Return the libarchive as a version.
+
+=cut
+
 const char *
 archive_version_string();
 
+=head2 archive_version_number
+
+Return the libarchive version as an integer
+
+=cut
+
 int
 archive_version_number();
+
+=head2 archive_entry_pathname($entry)
+
+Retrieve the pathname of the entry
+
+=cut
 
 const char *
 archive_entry_pathname(archive_entry);
