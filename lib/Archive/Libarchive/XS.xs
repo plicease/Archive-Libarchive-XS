@@ -33,7 +33,7 @@ archive_read_free(archive)
 
 =head2 archive_read_support_filter_all($archive)
 
-FIXME
+Enable all available decompression filters.
 
 =cut
 
@@ -43,7 +43,7 @@ archive_read_support_filter_all(archive)
 
 =head2 archive_read_support_format_all($archive)
 
-FIXME
+Enable all available archive formats.
 
 =cut
 
@@ -91,7 +91,8 @@ archive_read_next_header(archive, out)
 
 =head2 archive_read_data_skip($archive)
 
-FIXME
+A convenience function that repeatedly calls C<archive_read_data> to skip
+all of the data for this archive entry.
 
 =cut
 
@@ -691,3 +692,4 @@ _constant(name)
           Perl_croak(aTHX_ "No such constant");
     OUTPUT:
         RETVAL
+

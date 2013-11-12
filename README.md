@@ -18,7 +18,8 @@ Retrieve the pathname of the entry
 
 ## archive\_read\_data\_skip($archive)
 
-FIXME
+A convenience function that repeatedly calls `archive_read_data` to skip
+all of the data for this archive entry.
 
 ## archive\_read\_free($archive)
 
@@ -49,11 +50,11 @@ TODO: a NULL filename represents standard input.
 
 ## archive\_read\_support\_filter\_all($archive)
 
-FIXME
+Enable all available decompression filters.
 
 ## archive\_read\_support\_format\_all($archive)
 
-FIXME
+Enable all available archive formats.
 
 ## archive\_version\_number
 

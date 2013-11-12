@@ -24,7 +24,8 @@ Retrieve the pathname of the entry
 
 =head2 archive_read_data_skip($archive)
 
-FIXME
+A convenience function that repeatedly calls C<archive_read_data> to skip
+all of the data for this archive entry.
 
 =head2 archive_read_free($archive)
 
@@ -55,11 +56,11 @@ TODO: a NULL filename represents standard input.
 
 =head2 archive_read_support_filter_all($archive)
 
-FIXME
+Enable all available decompression filters.
 
 =head2 archive_read_support_format_all($archive)
 
-FIXME
+Enable all available archive formats.
 
 =head2 archive_version_number
 
