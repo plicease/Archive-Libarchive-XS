@@ -1,16 +1,20 @@
 use strict;
 use warnings;
 use Archive::Libarchive::XS qw( :all );
-use Config ();
 
 # this is a translation to perl for this:
-#  https://github.com/libarchive/libarchive/wiki/Examples#wiki-List_contents_of_Archive_stored_in_File
+#  https://github.com/libarchive/libarchive/wiki/Examples#wiki-List_contents_of_Archive_stored_in_Memory
+
+my $buff = do {
+  open my $fh, '<', "archive.tar.gz";
+  local $/;
+  <$fh>
+};
 
 my $a = archive_read_new();
-archive_read_support_filter_all($a);
-archive_read_support_format_all($a);
-
-my $r = archive_read_open_filename($a, "archive.tar", 10240);
+archive_read_support_filter_gzip($a);
+archive_read_support_format_tar($a);
+my $r = archive_read_open_memory($a, $buff);
 if($r != ARCHIVE_OK)
 {
   print "r = $r\n";

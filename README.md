@@ -52,9 +52,13 @@ generally used in client code.
 
 Return the compression code for the given archive.
 
+FIXME: deprecated in favor of archive\_filter\_code
+
 ## archive\_compression\_name($archive)
 
 Returns a text description of the current compression suitable for display.
+
+FIXME: deprecated in favor of archive\_filter\_name
 
 ## archive\_copy\_error($archive1, $archive2)
 
@@ -127,6 +131,12 @@ and a block size.  This function is safe for use with tape drives
 or other blocked devices.
 
 TODO: a NULL filename represents standard input.
+
+## archive\_read\_open\_memory($archive, $buffer)
+
+Like `archive_read_open`, except that it uses a Perl scalar that holds the content of the
+archive.  This function does not make a copy of the data stored in `$buffer`, so you should
+not modify the buffer until you have free the archive using `archive_read_free`.
 
 ## archive\_read\_support\_filter\_all($archive)
 

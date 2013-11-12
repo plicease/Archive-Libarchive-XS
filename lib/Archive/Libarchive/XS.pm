@@ -62,9 +62,13 @@ generally used in client code.
 
 Return the compression code for the given archive.
 
+FIXME: deprecated in favor of archive_filter_code
+
 =head2 archive_compression_name($archive)
 
 Returns a text description of the current compression suitable for display.
+
+FIXME: deprecated in favor of archive_filter_name
 
 =head2 archive_copy_error($archive1, $archive2)
 
@@ -137,6 +141,12 @@ and a block size.  This function is safe for use with tape drives
 or other blocked devices.
 
 TODO: a NULL filename represents standard input.
+
+=head2 archive_read_open_memory($archive, $buffer)
+
+Like C<archive_read_open>, except that it uses a Perl scalar that holds the content of the
+archive.  This function does not make a copy of the data stored in C<$buffer>, so you should
+not modify the buffer until you have free the archive using C<archive_read_free>.
 
 =head2 archive_read_support_filter_all($archive)
 
@@ -421,6 +431,7 @@ our %EXPORT_TAGS = (
     archive_read_new
     archive_read_next_header
     archive_read_open_filename
+    archive_read_open_memory
     archive_read_support_filter_all
     archive_read_support_filter_bzip2
     archive_read_support_filter_compress

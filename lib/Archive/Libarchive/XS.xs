@@ -85,6 +85,8 @@ archive_copy_error(archive1, archive2)
 
 Return the compression code for the given archive.
 
+FIXME: deprecated in favor of archive_filter_code
+
 =cut
 
 int
@@ -94,6 +96,8 @@ archive_compression(archive)
 =head2 archive_compression_name($archive)
 
 Returns a text description of the current compression suitable for display.
+
+FIXME: deprecated in favor of archive_filter_name
 
 =cut
 
@@ -190,6 +194,27 @@ archive_read_open_filename(archive, filename, block_size)
     const char *filename;
     size_t block_size;
 
+=head2 archive_read_open_memory($archive, $buffer)
+
+Like C<archive_read_open>, except that it uses a Perl scalar that holds the content of the
+archive.  This function does not make a copy of the data stored in C<$buffer>, so you should
+not modify the buffer until you have free the archive using C<archive_read_free>.
+
+=cut
+
+int
+archive_read_open_memory(archive, input)
+    struct archive *archive;
+    SV *input;
+  CODE:
+    void *buff = NULL;
+    size_t size = 0;
+    buff = SvPV(input, size);
+    RETVAL = archive_read_open_memory(archive, buff, size);
+  OUTPUT:
+    RETVAL
+
+
 =head2 archive_read_next_header($archive, $entry)
 
 Read the header for the next entry and return an entry object
@@ -200,14 +225,14 @@ TODO: maybe use archive_read_next_header2
 =cut
 
 int
-archive_read_next_header(archive, out)
+archive_read_next_header(archive, output)
     struct archive *archive;
-    SV *out;
+    SV *output;
   CODE:
     struct archive_entry *entry;
     RETVAL = archive_read_next_header(archive, &entry);
     /* Question: entry is probably not valid on EOF ? */
-    sv_setref_pv(out, "Archive::Libarchive::XS::archive_entry", (void*) entry);
+    sv_setref_pv(output, "Archive::Libarchive::XS::archive_entry", (void*) entry);
   OUTPUT:
     RETVAL
     out
