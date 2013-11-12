@@ -59,12 +59,19 @@ No more operations are possible
 % }
 =cut
 
-our @EXPORT_OK = qw(
-% foreach my $function (sort keys %$functions) {
-<%= $function %>
+our %EXPORT_TAGS = (
+  all   => [],
+  const => [qw(
+% foreach my $constant (@$constants) {
+    <%= $constant %>
 % }
+  )],
+  func  => [qw(
+% foreach my $function (sort keys %$functions) {
+    <%= $function %>
+% }
+  )],
 );
-our %EXPORT_TAGS = ( all => \@EXPORT_OK, const => []);
 
 require XSLoader;
 XSLoader::load('Archive::Libarchive::XS', $VERSION);
@@ -85,11 +92,7 @@ constants using the C<:const> export tag).
 
 =cut
 
-foreach my $const (qw(
-% foreach my $constant (@$constants) {
-<%= $constant %>
-% }
-)) {
+foreach my $const (@{ $EXPORT_TAGS{const} }) {
   my $value = eval { _constant($const) };
   if($@)
   {
@@ -97,13 +100,14 @@ foreach my $const (qw(
     next;
   }
 
-  push @{ $EXPORT_TAGS{const} }, $const;
-  push @EXPORT_OK, $const;
   no strict 'refs';
   # what is the best way to do actually do this?
   *{"Archive::Libarchive::XS::$const"} = eval qq{ sub { $value } };
 }
 
+
+our @EXPORT_OK = (@{ $EXPORT_TAGS{const} }, @{ $EXPORT_TAGS{func} });
+$EXPORT_TAGS{all} = \@EXPORT_OK;
 
 1;
 
