@@ -8,13 +8,66 @@ Perl bindings to libarchive via XS
 
 # DESCRIPTION
 
-This module provides a functional interface to libarchive.
+This module provides a functional interface to `libarchive`.  `libarchive` is a
+C library that can read and write archives in a variety of formats and with a 
+variety of compression filters, optimized in a stream oriented way.  A familiarity
+with the `libarchive` documentation would be helpful, but may not be necessary
+for simple tasks.
 
 # FUNCTIONS
 
+Unless otherwise specified, each function will return an integer return code,
+with one of the following values:
+
+- ARCHIVE\_OK
+
+    Operation was successful
+
+- ARCHIVE\_EOF
+
+    Fond end of archive
+
+- ARCHIVE\_RETRY
+
+    Retry might succeed
+
+- ARCHIVE\_WARN
+
+    Partial success
+
+- ARCHIVE\_FAILED
+
+    Current operation cannot complete
+
+- ARCHIVE\_FATAL
+
+    No more operations are possible
+
+## archive\_clear\_error($archive)
+
+Clears any error information left over from a previous call Not
+generally used in client code.
+
 ## archive\_entry\_pathname($entry)
 
-Retrieve the pathname of the entry
+Retrieve the pathname of the entry.
+
+Returns a string value.
+
+## archive\_errno($archive)
+
+Returns a numeric error code indicating the reason for the most
+recent error return.
+
+Return type is an errno integer value.
+
+## archive\_error\_string($archive)
+
+Returns a textual error message suitable for display.  The error
+message here is usually more specific than that obtained from
+passing the result of `archive_errno` to `strerror`.
+
+Return type is a string.
 
 ## archive\_read\_data\_skip($archive)
 
@@ -29,7 +82,8 @@ release all resources.
 ## archive\_read\_new
 
 Allocates and initializes a archive object suitable for reading from an archive.
-Returns an instance of [Archive::Libarchive::XS::archive](https://metacpan.org/pod/Archive::Libarchive::XS::archive)
+Returns an instance of [Archive::Libarchive::XS::archive](https://metacpan.org/pod/Archive::Libarchive::XS::archive), which can be passed
+into any function documented here with a <$archive> argument.
 
 TODO: handle the unusual circumstance when this would return C NULL pointer.
 
@@ -163,11 +217,13 @@ Enable zip archive format.
 
 ## archive\_version\_number
 
-Return the libarchive version as an integer
+Return the libarchive version as an integer.
 
 ## archive\_version\_string
 
 Return the libarchive as a version.
+
+Returns a string value.
 
 # CONSTANTS
 

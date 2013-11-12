@@ -14,9 +14,44 @@ use Alien::Libarchive;
 
 =head1 DESCRIPTION
 
-This module provides a functional interface to libarchive.
+This module provides a functional interface to C<libarchive>.  C<libarchive> is a
+C library that can read and write archives in a variety of formats and with a 
+variety of compression filters, optimized in a stream oriented way.  A familiarity
+with the C<libarchive> documentation would be helpful, but may not be necessary
+for simple tasks.
 
 =head1 FUNCTIONS
+
+Unless otherwise specified, each function will return an integer return code,
+with one of the following values:
+
+=over 4
+
+=item ARCHIVE_OK
+
+Operation was successful
+
+=item ARCHIVE_EOF
+
+Fond end of archive
+
+=item ARCHIVE_RETRY
+
+Retry might succeed
+
+=item ARCHIVE_WARN
+
+Partial success
+
+=item ARCHIVE_FAILED
+
+Current operation cannot complete
+
+=item ARCHIVE_FATAL
+
+No more operations are possible
+
+=back
 
 % foreach my $function (sort keys %$functions) {
 <%= $functions->{$function} %>

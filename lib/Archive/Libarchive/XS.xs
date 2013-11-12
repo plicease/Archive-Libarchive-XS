@@ -11,7 +11,8 @@ MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 =head2 archive_read_new
 
 Allocates and initializes a archive object suitable for reading from an archive.
-Returns an instance of L<Archive::Libarchive::XS::archive>
+Returns an instance of L<Archive::Libarchive::XS::archive>, which can be passed
+into any function documented here with a <$archive> argument.
 
 TODO: handle the unusual circumstance when this would return C NULL pointer.
 
@@ -29,6 +30,44 @@ release all resources.
 
 int
 archive_read_free(archive)
+    struct archive *archive;
+
+=head2 archive_error_string($archive)
+
+Returns a textual error message suitable for display.  The error
+message here is usually more specific than that obtained from
+passing the result of C<archive_errno> to C<strerror>.
+
+Return type is a string.
+
+=cut
+
+const char *
+archive_error_string(archive)
+    struct archive *archive;
+
+=head2 archive_errno($archive)
+
+Returns a numeric error code indicating the reason for the most
+recent error return.
+
+Return type is an errno integer value.
+
+=cut
+
+int
+archive_errno(archive)
+    struct archive *archive;
+
+=head2 archive_clear_error($archive)
+
+Clears any error information left over from a previous call Not
+generally used in client code.
+
+=cut
+
+void
+archive_clear_error(archive)
     struct archive *archive;
 
 =head2 archive_read_support_filter_all($archive)
@@ -131,6 +170,8 @@ archive_read_data_skip(archive)
 
 Return the libarchive as a version.
 
+Returns a string value.
+
 =cut
 
 const char *
@@ -138,7 +179,7 @@ archive_version_string();
 
 =head2 archive_version_number
 
-Return the libarchive version as an integer
+Return the libarchive version as an integer.
 
 =cut
 
@@ -147,7 +188,9 @@ archive_version_number();
 
 =head2 archive_entry_pathname($entry)
 
-Retrieve the pathname of the entry
+Retrieve the pathname of the entry.
+
+Returns a string value.
 
 =cut
 

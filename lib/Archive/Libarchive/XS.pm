@@ -14,13 +14,70 @@ use Alien::Libarchive;
 
 =head1 DESCRIPTION
 
-This module provides a functional interface to libarchive.
+This module provides a functional interface to C<libarchive>.  C<libarchive> is a
+C library that can read and write archives in a variety of formats and with a 
+variety of compression filters, optimized in a stream oriented way.  A familiarity
+with the C<libarchive> documentation would be helpful, but may not be necessary
+for simple tasks.
 
 =head1 FUNCTIONS
 
+Unless otherwise specified, each function will return an integer return code,
+with one of the following values:
+
+=over 4
+
+=item ARCHIVE_OK
+
+Operation was successful
+
+=item ARCHIVE_EOF
+
+Fond end of archive
+
+=item ARCHIVE_RETRY
+
+Retry might succeed
+
+=item ARCHIVE_WARN
+
+Partial success
+
+=item ARCHIVE_FAILED
+
+Current operation cannot complete
+
+=item ARCHIVE_FATAL
+
+No more operations are possible
+
+=back
+
+=head2 archive_clear_error($archive)
+
+Clears any error information left over from a previous call Not
+generally used in client code.
+
 =head2 archive_entry_pathname($entry)
 
-Retrieve the pathname of the entry
+Retrieve the pathname of the entry.
+
+Returns a string value.
+
+=head2 archive_errno($archive)
+
+Returns a numeric error code indicating the reason for the most
+recent error return.
+
+Return type is an errno integer value.
+
+=head2 archive_error_string($archive)
+
+Returns a textual error message suitable for display.  The error
+message here is usually more specific than that obtained from
+passing the result of C<archive_errno> to C<strerror>.
+
+Return type is a string.
 
 =head2 archive_read_data_skip($archive)
 
@@ -35,7 +92,8 @@ release all resources.
 =head2 archive_read_new
 
 Allocates and initializes a archive object suitable for reading from an archive.
-Returns an instance of L<Archive::Libarchive::XS::archive>
+Returns an instance of L<Archive::Libarchive::XS::archive>, which can be passed
+into any function documented here with a <$archive> argument.
 
 TODO: handle the unusual circumstance when this would return C NULL pointer.
 
@@ -169,16 +227,21 @@ Enable zip archive format.
 
 =head2 archive_version_number
 
-Return the libarchive version as an integer
+Return the libarchive version as an integer.
 
 =head2 archive_version_string
 
 Return the libarchive as a version.
 
+Returns a string value.
+
 =cut
 
 our @EXPORT_OK = qw(
+archive_clear_error
 archive_entry_pathname
+archive_errno
+archive_error_string
 archive_read_data_skip
 archive_read_free
 archive_read_new

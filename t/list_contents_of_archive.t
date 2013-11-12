@@ -3,7 +3,6 @@ use warnings;
 use Archive::Libarchive::XS qw( :all );
 use Test::More tests => 5;
 use FindBin ();
-use File::Basename qw( basename );
 use File::Spec;
 
 foreach my $format (qw( tar tar.gz tar.bz2 xar zip ))
