@@ -48,18 +48,6 @@ with one of the following values:
 Clears any error information left over from a previous call Not
 generally used in client code.
 
-## archive\_compression($archive)
-
-Return the compression code for the given archive.
-
-FIXME: deprecated in favor of archive\_filter\_code
-
-## archive\_compression\_name($archive)
-
-Returns a text description of the current compression suitable for display.
-
-FIXME: deprecated in favor of archive\_filter\_name
-
 ## archive\_copy\_error($archive1, $archive2)
 
 Copies error information from one archive to another.
@@ -84,6 +72,38 @@ message here is usually more specific than that obtained from
 passing the result of `archive_errno` to `strerror`.
 
 Return type is a string.
+
+## archive\_file\_count($archive)
+
+Returns a count of the number of files processed by this archive object.  The count
+is incremented by calls to `archive_write_header` or `archive_read_next_header`.
+
+## archive\_filter\_code
+
+Returns a numeric code identifying the indicated filter.  See `archive_filter_count`
+for details of the numbering.
+
+## archive\_filter\_count
+
+Returns the number of filters in the current pipeline. For read archive handles, these 
+filters are added automatically by the automatic format detection. For write archive 
+handles, these filters are added by calls to the various `archive_write_add_filter_XXX`
+functions. Filters in the resulting pipeline are numbered so that filter 0 is the filter 
+closest to the format handler. As a convenience, functions that expect a filter number 
+will accept -1 as a synonym for the highest-numbered filter. For example, when reading 
+a uuencoded gzipped tar archive, there are three filters: filter 0 is the gunzip filter, 
+filter 1 is the uudecode filter, and filter 2 is the pseudo-filter that wraps the archive 
+read functions. In this case, requesting `archive_position(a,(-1))` would be a synonym
+for `archive_position(a,(2))` which would return the number of bytes currently read from 
+the archive, while `archive_position(a,(1))` would return the number of bytes after
+uudecoding, and `archive_position(a,(0))` would return the number of bytes after decompression.
+
+TODO: add bindings for archive\_position
+
+## archive\_filter\_name
+
+Returns a textual name identifying the indicated filter.  See [#archive_filter_count](https://metacpan.org/pod/#archive_filter_count) for
+details of the numbering.
 
 ## archive\_format($archive)
 

@@ -21,6 +21,10 @@ pod_spelling_system:
     - mtree
     - rar
     - xar
+    - uudecode
+    - uudecoding
+    - uuencoded
+
 
 pod_coverage:
   # format is "Class#method" or "Class", regex allowed

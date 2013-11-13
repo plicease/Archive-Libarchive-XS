@@ -10,7 +10,7 @@ foreach my $mode (qw( memory filename ))
   foreach my $format (qw( tar tar.gz tar.bz2 xar zip ))
   {
     subtest "$format $mode" => sub {
-      plan tests => 18;
+      plan tests => 21;
     
       my $filename = File::Spec->catfile($FindBin::Bin, "foo.$format");
       my $r;
@@ -45,10 +45,15 @@ foreach my $mode (qw( memory filename ))
       is $r, ARCHIVE_OK, "r = ARCHIVE_OK (archive_read_next_header 1)";
       isa_ok $entry, "Archive::Libarchive::XS::archive_entry";
 
+      is archive_file_count($a), 1, "archive_file_count = 1";
+
       is archive_entry_pathname($entry), "foo/foo.txt", 'archive_entry_pathname($entry) = foo/foo.txt';
 
-      note "archive_compression      = " . archive_compression($a);
-      note "archive_compression_name = " . archive_compression_name($a);
+      note 'archive_filter_count     = ' . archive_filter_count($a);
+      for(0..(archive_filter_count($a)-1)) {
+        note "archive_filter_code($_)  = " . archive_filter_code($a,$_);
+        note "archive_filter_name($_)  = " . archive_filter_name($a,$_);
+      }
       note "archive_format           = " . archive_format($a);
       note "archive_format_name      = " . archive_format_name($a);
 
@@ -59,6 +64,8 @@ foreach my $mode (qw( memory filename ))
       is $r, ARCHIVE_OK, "r = ARCHIVE_OK (archive_read_next_header 2)";
       isa_ok $entry, "Archive::Libarchive::XS::archive_entry";
 
+      is archive_file_count($a), 2, "archive_file_count = 2";
+
       is archive_entry_pathname($entry), "foo/bar.txt", 'archive_entry_pathname($entry) = foo/bar.txt';
 
       $r = archive_read_data_skip($a);
@@ -67,6 +74,8 @@ foreach my $mode (qw( memory filename ))
       $r = archive_read_next_header($a, $entry);
       is $r, ARCHIVE_OK, "r = ARCHIVE_OK (archive_read_next_header 3)";
       isa_ok $entry, "Archive::Libarchive::XS::archive_entry";
+
+      is archive_file_count($a), 3, "archive_file_count = 3";
 
       is archive_entry_pathname($entry), "foo/baz.txt", 'archive_entry_pathname($entry) = foo/baz.txt';
 

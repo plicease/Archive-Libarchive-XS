@@ -58,18 +58,6 @@ No more operations are possible
 Clears any error information left over from a previous call Not
 generally used in client code.
 
-=head2 archive_compression($archive)
-
-Return the compression code for the given archive.
-
-FIXME: deprecated in favor of archive_filter_code
-
-=head2 archive_compression_name($archive)
-
-Returns a text description of the current compression suitable for display.
-
-FIXME: deprecated in favor of archive_filter_name
-
 =head2 archive_copy_error($archive1, $archive2)
 
 Copies error information from one archive to another.
@@ -94,6 +82,38 @@ message here is usually more specific than that obtained from
 passing the result of C<archive_errno> to C<strerror>.
 
 Return type is a string.
+
+=head2 archive_file_count($archive)
+
+Returns a count of the number of files processed by this archive object.  The count
+is incremented by calls to C<archive_write_header> or C<archive_read_next_header>.
+
+=head2 archive_filter_code
+
+Returns a numeric code identifying the indicated filter.  See C<archive_filter_count>
+for details of the numbering.
+
+=head2 archive_filter_count
+
+Returns the number of filters in the current pipeline. For read archive handles, these 
+filters are added automatically by the automatic format detection. For write archive 
+handles, these filters are added by calls to the various C<archive_write_add_filter_XXX>
+functions. Filters in the resulting pipeline are numbered so that filter 0 is the filter 
+closest to the format handler. As a convenience, functions that expect a filter number 
+will accept -1 as a synonym for the highest-numbered filter. For example, when reading 
+a uuencoded gzipped tar archive, there are three filters: filter 0 is the gunzip filter, 
+filter 1 is the uudecode filter, and filter 2 is the pseudo-filter that wraps the archive 
+read functions. In this case, requesting C<archive_position(a,(-1))> would be a synonym
+for C<archive_position(a,(2))> which would return the number of bytes currently read from 
+the archive, while C<archive_position(a,(1))> would return the number of bytes after
+uudecoding, and C<archive_position(a,(0))> would return the number of bytes after decompression.
+
+TODO: add bindings for archive_position
+
+=head2 archive_filter_name
+
+Returns a textual name identifying the indicated filter.  See L<#archive_filter_count> for
+details of the numbering.
 
 =head2 archive_format($archive)
 
@@ -418,12 +438,14 @@ our %EXPORT_TAGS = (
   )],
   func  => [qw(
     archive_clear_error
-    archive_compression
-    archive_compression_name
     archive_copy_error
     archive_entry_pathname
     archive_errno
     archive_error_string
+    archive_file_count
+    archive_filter_code
+    archive_filter_count
+    archive_filter_name
     archive_format
     archive_format_name
     archive_read_data_skip

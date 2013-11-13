@@ -6,6 +6,11 @@
 #include <archive.h>
 #include <archive_entry.h>
 
+/*
+ * TODO/Research: archive_position is documented on libarchive wiki, but
+ * not (yet?) in the version of libarchive that I am using.
+ */
+
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 
 =head2 archive_read_new
@@ -81,29 +86,52 @@ archive_copy_error(archive1, archive2)
     struct archive *archive1;
     struct archive *archive2;
 
-=head2 archive_compression($archive)
+=head2 archive_filter_code
 
-Return the compression code for the given archive.
-
-FIXME: deprecated in favor of archive_filter_code
-
-=cut
-
-int
-archive_compression(archive)
-    struct archive *archive;
-
-=head2 archive_compression_name($archive)
-
-Returns a text description of the current compression suitable for display.
-
-FIXME: deprecated in favor of archive_filter_name
+Returns a numeric code identifying the indicated filter.  See C<archive_filter_count>
+for details of the numbering.
 
 =cut
 
-const char *
-archive_compression_name(archive);
+int 
+archive_filter_code(archive, level);
     struct archive *archive;
+    int level;
+
+=head2 archive_filter_count
+
+Returns the number of filters in the current pipeline. For read archive handles, these 
+filters are added automatically by the automatic format detection. For write archive 
+handles, these filters are added by calls to the various C<archive_write_add_filter_XXX>
+functions. Filters in the resulting pipeline are numbered so that filter 0 is the filter 
+closest to the format handler. As a convenience, functions that expect a filter number 
+will accept -1 as a synonym for the highest-numbered filter. For example, when reading 
+a uuencoded gzipped tar archive, there are three filters: filter 0 is the gunzip filter, 
+filter 1 is the uudecode filter, and filter 2 is the pseudo-filter that wraps the archive 
+read functions. In this case, requesting C<archive_position(a,(-1))> would be a synonym
+for C<archive_position(a,(2))> which would return the number of bytes currently read from 
+the archive, while C<archive_position(a,(1))> would return the number of bytes after
+uudecoding, and C<archive_position(a,(0))> would return the number of bytes after decompression.
+
+TODO: add bindings for archive_position
+
+=cut
+
+int 
+archive_filter_count(archive);
+    struct archive *archive;
+
+=head2 archive_filter_name
+
+Returns a textual name identifying the indicated filter.  See L<#archive_filter_count> for
+details of the numbering.
+
+=cut
+
+const char * 
+archive_filter_name(archive, level); 
+    struct archive *archive;
+    int level;
 
 =head2 archive_format($archive)
 
@@ -235,7 +263,7 @@ archive_read_next_header(archive, output)
     sv_setref_pv(output, "Archive::Libarchive::XS::archive_entry", (void*) entry);
   OUTPUT:
     RETVAL
-    out
+    output
 
 =head2 archive_read_data_skip($archive)
 
@@ -246,6 +274,17 @@ all of the data for this archive entry.
 
 int
 archive_read_data_skip(archive)
+    struct archive *archive;
+
+=head2 archive_file_count($archive)
+
+Returns a count of the number of files processed by this archive object.  The count
+is incremented by calls to C<archive_write_header> or C<archive_read_next_header>.
+
+=cut
+
+int
+archive_file_count(archive)
     struct archive *archive;
 
 =head2 archive_version_string
