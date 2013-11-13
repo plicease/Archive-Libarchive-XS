@@ -430,8 +430,8 @@ constants using the `:const` export tag).
 # SEE ALSO
 
 The intent of this module is to provide a low level fairly thin direct
-interface to the libarchive interface, on which a more Perlish OO layer
-could be written.
+interface to libarchive, on which a more Perlish OO layer could easily
+be written.
 
 - [Archive::Peek::Libarchive](https://metacpan.org/pod/Archive::Peek::Libarchive)
 - [Archive::Extract::Libarchive](https://metacpan.org/pod/Archive::Extract::Libarchive)
