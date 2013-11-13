@@ -129,6 +129,14 @@ codes.
 
 A textual description of the format of the current entry.
 
+=head2 archive_read_data($archive, $buffer, $max_size)
+
+Read data associated with the header just read.  Internally, this is a
+convenience function that calls C<archive_read_data_block> and fills
+any gaps with nulls so that callers see a single continuous stream of
+data.  Returns the actual number of bytes read, 0 on end of data and
+a negative value on error.
+
 =head2 archive_read_data_skip($archive)
 
 A convenience function that repeatedly calls C<archive_read_data> to skip
@@ -451,6 +459,7 @@ our %EXPORT_TAGS = (
     archive_filter_name
     archive_format
     archive_format_name
+    archive_read_data
     archive_read_data_skip
     archive_read_free
     archive_read_new

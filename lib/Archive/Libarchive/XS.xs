@@ -2,6 +2,7 @@
 #include "perl.h"
 #include "XSUB.h"
 
+#include <alloca.h>
 #include <string.h>
 #include <archive.h>
 #include <archive_entry.h>
@@ -321,6 +322,35 @@ Returns a string value.
 const char *
 archive_entry_pathname(archive_entry);
     struct archive_entry *archive_entry;
+
+=head2 archive_read_data($archive, $buffer, $max_size)
+
+Read data associated with the header just read.  Internally, this is a
+convenience function that calls C<archive_read_data_block> and fills
+any gaps with nulls so that callers see a single continuous stream of
+data.  Returns the actual number of bytes read, 0 on end of data and
+a negative value on error.
+
+=cut
+
+int
+archive_read_data(archive, buffer, max_size)
+    struct archive *archive;
+    SV *buffer;
+    size_t max_size;
+  CODE:
+    /* TODO: maybe use archive_read_data_block() here
+     * to avoid extra copies of data, I think this is already
+     * making one extra copy more than it has to
+     */
+    void *ptr = alloca(max_size); /* TODO: don't use alloca */
+    int size = archive_read_data(archive, ptr, max_size);
+    if(size > 0)
+      sv_setpvn(buffer, ptr, size);
+    RETVAL = size;
+  OUTPUT:
+    RETVAL
+    buffer
 
 int
 _constant(name)
