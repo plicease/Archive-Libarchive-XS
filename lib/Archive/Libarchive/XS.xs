@@ -16,8 +16,9 @@ MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 =head2 archive_read_new
 
 Allocates and initializes a archive object suitable for reading from an archive.
-Returns an instance of L<Archive::Libarchive::XS::archive>, which can be passed
-into any function documented here with a <$archive> argument.
+Returns an opaque archive which may be a perl style object, or a C pointer
+(depending on the implementation), either way, it can be passed into
+any of the functions documented here with an <$archive> argument.
 
 TODO: handle the unusual circumstance when this would return C NULL pointer.
 
@@ -67,7 +68,7 @@ archive_errno(archive)
 =head2 archive_clear_error($archive)
 
 Clears any error information left over from a previous call Not
-generally used in client code.
+generally used in client code.  Does not return a value.
 
 =cut
 
@@ -246,7 +247,9 @@ archive_read_open_memory(archive, input)
 =head2 archive_read_next_header($archive, $entry)
 
 Read the header for the next entry and return an entry object
-($entry will be an instance of L<Archive::Libarchive::XS::archive_entry>).
+Returns an opaque archive which may be a perl style object, or a C pointer
+(depending on the implementation), either way, it can be passed into
+any of the functions documented here with an <$entry> argument.
 
 TODO: maybe use archive_read_next_header2
 

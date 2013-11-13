@@ -56,7 +56,7 @@ No more operations are possible
 =head2 archive_clear_error($archive)
 
 Clears any error information left over from a previous call Not
-generally used in client code.
+generally used in client code.  Does not return a value.
 
 =head2 archive_copy_error($archive1, $archive2)
 
@@ -142,15 +142,18 @@ release all resources.
 =head2 archive_read_new
 
 Allocates and initializes a archive object suitable for reading from an archive.
-Returns an instance of L<Archive::Libarchive::XS::archive>, which can be passed
-into any function documented here with a <$archive> argument.
+Returns an opaque archive which may be a perl style object, or a C pointer
+(depending on the implementation), either way, it can be passed into
+any of the functions documented here with an <$archive> argument.
 
 TODO: handle the unusual circumstance when this would return C NULL pointer.
 
 =head2 archive_read_next_header($archive, $entry)
 
 Read the header for the next entry and return an entry object
-($entry will be an instance of L<Archive::Libarchive::XS::archive_entry>).
+Returns an opaque archive which may be a perl style object, or a C pointer
+(depending on the implementation), either way, it can be passed into
+any of the functions documented here with an <$entry> argument.
 
 TODO: maybe use archive_read_next_header2
 

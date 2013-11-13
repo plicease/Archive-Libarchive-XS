@@ -46,7 +46,7 @@ with one of the following values:
 ## archive\_clear\_error($archive)
 
 Clears any error information left over from a previous call Not
-generally used in client code.
+generally used in client code.  Does not return a value.
 
 ## archive\_copy\_error($archive1, $archive2)
 
@@ -132,15 +132,18 @@ release all resources.
 ## archive\_read\_new
 
 Allocates and initializes a archive object suitable for reading from an archive.
-Returns an instance of [Archive::Libarchive::XS::archive](https://metacpan.org/pod/Archive::Libarchive::XS::archive), which can be passed
-into any function documented here with a <$archive> argument.
+Returns an opaque archive which may be a perl style object, or a C pointer
+(depending on the implementation), either way, it can be passed into
+any of the functions documented here with an <$archive> argument.
 
 TODO: handle the unusual circumstance when this would return C NULL pointer.
 
 ## archive\_read\_next\_header($archive, $entry)
 
 Read the header for the next entry and return an entry object
-($entry will be an instance of [Archive::Libarchive::XS::archive_entry](https://metacpan.org/pod/Archive::Libarchive::XS::archive_entry)).
+Returns an opaque archive which may be a perl style object, or a C pointer
+(depending on the implementation), either way, it can be passed into
+any of the functions documented here with an <$entry> argument.
 
 TODO: maybe use archive\_read\_next\_header2
 
