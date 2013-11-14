@@ -933,9 +933,13 @@ Enable bzip2 decompression filter.
 
 =cut
 
+#ifdef ARCHIVE_FILTER_BZIP2
+
 int
 archive_read_support_filter_bzip2(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_filter_compress($archive)
 
@@ -943,9 +947,13 @@ Enable compress decompression filter.
 
 =cut
 
+#ifdef ARCHIVE_FILTER_COMPRESS
+
 int
 archive_read_support_filter_compress(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_filter_grzip($archive)
 
@@ -953,9 +961,13 @@ Enable grzip decompression filter.
 
 =cut
 
+#ifdef ARCHIVE_FILTER_GRZIP
+
 int
 archive_read_support_filter_grzip(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_filter_gzip($archive)
 
@@ -963,9 +975,13 @@ Enable gzip decompression filter.
 
 =cut
 
+#ifdef ARCHIVE_FILTER_GZIP
+
 int
 archive_read_support_filter_gzip(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_filter_lrzip($archive)
 
@@ -973,9 +989,13 @@ Enable lrzip decompression filter.
 
 =cut
 
+#ifdef ARCHIVE_FILTER_LRZIP
+
 int
 archive_read_support_filter_lrzip(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_filter_lzip($archive)
 
@@ -983,9 +1003,13 @@ Enable lzip decompression filter.
 
 =cut
 
+#ifdef ARCHIVE_FILTER_LZIP
+
 int
 archive_read_support_filter_lzip(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_filter_lzma($archive)
 
@@ -993,9 +1017,13 @@ Enable lzma decompression filter.
 
 =cut
 
+#ifdef ARCHIVE_FILTER_LZMA
+
 int
 archive_read_support_filter_lzma(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_filter_lzop($archive)
 
@@ -1003,9 +1031,13 @@ Enable lzop decompression filter.
 
 =cut
 
+#ifdef ARCHIVE_FILTER_LZOP
+
 int
 archive_read_support_filter_lzop(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_filter_none($archive)
 
@@ -1013,9 +1045,13 @@ Enable none decompression filter.
 
 =cut
 
+#ifdef ARCHIVE_FILTER_NONE
+
 int
 archive_read_support_filter_none(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_7zip($archive)
 
@@ -1023,9 +1059,13 @@ Enable 7zip archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_7ZIP
+
 int
 archive_read_support_format_7zip(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_ar($archive)
 
@@ -1033,9 +1073,13 @@ Enable ar archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_AR
+
 int
 archive_read_support_format_ar(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_cab($archive)
 
@@ -1043,9 +1087,13 @@ Enable cab archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_CAB
+
 int
 archive_read_support_format_cab(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_cpio($archive)
 
@@ -1053,9 +1101,13 @@ Enable cpio archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_CPIO
+
 int
 archive_read_support_format_cpio(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_empty($archive)
 
@@ -1063,9 +1115,13 @@ Enable empty archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_EMPTY
+
 int
 archive_read_support_format_empty(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_gnutar($archive)
 
@@ -1073,9 +1129,13 @@ Enable gnutar archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_GNUTAR
+
 int
 archive_read_support_format_gnutar(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_iso9660($archive)
 
@@ -1083,9 +1143,13 @@ Enable iso9660 archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_ISO9660
+
 int
 archive_read_support_format_iso9660(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_lha($archive)
 
@@ -1093,9 +1157,13 @@ Enable lha archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_LHA
+
 int
 archive_read_support_format_lha(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_mtree($archive)
 
@@ -1103,9 +1171,13 @@ Enable mtree archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_MTREE
+
 int
 archive_read_support_format_mtree(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_rar($archive)
 
@@ -1113,9 +1185,13 @@ Enable rar archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_RAR
+
 int
 archive_read_support_format_rar(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_raw($archive)
 
@@ -1123,9 +1199,13 @@ Enable raw archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_RAW
+
 int
 archive_read_support_format_raw(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_tar($archive)
 
@@ -1133,9 +1213,13 @@ Enable tar archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_TAR
+
 int
 archive_read_support_format_tar(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_xar($archive)
 
@@ -1143,9 +1227,13 @@ Enable xar archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_XAR
+
 int
 archive_read_support_format_xar(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_read_support_format_zip($archive)
 
@@ -1153,7 +1241,11 @@ Enable zip archive format.
 
 =cut
 
+#ifdef ARCHIVE_FORMAT_ZIP
+
 int
 archive_read_support_format_zip(archive)
     struct archive *archive
+
+#endif
 

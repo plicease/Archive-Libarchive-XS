@@ -47,9 +47,11 @@ do { # xs
     $buffer .= "=head2 archive_read_support_filter_$filter(\$archive)\n\n";
     $buffer .= "Enable $filter decompression filter.\n\n";
     $buffer .= "=cut\n\n";
+    $buffer .= "#ifdef ARCHIVE_FILTER_" . uc($filter) . "\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_read_support_filter_$filter(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
+    $buffer .= "#endif\n\n";
   }
   
   foreach my $format (sort qw( 7zip ar cab cpio empty gnutar iso9660 lha mtree rar raw tar xar zip ))
@@ -57,9 +59,11 @@ do { # xs
     $buffer .= "=head2 archive_read_support_format_$format(\$archive)\n\n";
     $buffer .= "Enable $format archive format.\n\n";
     $buffer .= "=cut\n\n";
+    $buffer .= "#ifdef ARCHIVE_FORMAT_" . uc($format) ."\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_read_support_format_$format(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
+    $buffer .= "#endif\n\n";
   }
   
   $file->spew($buffer);

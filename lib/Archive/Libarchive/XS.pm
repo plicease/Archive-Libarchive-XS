@@ -53,6 +53,20 @@ No more operations are possible
 
 =back
 
+If you are linking against an older version of libarchive, some of these 
+functions may not be available.  You can use the C<can> method to test if
+a function or constant is available, for example:
+
+ if(Archive::Libarchive::XS->can('archive_read_support_filter_grzip')
+ {
+   # grzip filter is available.
+ }
+
+You can use this one-liner to determine which functions and constants
+are unavailable:
+
+ % perl -MArchive::Libarchive::XS    -E 'for(@Archive::Libarchive::XS::EXPORT_OK) { say $_ unless Archive::Libarchive::XS->can($_) }'
+
 =head2 archive_clear_error($archive)
 
 Clears any error information left over from a previous call Not
@@ -798,12 +812,7 @@ constants using the C<:const> export tag).
 
 foreach my $const (@{ $EXPORT_TAGS{const} }) {
   my $value = eval { _constant($const) };
-  if($@)
-  {
-    warn "no constant $const";
-    next;
-  }
-
+  next if $@;
   no strict 'refs';
   # what is the best way to do actually do this?
   *{"Archive::Libarchive::XS::$const"} = eval qq{ sub { $value } };

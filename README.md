@@ -43,6 +43,20 @@ with one of the following values:
 
     No more operations are possible
 
+If you are linking against an older version of libarchive, some of these 
+functions may not be available.  You can use the `can` method to test if
+a function or constant is available, for example:
+
+    if(Archive::Libarchive::XS->can('archive_read_support_filter_grzip')
+    {
+      # grzip filter is available.
+    }
+
+You can use this one-liner to determine which functions and constants
+are unavailable:
+
+    % perl -MArchive::Libarchive::XS    -E 'for(@Archive::Libarchive::XS::EXPORT_OK) { say $_ unless Archive::Libarchive::XS->can($_) }'
+
 ## archive\_clear\_error($archive)
 
 Clears any error information left over from a previous call Not
