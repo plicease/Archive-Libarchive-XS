@@ -8,9 +8,9 @@ sub munge_files
 {
   my($self) = @_;
   
-  my($file) = grep { $_->name eq 'lib/Archive/Libarchive/XS.pm' } @{ $self->zilla->files };
+  my($file) = grep { $_->name =~ qr{^lib/Archive/Libarchive/(XS|FFI)\.pm$} } @{ $self->zilla->files };
   
-  $self->zilla->log_fatal("could not find XS.pm")
+  $self->zilla->log_fatal("could not find main module")
     unless $file;
   
   state $data;

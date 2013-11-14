@@ -226,9 +226,14 @@ archive_read_open_filename(archive, filename, block_size)
 
 =head2 archive_read_open_memory($archive, $buffer)
 
-Like C<archive_read_open>, except that it uses a Perl scalar that holds the content of the
-archive.  This function does not make a copy of the data stored in C<$buffer>, so you should
-not modify the buffer until you have free the archive using C<archive_read_free>.
+Like C<archive_read_open>, except that it uses a Perl scalar that holds the 
+content of the archive.  This function does not make a copy of the data stored 
+in C<$buffer>, so you should not modify the buffer until you have free the 
+archive using C<archive_read_free>.
+
+Bad things will happen if the buffer falls out of scope and is deallocated
+before you free the archive, so make sure that there is a reference to the
+buffer somewhere in your programmer until C<archive_read_free> is called.
 
 =cut
 

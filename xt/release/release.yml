@@ -24,6 +24,7 @@ pod_spelling_system:
     - uudecode
     - uudecoding
     - uuencoded
+    - FFI
 
 
 pod_coverage:
