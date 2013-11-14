@@ -809,21 +809,3 @@ our @EXPORT_OK = (@{ $EXPORT_TAGS{const} }, @{ $EXPORT_TAGS{func} });
 $EXPORT_TAGS{all} = \@EXPORT_OK;
 
 1;
-
-=head1 SEE ALSO
-
-The intent of this module is to provide a low level fairly thin direct
-interface to libarchive, on which a more Perlish OO layer could easily
-be written.
-
-=over 4
-
-=item L<Archive::Peek::Libarchive>
-
-=item L<Archive::Extract::Libarchive>
-
-Both of these provide a higher level perlish interface to libarchive.
-
-=back
-
-=cut
