@@ -5,7 +5,16 @@ use Alien::Libarchive;
 use Path::Class qw( file dir );
 
 my $alien = Alien::Libarchive->new;
-my @macros = grep { $_ ne 'ARCHIVE_VERSION_STRING' } grep { $_ !~ /H_INCLUDED$/ } $alien->_macro_list;
+
+my @macros = do { # constants
+
+  # keep any new macros, even if we are doing a dzil build
+  # against an old libarchive
+  # TODO: warn if we find a missing constant.
+  my %macros = (map { chomp; $_ => 1 } file(__FILE__)->parent->file('constants.txt')->slurp, grep { $_ ne 'ARCHIVE_VERSION_STRING' } grep { $_ !~ /H_INCLUDED$/ } $alien->_macro_list);
+  sort keys %macros;  
+};
+file(__FILE__)->parent->file('constants.txt')->spew(join "\n", @macros);
 
 do { # xs
   my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS.xs ))->absolute;
