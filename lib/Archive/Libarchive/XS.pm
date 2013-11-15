@@ -1076,3 +1076,46 @@ our @EXPORT_OK = (@{ $EXPORT_TAGS{const} }, @{ $EXPORT_TAGS{func} });
 $EXPORT_TAGS{all} = \@EXPORT_OK;
 
 1;
+
+=head1 EXAMPLES
+
+These examples are translated from equivalent C versions provided on the
+libarchive website, and are annotated here with Perl specific details.
+These examples are also included with the distribution.
+
+=head2 List contents of archive stored in file
+
+# EXAMPLE: example/list_contents_of_archive_stored_in_file.pl
+
+=head2 List contents of archive stored in memory
+
+# EXAMPLE: example/list_contents_of_archive_stored_in_memory.pl
+
+=head2 List contents of archive with custom read functions
+
+TODO
+
+=head2 A universal decompressor
+
+# EXAMPLE: example/universal_decompressor.pl
+
+=head2 A basic write example
+
+# EXAMPLE: example/basic_write.pl
+
+=head2 Constructing objects on disk
+
+TODO
+
+=head2 A complete extractor
+
+TODO
+
+=head1 CAVEATS
+
+Archive and entry objects are really pointers to opaque C structures
+and need to be freed using one of C<archive_read_free>, C<archive_write_free>
+or C<archive_entry_free>, in order to free the resources associated
+with those objects.
+
+=cut

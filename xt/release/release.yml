@@ -30,6 +30,7 @@ pod_spelling_system:
     - ustar
     - uuencode
     - xz
+    - decompressor
 
 
 pod_coverage:
