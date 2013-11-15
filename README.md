@@ -66,11 +66,49 @@ generally used in client code.  Does not return a value.
 
 Copies error information from one archive to another.
 
+## archive\_entry\_clear
+
+FIXME
+
+## archive\_entry\_clone
+
+FIXME
+
+## archive\_entry\_free
+
+FIXME
+
+## archive\_entry\_new
+
+FIXME
+
+## archive\_entry\_new2
+
+FIXME
+
 ## archive\_entry\_pathname($entry)
 
 Retrieve the pathname of the entry.
 
 Returns a string value.
+
+## archive\_entry\_set\_filetype($entry, $code)
+
+FIXME
+
+## archive\_entry\_set\_pathname($entry, $name)
+
+FIXME
+
+## archive\_entry\_set\_perm
+
+FIXME
+
+## archive\_entry\_set\_size($entry, $size)
+
+FIXME
+
+FIXME: size is 64bit
 
 ## archive\_errno($archive)
 
@@ -156,7 +194,7 @@ release all resources.
 Allocates and initializes a archive object suitable for reading from an archive.
 Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
-any of the functions documented here with an <$archive> argument.
+any of the read functions documented here with an <$archive> argument.
 
 TODO: handle the unusual circumstance when this would return C NULL pointer.
 
@@ -310,6 +348,172 @@ Return the libarchive version as an integer.
 Return the libarchive as a version.
 
 Returns a string value.
+
+## archive\_write\_add\_filter($archive, $code)
+
+FIXME
+
+## archive\_write\_add\_filter\_b64encode($archive)
+
+Add b64encode filter
+
+## archive\_write\_add\_filter\_by\_name($archive, $name)
+
+FIXME
+
+## archive\_write\_add\_filter\_bzip2($archive)
+
+Add bzip2 filter
+
+## archive\_write\_add\_filter\_compress($archive)
+
+Add compress filter
+
+## archive\_write\_add\_filter\_grzip($archive)
+
+Add grzip filter
+
+## archive\_write\_add\_filter\_gzip($archive)
+
+Add gzip filter
+
+## archive\_write\_add\_filter\_lrzip($archive)
+
+Add lrzip filter
+
+## archive\_write\_add\_filter\_lzip($archive)
+
+Add lzip filter
+
+## archive\_write\_add\_filter\_lzma($archive)
+
+Add lzma filter
+
+## archive\_write\_add\_filter\_lzop($archive)
+
+Add lzop filter
+
+## archive\_write\_add\_filter\_none($archive)
+
+Add none filter
+
+## archive\_write\_add\_filter\_program($archive, $cmd)
+
+FIXME
+
+## archive\_write\_add\_filter\_uuencode($archive)
+
+Add uuencode filter
+
+## archive\_write\_add\_filter\_xz($archive)
+
+Add xz filter
+
+## archive\_write\_close(archive)
+
+FIXME
+
+## archive\_write\_data(archive, buffer)
+
+FIXME
+
+## archive\_write\_free($archive)
+
+Invokes `archive_write_close` if it was not invoked manually, then
+release all resources.
+
+## archive\_write\_header($archive, $entry)
+
+FIXME
+
+## archive\_write\_new
+
+Allocates and initializes a archive object suitable for writing an new archive.
+Returns an opaque archive which may be a perl style object, or a C pointer
+(depending on the implementation), either way, it can be passed into
+any of the functions write documented here with an <$archive> argument.
+
+TODO: handle the unusual circumstance when this would return C NULL pointer.
+
+## archive\_write\_open\_filename($archive, $filename)
+
+FIXME
+
+## archive\_write\_set\_format($archive, $code)
+
+FIXME
+
+## archive\_write\_set\_format\_7zip($archive)
+
+Set the archive format to 7zip
+
+## archive\_write\_set\_format\_ar\_bsd($archive)
+
+Set the archive format to ar\_bsd
+
+## archive\_write\_set\_format\_ar\_svr4($archive)
+
+Set the archive format to ar\_svr4
+
+## archive\_write\_set\_format\_by\_name($archive, $name)
+
+FIXME
+
+## archive\_write\_set\_format\_cpio($archive)
+
+Set the archive format to cpio
+
+## archive\_write\_set\_format\_cpio\_newc($archive)
+
+Set the archive format to cpio\_newc
+
+## archive\_write\_set\_format\_gnutar($archive)
+
+Set the archive format to gnutar
+
+## archive\_write\_set\_format\_iso9660($archive)
+
+Set the archive format to iso9660
+
+## archive\_write\_set\_format\_mtree($archive)
+
+Set the archive format to mtree
+
+## archive\_write\_set\_format\_mtree\_classic($archive)
+
+Set the archive format to mtree\_classic
+
+## archive\_write\_set\_format\_pax($archive)
+
+Set the archive format to pax
+
+## archive\_write\_set\_format\_pax\_restricted($archive)
+
+Set the archive format to pax\_restricted
+
+## archive\_write\_set\_format\_shar($archive)
+
+Set the archive format to shar
+
+## archive\_write\_set\_format\_shar\_dump($archive)
+
+Set the archive format to shar\_dump
+
+## archive\_write\_set\_format\_ustar($archive)
+
+Set the archive format to ustar
+
+## archive\_write\_set\_format\_v7tar($archive)
+
+Set the archive format to v7tar
+
+## archive\_write\_set\_format\_xar($archive)
+
+Set the archive format to xar
+
+## archive\_write\_set\_format\_zip($archive)
+
+Set the archive format to zip
 
 # CONSTANTS
 

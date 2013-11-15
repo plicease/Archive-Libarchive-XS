@@ -1,6 +1,7 @@
 Alien::Libarchive
 Exporter
 File::Spec
+File::Temp
 FindBin
 Module::Build
 Test::More

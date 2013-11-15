@@ -76,11 +76,49 @@ generally used in client code.  Does not return a value.
 
 Copies error information from one archive to another.
 
+=head2 archive_entry_clear
+
+FIXME
+
+=head2 archive_entry_clone
+
+FIXME
+
+=head2 archive_entry_free
+
+FIXME
+
+=head2 archive_entry_new
+
+FIXME
+
+=head2 archive_entry_new2
+
+FIXME
+
 =head2 archive_entry_pathname($entry)
 
 Retrieve the pathname of the entry.
 
 Returns a string value.
+
+=head2 archive_entry_set_filetype($entry, $code)
+
+FIXME
+
+=head2 archive_entry_set_pathname($entry, $name)
+
+FIXME
+
+=head2 archive_entry_set_perm
+
+FIXME
+
+=head2 archive_entry_set_size($entry, $size)
+
+FIXME
+
+FIXME: size is 64bit
 
 =head2 archive_errno($archive)
 
@@ -166,7 +204,7 @@ release all resources.
 Allocates and initializes a archive object suitable for reading from an archive.
 Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
-any of the functions documented here with an <$archive> argument.
+any of the read functions documented here with an <$archive> argument.
 
 TODO: handle the unusual circumstance when this would return C NULL pointer.
 
@@ -321,6 +359,172 @@ Return the libarchive as a version.
 
 Returns a string value.
 
+=head2 archive_write_add_filter($archive, $code)
+
+FIXME
+
+=head2 archive_write_add_filter_b64encode($archive)
+
+Add b64encode filter
+
+=head2 archive_write_add_filter_by_name($archive, $name)
+
+FIXME
+
+=head2 archive_write_add_filter_bzip2($archive)
+
+Add bzip2 filter
+
+=head2 archive_write_add_filter_compress($archive)
+
+Add compress filter
+
+=head2 archive_write_add_filter_grzip($archive)
+
+Add grzip filter
+
+=head2 archive_write_add_filter_gzip($archive)
+
+Add gzip filter
+
+=head2 archive_write_add_filter_lrzip($archive)
+
+Add lrzip filter
+
+=head2 archive_write_add_filter_lzip($archive)
+
+Add lzip filter
+
+=head2 archive_write_add_filter_lzma($archive)
+
+Add lzma filter
+
+=head2 archive_write_add_filter_lzop($archive)
+
+Add lzop filter
+
+=head2 archive_write_add_filter_none($archive)
+
+Add none filter
+
+=head2 archive_write_add_filter_program($archive, $cmd)
+
+FIXME
+
+=head2 archive_write_add_filter_uuencode($archive)
+
+Add uuencode filter
+
+=head2 archive_write_add_filter_xz($archive)
+
+Add xz filter
+
+=head2 archive_write_close(archive)
+
+FIXME
+
+=head2 archive_write_data(archive, buffer)
+
+FIXME
+
+=head2 archive_write_free($archive)
+
+Invokes C<archive_write_close> if it was not invoked manually, then
+release all resources.
+
+=head2 archive_write_header($archive, $entry)
+
+FIXME
+
+=head2 archive_write_new
+
+Allocates and initializes a archive object suitable for writing an new archive.
+Returns an opaque archive which may be a perl style object, or a C pointer
+(depending on the implementation), either way, it can be passed into
+any of the functions write documented here with an <$archive> argument.
+
+TODO: handle the unusual circumstance when this would return C NULL pointer.
+
+=head2 archive_write_open_filename($archive, $filename)
+
+FIXME
+
+=head2 archive_write_set_format($archive, $code)
+
+FIXME
+
+=head2 archive_write_set_format_7zip($archive)
+
+Set the archive format to 7zip
+
+=head2 archive_write_set_format_ar_bsd($archive)
+
+Set the archive format to ar_bsd
+
+=head2 archive_write_set_format_ar_svr4($archive)
+
+Set the archive format to ar_svr4
+
+=head2 archive_write_set_format_by_name($archive, $name)
+
+FIXME
+
+=head2 archive_write_set_format_cpio($archive)
+
+Set the archive format to cpio
+
+=head2 archive_write_set_format_cpio_newc($archive)
+
+Set the archive format to cpio_newc
+
+=head2 archive_write_set_format_gnutar($archive)
+
+Set the archive format to gnutar
+
+=head2 archive_write_set_format_iso9660($archive)
+
+Set the archive format to iso9660
+
+=head2 archive_write_set_format_mtree($archive)
+
+Set the archive format to mtree
+
+=head2 archive_write_set_format_mtree_classic($archive)
+
+Set the archive format to mtree_classic
+
+=head2 archive_write_set_format_pax($archive)
+
+Set the archive format to pax
+
+=head2 archive_write_set_format_pax_restricted($archive)
+
+Set the archive format to pax_restricted
+
+=head2 archive_write_set_format_shar($archive)
+
+Set the archive format to shar
+
+=head2 archive_write_set_format_shar_dump($archive)
+
+Set the archive format to shar_dump
+
+=head2 archive_write_set_format_ustar($archive)
+
+Set the archive format to ustar
+
+=head2 archive_write_set_format_v7tar($archive)
+
+Set the archive format to v7tar
+
+=head2 archive_write_set_format_xar($archive)
+
+Set the archive format to xar
+
+=head2 archive_write_set_format_zip($archive)
+
+Set the archive format to zip
+
 =cut
 
 our %EXPORT_TAGS = (
@@ -469,7 +673,16 @@ our %EXPORT_TAGS = (
   func  => [qw(
     archive_clear_error
     archive_copy_error
+    archive_entry_clear
+    archive_entry_clone
+    archive_entry_free
+    archive_entry_new
+    archive_entry_new2
     archive_entry_pathname
+    archive_entry_set_filetype
+    archive_entry_set_pathname
+    archive_entry_set_perm
+    archive_entry_set_size
     archive_errno
     archive_error_string
     archive_file_count
@@ -514,6 +727,46 @@ our %EXPORT_TAGS = (
     archive_read_support_format_zip
     archive_version_number
     archive_version_string
+    archive_write_add_filter
+    archive_write_add_filter_b64encode
+    archive_write_add_filter_by_name
+    archive_write_add_filter_bzip2
+    archive_write_add_filter_compress
+    archive_write_add_filter_grzip
+    archive_write_add_filter_gzip
+    archive_write_add_filter_lrzip
+    archive_write_add_filter_lzip
+    archive_write_add_filter_lzma
+    archive_write_add_filter_lzop
+    archive_write_add_filter_none
+    archive_write_add_filter_program
+    archive_write_add_filter_uuencode
+    archive_write_add_filter_xz
+    archive_write_close
+    archive_write_data
+    archive_write_free
+    archive_write_header
+    archive_write_new
+    archive_write_open_filename
+    archive_write_set_format
+    archive_write_set_format_7zip
+    archive_write_set_format_ar_bsd
+    archive_write_set_format_ar_svr4
+    archive_write_set_format_by_name
+    archive_write_set_format_cpio
+    archive_write_set_format_cpio_newc
+    archive_write_set_format_gnutar
+    archive_write_set_format_iso9660
+    archive_write_set_format_mtree
+    archive_write_set_format_mtree_classic
+    archive_write_set_format_pax
+    archive_write_set_format_pax_restricted
+    archive_write_set_format_shar
+    archive_write_set_format_shar_dump
+    archive_write_set_format_ustar
+    archive_write_set_format_v7tar
+    archive_write_set_format_xar
+    archive_write_set_format_zip
   )],
 );
 
