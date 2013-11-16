@@ -162,4 +162,8 @@ and need to be freed using one of C<archive_read_free>, C<archive_write_free>
 or C<archive_entry_free>, in order to free the resources associated
 with those objects.
 
+The documentation that comes with libarchive is not that great, but
+is serviceable.  The documentation for this library is copied largely
+from libarchive, with adjustments for Perl.
+
 =cut

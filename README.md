@@ -68,23 +68,27 @@ Copies error information from one archive to another.
 
 ## archive\_entry\_clear
 
-FIXME
+Erases the object, resetting all internal fields to the same state as a newly-created object.  This is provided
+to allow you to quickly recycle objects without thrashing the heap.
 
 ## archive\_entry\_clone
 
-FIXME
+A deep copy operation; all text fields are duplicated.
 
 ## archive\_entry\_free
 
-FIXME
+Releases the struct archive\_entry object.
 
 ## archive\_entry\_new
 
-FIXME
+Allocate and return a blank struct archive\_entry object.
 
 ## archive\_entry\_new2
 
-FIXME
+This form of `archive_entry_new2` will pull character-set
+conversion information from the specified archive handle.  The
+older `archive_entry_new` form will result in the use of an internal
+default character-set conversion.
 
 ## archive\_entry\_pathname($entry)
 
@@ -94,19 +98,36 @@ Returns a string value.
 
 ## archive\_entry\_set\_filetype($entry, $code)
 
-FIXME
+Sets the filetype in the archive.  Code should be one of
+
+- AE\_IFMT
+- AE\_IFREG
+- AE\_IFLNK
+- AE\_IFSOCK
+- AE\_IFCHR
+- AE\_IFBLK
+- AE\_IFDIR
+- AE\_IFIFO
+
+Does not return anything.
 
 ## archive\_entry\_set\_pathname($entry, $name)
 
-FIXME
+Sets the path in the archive as a string.
+
+Does not return anything.
 
 ## archive\_entry\_set\_perm
 
-FIXME
+Set the permission bits for the entry.  This is the usual UNIX octal permission thing.
+
+Does not return anything.
 
 ## archive\_entry\_set\_size($entry, $size)
 
-FIXME
+Sets the size of the file in the archive.
+
+Does not return anything.
 
 FIXME: size is 64bit
 
@@ -351,7 +372,7 @@ Returns a string value.
 
 ## archive\_write\_add\_filter($archive, $code)
 
-FIXME
+A convenience function to set the filter based on the code.
 
 ## archive\_write\_add\_filter\_b64encode($archive)
 
@@ -359,7 +380,7 @@ Add b64encode filter
 
 ## archive\_write\_add\_filter\_by\_name($archive, $name)
 
-FIXME
+A convenience function to set the filter based on the name.
 
 ## archive\_write\_add\_filter\_bzip2($archive)
 
@@ -399,7 +420,9 @@ Add none filter
 
 ## archive\_write\_add\_filter\_program($archive, $cmd)
 
-FIXME
+The archive will be fed into the specified compression program. 
+The output of that program is blocked and written to the client
+write callbacks.
 
 ## archive\_write\_add\_filter\_uuencode($archive)
 
@@ -411,11 +434,13 @@ Add xz filter
 
 ## archive\_write\_close(archive)
 
-FIXME
+Complete the archive and invoke the close callback.
 
 ## archive\_write\_data(archive, buffer)
 
-FIXME
+Write data corresponding to the header just written.
+
+This function returns the number of bytes actually written, or -1 on error.
 
 ## archive\_write\_free($archive)
 
@@ -424,7 +449,9 @@ release all resources.
 
 ## archive\_write\_header($archive, $entry)
 
-FIXME
+Build and write a header using the data in the provided struct archive\_entry structure.
+You can use `archive_entry_new` to create an `$entry` object and populate it with
+`archive_entry_set*` functions.
 
 ## archive\_write\_new
 
@@ -437,11 +464,19 @@ TODO: handle the unusual circumstance when this would return C NULL pointer.
 
 ## archive\_write\_open\_filename($archive, $filename)
 
-FIXME
+A convenience form of `archive_write_open` that accepts a filename.  A NULL argument indicates that the output
+should be written to standard output; an argument of "-" will open a file with that name.  If you have not
+invoked `archive_write_set_bytes_in_last_block`, then `archive_write_open_filename` will adjust the last-block
+padding depending on the file: it will enable padding when writing to standard output or to a character or block
+device node, it will disable padding otherwise.  You can override this by manually invoking
+`archive_write_set_bytes_in_last_block` before `calling archive_write_open`.  The `archive_write_open_filename`
+function is safe for use with tape drives or other block-oriented devices.
+
+TODO: How to pass NULL in?
 
 ## archive\_write\_set\_format($archive, $code)
 
-FIXME
+A convenience function to set the format based on the code.
 
 ## archive\_write\_set\_format\_7zip($archive)
 
@@ -457,7 +492,7 @@ Set the archive format to ar\_svr4
 
 ## archive\_write\_set\_format\_by\_name($archive, $name)
 
-FIXME
+A convenience function to set the format based on the name.
 
 ## archive\_write\_set\_format\_cpio($archive)
 
@@ -854,6 +889,10 @@ Archive and entry objects are really pointers to opaque C structures
 and need to be freed using one of `archive_read_free`, `archive_write_free`
 or `archive_entry_free`, in order to free the resources associated
 with those objects.
+
+The documentation that comes with libarchive is not that great, but
+is serviceable.  The documentation for this library is copied largely
+from libarchive, with adjustments for Perl.
 
 # SEE ALSO
 

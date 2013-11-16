@@ -384,7 +384,7 @@ archive_write_free(archive)
 
 =head2 archive_write_add_filter($archive, $code)
 
-FIXME
+A convenience function to set the filter based on the code.
 
 =cut
 
@@ -395,7 +395,7 @@ archive_write_add_filter(archive, code)
 
 =head2 archive_write_add_filter_by_name($archive, $name)
 
-FIXME
+A convenience function to set the filter based on the name.
 
 =cut
 
@@ -407,7 +407,9 @@ archive_write_add_filter_by_name(archive, name)
 
 =head2 archive_write_add_filter_program($archive, $cmd)
 
-FIXME
+The archive will be fed into the specified compression program. 
+The output of that program is blocked and written to the client
+write callbacks.
 
 =cut
 
@@ -418,7 +420,7 @@ archive_write_add_filter_program(archive, cmd)
 
 =head2 archive_write_set_format($archive, $code)
 
-FIXME
+A convenience function to set the format based on the code.
 
 =cut
 
@@ -429,7 +431,7 @@ archive_write_set_format(archive, code)
 
 =head2 archive_write_set_format_by_name($archive, $name)
 
-FIXME
+A convenience function to set the format based on the name.
 
 =cut
 
@@ -440,7 +442,15 @@ archive_write_set_format_by_name(archive, name)
 
 =head2 archive_write_open_filename($archive, $filename)
 
-FIXME
+A convenience form of C<archive_write_open> that accepts a filename.  A NULL argument indicates that the output
+should be written to standard output; an argument of "-" will open a file with that name.  If you have not
+invoked C<archive_write_set_bytes_in_last_block>, then C<archive_write_open_filename> will adjust the last-block
+padding depending on the file: it will enable padding when writing to standard output or to a character or block
+device node, it will disable padding otherwise.  You can override this by manually invoking
+C<archive_write_set_bytes_in_last_block> before C<calling archive_write_open>.  The C<archive_write_open_filename>
+function is safe for use with tape drives or other block-oriented devices.
+
+TODO: How to pass NULL in?
 
 =cut
 
@@ -451,7 +461,8 @@ archive_write_open_filename(archive, filename)
 
 =head2 archive_entry_clear
 
-FIXME
+Erases the object, resetting all internal fields to the same state as a newly-created object.  This is provided
+to allow you to quickly recycle objects without thrashing the heap.
 
 =cut
 
@@ -461,7 +472,7 @@ archive_entry_clear(archive_entry)
 
 =head2 archive_entry_clone
 
-FIXME
+A deep copy operation; all text fields are duplicated.
 
 =cut
 
@@ -471,7 +482,7 @@ archive_entry_clone(archive_entry)
 
 =head2 archive_entry_free
 
-FIXME
+Releases the struct archive_entry object.
 
 =cut
 
@@ -482,7 +493,7 @@ archive_entry_free(archive_entry)
 
 =head2 archive_entry_new
 
-FIXME
+Allocate and return a blank struct archive_entry object.
 
 =cut
 
@@ -491,7 +502,10 @@ archive_entry_new()
 
 =head2 archive_entry_new2
 
-FIXME
+This form of C<archive_entry_new2> will pull character-set
+conversion information from the specified archive handle.  The
+older C<archive_entry_new> form will result in the use of an internal
+default character-set conversion.
 
 =cut
 
@@ -501,7 +515,9 @@ archive_entry_new2(archive_entry)
 
 =head2 archive_entry_set_pathname($entry, $name)
 
-FIXME
+Sets the path in the archive as a string.
+
+Does not return anything.
 
 =cut
 
@@ -512,7 +528,9 @@ archive_entry_set_pathname(entry, name)
 
 =head2 archive_entry_set_size($entry, $size)
 
-FIXME
+Sets the size of the file in the archive.
+
+Does not return anything.
 
 FIXME: size is 64bit
 
@@ -525,7 +543,29 @@ archive_entry_set_size(entry, size)
 
 =head2 archive_entry_set_filetype($entry, $code)
 
-FIXME
+Sets the filetype in the archive.  Code should be one of
+
+=over 4
+
+=item AE_IFMT
+
+=item AE_IFREG
+
+=item AE_IFLNK
+
+=item AE_IFSOCK
+
+=item AE_IFCHR
+
+=item AE_IFBLK
+
+=item AE_IFDIR
+
+=item AE_IFIFO
+
+=back
+
+Does not return anything.
 
 =cut
 
@@ -536,7 +576,9 @@ archive_entry_set_filetype(entry, code)
 
 =head2 archive_entry_set_perm
 
-FIXME
+Set the permission bits for the entry.  This is the usual UNIX octal permission thing.
+
+Does not return anything.
 
 =cut
 
@@ -547,7 +589,9 @@ archive_entry_set_perm(entry, perm)
 
 =head2 archive_write_header($archive, $entry)
 
-FIXME
+Build and write a header using the data in the provided struct archive_entry structure.
+You can use C<archive_entry_new> to create an C<$entry> object and populate it with
+C<archive_entry_set*> functions.
 
 =cut
 
@@ -558,7 +602,9 @@ archive_write_header(archive, entry)
 
 =head2 archive_write_data(archive, buffer)
 
-FIXME
+Write data corresponding to the header just written.
+
+This function returns the number of bytes actually written, or -1 on error.
 
 =cut
 
@@ -576,7 +622,7 @@ archive_write_data(archive, input)
 
 =head2 archive_write_close(archive)
 
-FIXME
+Complete the archive and invoke the close callback.
 
 =cut
 
