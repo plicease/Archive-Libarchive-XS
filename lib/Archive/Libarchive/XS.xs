@@ -3,7 +3,7 @@
 #include "XSUB.h"
 #include "ppport.h"
 
-/* #define MATH_INT64_NATIVE_IF_AVAILABLE */
+#define MATH_INT64_NATIVE_IF_AVAILABLE
 #include "perl_math_int64.h"
 
 #include <string.h>
