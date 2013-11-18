@@ -209,8 +209,6 @@ Like C<archive_read_open>, except that it accepts a simple filename
 and a block size.  This function is safe for use with tape drives
 or other blocked devices.
 
-TODO: a NULL filename represents standard input.
-
 =cut
 
 int
@@ -218,6 +216,27 @@ archive_read_open_filename(archive, filename, block_size)
     struct archive *archive;
     const char *filename;
     size_t block_size;
+
+=head2 archive_read_open_stdin($archive, $block_size)
+
+This is just like C<archive_read_open_filename> except, read from
+standard input instead of a file.
+
+Note: this function does not exist in the C API, it is offered here
+instead this C call, which does the same thing:
+
+ archive_read_open_filename(archive, NULL, block_size);
+
+=cut
+
+int
+archive_read_open_stdin(archive, block_size)
+    struct archive *archive
+    size_t block_size
+  CODE:
+    RETVAL = archive_read_open_filename(archive, NULL, block_size);
+  OUTPUT:
+    RETVAL
 
 =head2 archive_read_open_memory($archive, $buffer)
 
