@@ -149,7 +149,7 @@ TODO
 
 =head2 Constructing objects on disk
 
-TODO
+# EXAMPLE: example/constructing_objects_on_disk.pl
 
 =head2 A complete extractor
 
