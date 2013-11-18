@@ -135,8 +135,6 @@ Sets the size of the file in the archive.
 
 Does not return anything.
 
-FIXME: size is 64bit
-
 ## archive\_errno($archive)
 
 Returns a numeric error code indicating the reason for the most

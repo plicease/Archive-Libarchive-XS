@@ -39,3 +39,4 @@ use Alien::Libarchive;
 my $alien = Alien::Libarchive->new;
 $module_build_args{extra_compiler_flags} = $alien->cflags;
 $module_build_args{extra_linker_flags}   = $alien->libs;
+$module_build_args{c_source}             = 'xs';

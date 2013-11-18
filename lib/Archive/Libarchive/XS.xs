@@ -1,6 +1,10 @@
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
+#include "ppport.h"
+
+/* #define MATH_INT64_NATIVE_IF_AVAILABLE */
+#include "perl_math_int64.h"
 
 #include <alloca.h>
 #include <string.h>
@@ -13,6 +17,9 @@
  */
 
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
+
+BOOT:
+     PERL_MATH_INT64_LOAD_OR_CROAK;
 
 =head2 archive_read_new
 
@@ -546,14 +553,12 @@ Sets the size of the file in the archive.
 
 Does not return anything.
 
-FIXME: size is 64bit
-
 =cut
 
 void
 archive_entry_set_size(entry, size)
     struct archive_entry *entry
-    int size
+    __LA_INT64_T size
 
 =head2 archive_entry_set_filetype($entry, $code)
 

@@ -1,0 +1,5 @@
+this (public domain code) was snarked from Math::Int64 version 0.30
+
+this is the original sources kept here for reference (if necessary)
+the actual versions used are in the 'xs' directory and the typemap 
+in the root of this dist.

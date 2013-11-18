@@ -156,8 +156,6 @@ Sets the size of the file in the archive.
 
 Does not return anything.
 
-FIXME: size is 64bit
-
 =head2 archive_errno($archive)
 
 Returns a numeric error code indicating the reason for the most
