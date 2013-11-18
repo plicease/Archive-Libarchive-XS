@@ -467,15 +467,14 @@ archive_write_set_format_by_name(archive, name)
 
 =head2 archive_write_open_filename($archive, $filename)
 
-A convenience form of C<archive_write_open> that accepts a filename.  A NULL argument indicates that the output
-should be written to standard output; an argument of "-" will open a file with that name.  If you have not
-invoked C<archive_write_set_bytes_in_last_block>, then C<archive_write_open_filename> will adjust the last-block
-padding depending on the file: it will enable padding when writing to standard output or to a character or block
-device node, it will disable padding otherwise.  You can override this by manually invoking
-C<archive_write_set_bytes_in_last_block> before C<calling archive_write_open>.  The C<archive_write_open_filename>
-function is safe for use with tape drives or other block-oriented devices.
-
-TODO: How to pass NULL in?
+A convenience form of C<archive_write_open> that accepts a filename.  If you have 
+not invoked C<archive_write_set_bytes_in_last_block>, then 
+C<archive_write_open_filename> will adjust the last-block padding depending on the 
+file: it will enable padding when writing to standard output or to a character or 
+block device node, it will disable padding otherwise.  You can override this by 
+manually invoking C<archive_write_set_bytes_in_last_block> before C<calling 
+archive_write_open>.  The C<archive_write_open_filename> function is safe for use 
+with tape drives or other block-oriented devices.
 
 =cut
 
@@ -483,6 +482,21 @@ int
 archive_write_open_filename(archive, filename)
     struct archive *archive
     const char *filename;
+
+=head2 archive_write_open_stdout($archive, $filename)
+
+This is the same as C<archive_write_open_filename>, except a C NULL pointer is passed
+in for the filename, which indicates stdout.
+
+=cut
+
+int
+archive_write_open_stdout(archive)
+    struct archive *archive
+  CODE:
+    RETVAL = archive_write_open_filename(archive, NULL);
+  OUTPUT:
+    RETVAL
 
 =head2 archive_entry_clear
 
