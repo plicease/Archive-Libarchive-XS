@@ -47,7 +47,7 @@ do { # xs
     $buffer .= "=head2 archive_read_support_filter_$filter(\$archive)\n\n";
     $buffer .= "Enable $filter decompression filter.\n\n";
     $buffer .= "=cut\n\n";
-    #$buffer .= "#ifdef ARCHIVE_FILTER_" . uc($filter) . "\n\n";
+    #$buffer .= "#ifdef HAS_archive_read_support_filter_$filter\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_read_support_filter_$filter(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
@@ -59,7 +59,7 @@ do { # xs
     $buffer .= "=head2 archive_read_support_format_$format(\$archive)\n\n";
     $buffer .= "Enable $format archive format.\n\n";
     $buffer .= "=cut\n\n";
-    #$buffer .= "#ifdef ARCHIVE_FORMAT_" . uc($format) ."\n\n";
+    #$buffer .= "#ifdef HAS_archive_read_support_format_$format\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_read_support_format_$format(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
@@ -71,7 +71,7 @@ do { # xs
     $buffer .= "=head2 archive_write_add_filter_$filter(\$archive)\n\n";
     $buffer .= "Add $filter filter\n\n";
     $buffer .= "=cut\n\n";
-    #$buffer .= "#ifdef ARCHIVE_FILTER_" . uc($filter) . "\n\n";
+    #$buffer .= "#ifdef HAS_archive_write_add_filter_$filter\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_write_add_filter_$filter(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
@@ -83,7 +83,7 @@ do { # xs
     $buffer .= "=head2 archive_write_set_format_$format(\$archive)\n\n";
     $buffer .= "Set the archive format to $format\n\n";
     $buffer .= "=cut\n\n";
-    #$buffer .= "#ifdef ARCHIVE_FORMAT_" . uc($format) ."\n\n";
+    #$buffer .= "#ifdef HAS_archive_write_set_format_$format\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_write_set_format_$format(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
@@ -92,6 +92,33 @@ do { # xs
   }
   
   $file->spew($buffer);
+};
+
+my %symbols;
+do { # symbol list
+
+  if($alien->cflags =~ /-I(\S+)/)
+  {
+    my $include = dir($1);
+    foreach my $line (map { $include->file($_)->slurp } qw( archive.h archive_entry.h ))
+    {
+      while($line =~ s/\b(archive_[A-Za-z0-9_]+)//)
+      {
+        $symbols{$1} = 1;
+      }
+    }
+  }
+  
+  open(my $fh, '<', file(__FILE__)->parent->file('symbols.txt'));
+  foreach my $line (<$fh>)
+  {
+    chomp $line;
+    $symbols{$line} = 1;
+  }
+  close $fh;
+  
+  file(__FILE__)->parent->file('symbols.txt')->spew(join "\n", sort keys %symbols);
+
 };
 
 do {
@@ -113,6 +140,14 @@ do {
     if($pod->pod =~ /^=head2 ([A-Za-z_0-9]+)/)
     {
       my $name = $1;
+      if(defined $symbols{$name})
+      {
+        delete $symbols{$name};
+      }
+      else
+      {
+        warn "extra symbol: $name";
+      }
       $functions{$name} = $pod->pod;
       $functions{$name} =~ s/\s+$//;
     }
@@ -134,3 +169,9 @@ do {
   $file->spew($perl);
 };
 
+# FIXME: don't include thems that are deprecated
+# hrm.
+foreach my $symbol (sort keys %symbols)
+{
+  warn "unimplemented symbols: $symbol";
+}

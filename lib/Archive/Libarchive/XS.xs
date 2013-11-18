@@ -5,6 +5,7 @@
 
 #define MATH_INT64_NATIVE_IF_AVAILABLE
 #include "perl_math_int64.h"
+#include "func.h"
 
 #include <string.h>
 #include <archive.h>
