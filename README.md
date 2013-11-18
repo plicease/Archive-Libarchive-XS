@@ -83,7 +83,7 @@ Releases the struct archive\_entry object.
 
 Allocate and return a blank struct archive\_entry object.
 
-## archive\_entry\_new2
+## archive\_entry\_new2($archive)
 
 This form of `archive_entry_new2` will pull character-set
 conversion information from the specified archive handle.  The
@@ -175,8 +175,6 @@ for `archive_position(a,(2))` which would return the number of bytes currently r
 the archive, while `archive_position(a,(1))` would return the number of bytes after
 uudecoding, and `archive_position(a,(0))` would return the number of bytes after decompression.
 
-TODO: add bindings for archive\_position
-
 ## archive\_filter\_name
 
 Returns a textual name identifying the indicated filter.  See [#archive_filter_count](https://metacpan.org/pod/#archive_filter_count) for
@@ -220,8 +218,6 @@ Allocates and initializes a archive object suitable for reading from an archive.
 Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the read functions documented here with an <$archive> argument.
-
-TODO: handle the unusual circumstance when this would return C NULL pointer.
 
 ## archive\_read\_next\_header($archive, $entry)
 
@@ -297,8 +293,6 @@ Data is feed through the specified external program before being
 dearchived.  Note that this disables automatic detection of the
 compression format, so it makes no sense to specify this in
 conjunction with any other decompression option.
-
-TODO: also support archive\_read\_support\_filter\_program\_signature
 
 ## archive\_read\_support\_format\_7zip($archive)
 
@@ -499,8 +493,6 @@ Allocates and initializes a archive object suitable for writing an new archive.
 Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the write functions documented here with an `$archive` argument.
-
-TODO: handle the unusual circumstance when this would return C NULL pointer.
 
 ## archive\_write\_open\_filename($archive, $filename)
 

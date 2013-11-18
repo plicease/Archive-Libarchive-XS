@@ -93,7 +93,7 @@ Releases the struct archive_entry object.
 
 Allocate and return a blank struct archive_entry object.
 
-=head2 archive_entry_new2
+=head2 archive_entry_new2($archive)
 
 This form of C<archive_entry_new2> will pull character-set
 conversion information from the specified archive handle.  The
@@ -196,8 +196,6 @@ for C<archive_position(a,(2))> which would return the number of bytes currently 
 the archive, while C<archive_position(a,(1))> would return the number of bytes after
 uudecoding, and C<archive_position(a,(0))> would return the number of bytes after decompression.
 
-TODO: add bindings for archive_position
-
 =head2 archive_filter_name
 
 Returns a textual name identifying the indicated filter.  See L<#archive_filter_count> for
@@ -241,8 +239,6 @@ Allocates and initializes a archive object suitable for reading from an archive.
 Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the read functions documented here with an <$archive> argument.
-
-TODO: handle the unusual circumstance when this would return C NULL pointer.
 
 =head2 archive_read_next_header($archive, $entry)
 
@@ -318,8 +314,6 @@ Data is feed through the specified external program before being
 dearchived.  Note that this disables automatic detection of the
 compression format, so it makes no sense to specify this in
 conjunction with any other decompression option.
-
-TODO: also support archive_read_support_filter_program_signature
 
 =head2 archive_read_support_format_7zip($archive)
 
@@ -534,8 +528,6 @@ Allocates and initializes a archive object suitable for writing an new archive.
 Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the write functions documented here with an C<$archive> argument.
-
-TODO: handle the unusual circumstance when this would return C NULL pointer.
 
 =head2 archive_write_open_filename($archive, $filename)
 

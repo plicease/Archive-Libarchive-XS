@@ -6,15 +6,9 @@
 /* #define MATH_INT64_NATIVE_IF_AVAILABLE */
 #include "perl_math_int64.h"
 
-#include <alloca.h>
 #include <string.h>
 #include <archive.h>
 #include <archive_entry.h>
-
-/*
- * TODO/Research: archive_position is documented on libarchive wiki, but
- * not (yet?) in the version of libarchive that I am using.
- */
 
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 
@@ -27,8 +21,6 @@ Allocates and initializes a archive object suitable for reading from an archive.
 Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the read functions documented here with an <$archive> argument.
-
-TODO: handle the unusual circumstance when this would return C NULL pointer.
 
 =cut
 
@@ -122,8 +114,6 @@ for C<archive_position(a,(2))> which would return the number of bytes currently 
 the archive, while C<archive_position(a,(1))> would return the number of bytes after
 uudecoding, and C<archive_position(a,(0))> would return the number of bytes after decompression.
 
-TODO: add bindings for archive_position
-
 =cut
 
 int 
@@ -184,8 +174,6 @@ Data is feed through the specified external program before being
 dearchived.  Note that this disables automatic detection of the
 compression format, so it makes no sense to specify this in
 conjunction with any other decompression option.
-
-TODO: also support archive_read_support_filter_program_signature
 
 =cut
 
@@ -351,14 +339,12 @@ archive_read_data(archive, buffer, max_size)
     SV *buffer;
     size_t max_size;
   CODE:
-    /* TODO: maybe use archive_read_data_block() here
-     * to avoid extra copies of data, I think this is already
-     * making one extra copy more than it has to
-     */
-    void *ptr = alloca(max_size); /* TODO: don't use alloca */
+    if(!SvPOKp(buffer))
+      sv_setpv(buffer, "");
+    SvGROW(buffer, max_size);
+    void *ptr = SvPV_nolen(buffer);
     int size = archive_read_data(archive, ptr, max_size);
-    if(size > 0)
-      sv_setpvn(buffer, ptr, size);
+    SvCUR_set(buffer, size);
     RETVAL = size;
   OUTPUT:
     RETVAL
@@ -384,8 +370,6 @@ Allocates and initializes a archive object suitable for writing an new archive.
 Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the write functions documented here with an C<$archive> argument.
-
-TODO: handle the unusual circumstance when this would return C NULL pointer.
 
 =cut
 
@@ -521,7 +505,7 @@ Allocate and return a blank struct archive_entry object.
 struct archive_entry *
 archive_entry_new()
 
-=head2 archive_entry_new2
+=head2 archive_entry_new2($archive)
 
 This form of C<archive_entry_new2> will pull character-set
 conversion information from the specified archive handle.  The
@@ -531,8 +515,8 @@ default character-set conversion.
 =cut
 
 struct archive_entry *
-archive_entry_new2(archive_entry)
-    struct archive_entry *archive_entry
+archive_entry_new2(archive)
+    struct archive *archive
 
 =head2 archive_entry_set_pathname($entry, $name)
 
