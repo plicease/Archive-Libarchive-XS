@@ -341,6 +341,18 @@ dearchived.  Note that this disables automatic detection of the
 compression format, so it makes no sense to specify this in
 conjunction with any other decompression option.
 
+=head2 archive_read_support_filter_rpm($archive)
+
+Enable rpm decompression filter.
+
+=head2 archive_read_support_filter_uu($archive)
+
+Enable uu decompression filter.
+
+=head2 archive_read_support_filter_xz($archive)
+
+Enable xz decompression filter.
+
 =head2 archive_read_support_format_7zip($archive)
 
 Enable 7zip archive format.
@@ -850,6 +862,9 @@ our %EXPORT_TAGS = (
     archive_read_support_filter_lzop
     archive_read_support_filter_none
     archive_read_support_filter_program
+    archive_read_support_filter_rpm
+    archive_read_support_filter_uu
+    archive_read_support_filter_xz
     archive_read_support_format_7zip
     archive_read_support_format_all
     archive_read_support_format_ar

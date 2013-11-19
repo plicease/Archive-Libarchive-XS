@@ -1482,6 +1482,36 @@ int
 archive_read_support_filter_none(archive)
     struct archive *archive
 
+=head2 archive_read_support_filter_rpm($archive)
+
+Enable rpm decompression filter.
+
+=cut
+
+int
+archive_read_support_filter_rpm(archive)
+    struct archive *archive
+
+=head2 archive_read_support_filter_uu($archive)
+
+Enable uu decompression filter.
+
+=cut
+
+int
+archive_read_support_filter_uu(archive)
+    struct archive *archive
+
+=head2 archive_read_support_filter_xz($archive)
+
+Enable xz decompression filter.
+
+=cut
+
+int
+archive_read_support_filter_xz(archive)
+    struct archive *archive
+
 =head2 archive_read_support_format_7zip($archive)
 
 Enable 7zip archive format.
