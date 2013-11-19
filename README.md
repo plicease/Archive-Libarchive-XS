@@ -210,7 +210,7 @@ any gaps with nulls so that callers see a single continuous stream of
 data.  Returns the actual number of bytes read, 0 on end of data and
 a negative value on error.
 
-## archive\_read\_data\_block($archive, $buff, $size, $offset)
+## archive\_read\_data\_block($archive, $buff, $offset)
 
 FIXME
 
@@ -460,7 +460,7 @@ Write data corresponding to the header just written.
 
 This function returns the number of bytes actually written, or -1 on error.
 
-## archive\_write\_data\_block($archive, $buff, $size, $offset)
+## archive\_write\_data\_block($archive, $buff, $offset)
 
 FIXME
 
@@ -1035,7 +1035,7 @@ TODO
       my $r;
       while(1)
       {
-        $r = archive_read_data_block($ar, my $buff, my $size, my $offset);
+        $r = archive_read_data_block($ar, my $buff, my $offset);
         if($r == ARCHIVE_EOF)
         {
           return ARCHIVE_OK;
@@ -1044,7 +1044,7 @@ TODO
         {
           die archive_error_string($ar), "\n";
         }
-        $r = archive_write_data_block($aw, $buff, $size, $offset);
+        $r = archive_write_data_block($aw, $buff, $offset);
         if($r != ARCHIVE_OK)
         {
           die archive_error_string($aw), "\n";

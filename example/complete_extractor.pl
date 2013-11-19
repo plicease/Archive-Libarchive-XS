@@ -64,7 +64,7 @@ sub copy_data
   my $r;
   while(1)
   {
-    $r = archive_read_data_block($ar, my $buff, my $size, my $offset);
+    $r = archive_read_data_block($ar, my $buff, my $offset);
     if($r == ARCHIVE_EOF)
     {
       return ARCHIVE_OK;
@@ -73,7 +73,7 @@ sub copy_data
     {
       die archive_error_string($ar), "\n";
     }
-    $r = archive_write_data_block($aw, $buff, $size, $offset);
+    $r = archive_write_data_block($aw, $buff, $offset);
     if($r != ARCHIVE_OK)
     {
       die archive_error_string($aw), "\n";

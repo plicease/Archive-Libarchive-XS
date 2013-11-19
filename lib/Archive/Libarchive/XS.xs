@@ -380,17 +380,16 @@ archive_read_data(archive, buffer, max_size)
     RETVAL
     buffer
 
-=head2 archive_read_data_block($archive, $buff, $size, $offset)
+=head2 archive_read_data_block($archive, $buff, $offset)
 
 FIXME
 
 =cut
 
 int
-archive_read_data_block(archive, sv_buff, sv_size, sv_offset)
+archive_read_data_block(archive, sv_buff, sv_offset)
     struct archive *archive
     SV *sv_buff
-    SV *sv_size
     SV *sv_offset
   CODE:
     SV *tmp;
@@ -399,31 +398,29 @@ archive_read_data_block(archive, sv_buff, sv_size, sv_offset)
     __LA_INT64_T offset = 0;
     int r = archive_read_data_block(archive, &buff, &size, &offset);
     sv_setpvn(sv_buff, buff, size);
-    sv_setiv(sv_size, size);
     tmp = newSVi64(offset);
     sv_setsv(sv_offset, tmp);
     RETVAL = r;
   OUTPUT:
     sv_buff
-    sv_size
     sv_offset
     RETVAL
 
-=head2 archive_write_data_block($archive, $buff, $size, $offset)
+=head2 archive_write_data_block($archive, $buff, $offset)
 
 FIXME
 
 =cut
 
 size_t
-archive_write_data_block(archive, sv_buff, size, offset)
+archive_write_data_block(archive, sv_buff, offset)
     struct archive *archive
     SV *sv_buff
-    size_t size
     __LA_INT64_T offset
   CODE:
     void *buff = NULL;
-    buff = SvPV_nolen(sv_buff);
+    size_t size;
+    buff = SvPV(sv_buff, size);
     RETVAL = archive_write_data_block(archive, buff, size, offset);
   OUTPUT:
     RETVAL

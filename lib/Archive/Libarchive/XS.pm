@@ -231,7 +231,7 @@ any gaps with nulls so that callers see a single continuous stream of
 data.  Returns the actual number of bytes read, 0 on end of data and
 a negative value on error.
 
-=head2 archive_read_data_block($archive, $buff, $size, $offset)
+=head2 archive_read_data_block($archive, $buff, $offset)
 
 FIXME
 
@@ -481,7 +481,7 @@ Write data corresponding to the header just written.
 
 This function returns the number of bytes actually written, or -1 on error.
 
-=head2 archive_write_data_block($archive, $buff, $size, $offset)
+=head2 archive_write_data_block($archive, $buff, $offset)
 
 FIXME
 

@@ -54,14 +54,14 @@ foreach my $name (qw( foo bar baz ))
     
     while(1)
     {
-      $r = archive_read_data_block($a, my $buff, my $size, my $offset);
+      $r = archive_read_data_block($a, my $buff, my $offset);
       last if $r == ARCHIVE_EOF;
       if($r != ARCHIVE_OK)
       {
         diag archive_error_string($a);
         last;
       }
-      $r = archive_write_data_block($ext, $buff, $size, $offset);
+      $r = archive_write_data_block($ext, $buff, $offset);
       if($r != ARCHIVE_OK)
       {
         diag archive_error_string($ext);
