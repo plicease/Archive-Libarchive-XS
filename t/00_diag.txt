@@ -1,5 +1,6 @@
 Alien::Libarchive
 Exporter
+File::Basename
 File::Spec
 File::Temp
 FindBin

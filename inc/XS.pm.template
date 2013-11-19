@@ -153,7 +153,7 @@ TODO
 
 =head2 A complete extractor
 
-TODO
+# EXAMPLE: example/complete_extractor.pl
 
 =head1 CAVEATS
 

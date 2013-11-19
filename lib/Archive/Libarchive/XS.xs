@@ -28,6 +28,16 @@ any of the read functions documented here with an <$archive> argument.
 struct archive *
 archive_read_new();
 
+=head2 archive_read_close($archive)
+
+Complete the archive and invoke the close callback.
+
+=cut
+
+int
+archive_read_close(archive)
+    struct archive *archive
+
 =head2 archive_read_free($archive)
 
 Invokes C<archive_read_close> if it was not invoked manually, then
@@ -370,6 +380,54 @@ archive_read_data(archive, buffer, max_size)
     RETVAL
     buffer
 
+=head2 archive_read_data_block($archive, $buff, $size, $offset)
+
+FIXME
+
+=cut
+
+int
+archive_read_data_block(archive, sv_buff, sv_size, sv_offset)
+    struct archive *archive
+    SV *sv_buff
+    SV *sv_size
+    SV *sv_offset
+  CODE:
+    SV *tmp;
+    void *buff = NULL;
+    size_t size = 0;
+    __LA_INT64_T offset = 0;
+    int r = archive_read_data_block(archive, &buff, &size, &offset);
+    sv_setpvn(sv_buff, buff, size);
+    sv_setiv(sv_size, size);
+    tmp = newSVi64(offset);
+    sv_setsv(sv_offset, tmp);
+    RETVAL = r;
+  OUTPUT:
+    sv_buff
+    sv_size
+    sv_offset
+    RETVAL
+
+=head2 archive_write_data_block($archive, $buff, $size, $offset)
+
+FIXME
+
+=cut
+
+size_t
+archive_write_data_block(archive, sv_buff, size, offset)
+    struct archive *archive
+    SV *sv_buff
+    size_t size
+    __LA_INT64_T offset
+  CODE:
+    void *buff = NULL;
+    buff = SvPV_nolen(sv_buff);
+    RETVAL = archive_write_data_block(archive, buff, size, offset);
+  OUTPUT:
+    RETVAL
+
 =head2 archive_write_disk_new
 
 Allocates and initializes a struct archive object suitable for
@@ -405,7 +463,7 @@ release all resources.
 
 int
 archive_write_free(archive)
-    struct archive *archive;
+    struct archive *archive
 
 =head2 archive_write_add_filter($archive, $code)
 
@@ -564,6 +622,16 @@ void
 archive_entry_set_pathname(entry, name)
     struct archive_entry *entry
     const char *name
+
+=head2 archive_entry_size($entry)
+
+Returns the size of the entry in bytes.
+
+=cut
+
+__LA_INT64_T
+archive_entry_size(entry)
+    struct archive_entry *entry
 
 =head2 archive_entry_set_size($entry, $size)
 
@@ -733,6 +801,21 @@ if you need to work with the file on disk right away.
 
 int
 archive_write_finish_entry(archive)
+    struct archive *archive
+
+=head2 archive_write_disk_set_standard_lookup($archive)
+
+This convenience function installs a standard set of user and
+group lookup functions.  These functions use C<getpwnam> and
+C<getgrnam> to convert names to ids, defaulting to the ids
+if the names cannot be looked up.  These functions also implement
+a simple memory cache to reduce the number of calls to 
+C<getpwnam> and C<getgrnam>.
+
+=cut
+
+int
+archive_write_disk_set_standard_lookup(archive)
     struct archive *archive
 
 int

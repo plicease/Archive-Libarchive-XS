@@ -156,6 +156,10 @@ Sets the size of the file in the archive.
 
 Does not return anything.
 
+=head2 archive_entry_size($entry)
+
+Returns the size of the entry in bytes.
+
 =head2 archive_errno($archive)
 
 Returns a numeric error code indicating the reason for the most
@@ -215,6 +219,10 @@ codes.
 
 A textual description of the format of the current entry.
 
+=head2 archive_read_close($archive)
+
+Complete the archive and invoke the close callback.
+
 =head2 archive_read_data($archive, $buffer, $max_size)
 
 Read data associated with the header just read.  Internally, this is a
@@ -222,6 +230,10 @@ convenience function that calls C<archive_read_data_block> and fills
 any gaps with nulls so that callers see a single continuous stream of
 data.  Returns the actual number of bytes read, 0 on end of data and
 a negative value on error.
+
+=head2 archive_read_data_block($archive, $buff, $size, $offset)
+
+FIXME
 
 =head2 archive_read_data_skip($archive)
 
@@ -469,6 +481,10 @@ Write data corresponding to the header just written.
 
 This function returns the number of bytes actually written, or -1 on error.
 
+=head2 archive_write_data_block($archive, $buff, $size, $offset)
+
+FIXME
+
 =head2 archive_write_disk_new
 
 Allocates and initializes a struct archive object suitable for
@@ -508,6 +524,15 @@ following values:
 =item ARCHIVE_EXTRACT_SPARSE
 
 =back
+
+=head2 archive_write_disk_set_standard_lookup($archive)
+
+This convenience function installs a standard set of user and
+group lookup functions.  These functions use C<getpwnam> and
+C<getgrnam> to convert names to ids, defaulting to the ids
+if the names cannot be looked up.  These functions also implement
+a simple memory cache to reduce the number of calls to 
+C<getpwnam> and C<getgrnam>.
 
 =head2 archive_write_finish_entry($archive)
 
@@ -788,6 +813,7 @@ our %EXPORT_TAGS = (
     archive_entry_set_pathname
     archive_entry_set_perm
     archive_entry_set_size
+    archive_entry_size
     archive_errno
     archive_error_string
     archive_file_count
@@ -796,7 +822,9 @@ our %EXPORT_TAGS = (
     archive_filter_name
     archive_format
     archive_format_name
+    archive_read_close
     archive_read_data
+    archive_read_data_block
     archive_read_data_skip
     archive_read_free
     archive_read_new
@@ -850,8 +878,10 @@ our %EXPORT_TAGS = (
     archive_write_add_filter_xz
     archive_write_close
     archive_write_data
+    archive_write_data_block
     archive_write_disk_new
     archive_write_disk_set_options
+    archive_write_disk_set_standard_lookup
     archive_write_finish_entry
     archive_write_free
     archive_write_header
@@ -1219,7 +1249,7 @@ TODO
 
 =head2 A complete extractor
 
-TODO
+# EXAMPLE: example/complete_extractor.pl
 
 =head1 CAVEATS
 
