@@ -32,6 +32,7 @@ pod_spelling_system:
     - xz
     - decompressor
     - filetype
+    - optimizations
 
 
 pod_coverage:

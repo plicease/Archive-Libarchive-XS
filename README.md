@@ -212,7 +212,13 @@ a negative value on error.
 
 ## archive\_read\_data\_block($archive, $buff, $offset)
 
-FIXME
+Return the next available block of data for this entry.  Unlike
+`archive_read_data`, this function allows you to correctly
+handle sparse files, as supported by some archive formats.  The
+library guarantees that offsets will increase and that blocks
+will not overlap.  Note that the blocks returned from this
+function can be much larger than the block size read from disk,
+due to compression and internal buffer optimizations.
 
 ## archive\_read\_data\_skip($archive)
 
@@ -462,7 +468,8 @@ This function returns the number of bytes actually written, or -1 on error.
 
 ## archive\_write\_data\_block($archive, $buff, $offset)
 
-FIXME
+Writes the buffer to the current entry in the given archive
+starting at the given offset.
 
 ## archive\_write\_disk\_new
 

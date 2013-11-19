@@ -382,7 +382,13 @@ archive_read_data(archive, buffer, max_size)
 
 =head2 archive_read_data_block($archive, $buff, $offset)
 
-FIXME
+Return the next available block of data for this entry.  Unlike
+C<archive_read_data>, this function allows you to correctly
+handle sparse files, as supported by some archive formats.  The
+library guarantees that offsets will increase and that blocks
+will not overlap.  Note that the blocks returned from this
+function can be much larger than the block size read from disk,
+due to compression and internal buffer optimizations.
 
 =cut
 
@@ -408,7 +414,8 @@ archive_read_data_block(archive, sv_buff, sv_offset)
 
 =head2 archive_write_data_block($archive, $buff, $offset)
 
-FIXME
+Writes the buffer to the current entry in the given archive
+starting at the given offset.
 
 =cut
 
