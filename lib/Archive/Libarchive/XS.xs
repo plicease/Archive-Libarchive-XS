@@ -399,7 +399,7 @@ archive_read_data_block(archive, sv_buff, sv_offset)
     SV *sv_offset
   CODE:
     SV *tmp;
-    void *buff = NULL;
+    const void *buff = NULL;
     size_t size = 0;
     __LA_INT64_T offset = 0;
     int r = archive_read_data_block(archive, &buff, &size, &offset);
