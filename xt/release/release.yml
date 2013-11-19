@@ -33,6 +33,7 @@ pod_spelling_system:
     - decompressor
     - filetype
     - optimizations
+    - uu
 
 
 pod_coverage:
