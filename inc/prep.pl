@@ -117,8 +117,40 @@ do { # symbol list
   }
   close $fh;
   
+  my @deprecated = qw(
+    archive_read_support_compression_all
+    archive_read_support_compression_bzip2
+    archive_read_support_compression_compress
+    archive_read_support_compression_gzip
+    archive_read_support_compression_lzip
+    archive_read_support_compression_lzma
+    archive_read_support_compression_none
+    archive_read_support_compression_program
+    archive_read_support_compression_program_signature
+    archive_read_support_compression_rpm
+    archive_read_support_compression_uu
+    archive_read_support_compression_xz
+    archive_read_open_file
+    archive_read_finish
+    archive_write_set_compression_bzip2
+    archive_write_set_compression_compress
+    archive_write_set_compression_gzip
+    archive_write_set_compression_lzip
+    archive_write_set_compression_lzma
+    archive_write_set_compression_none
+    archive_write_set_compression_program
+    archive_write_set_compression_xz
+    archive_write_open_file
+    archive_write_finish
+    archive_position_compressed
+    archive_position_uncompressed
+    archive_compression_name
+    archive_compression
+  );
+  
+  delete $symbols{$_} for @deprecated;
+  
   file(__FILE__)->parent->file('symbols.txt')->spew(join "\n", sort keys %symbols);
-
 };
 
 do {
