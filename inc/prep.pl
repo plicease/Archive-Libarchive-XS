@@ -47,11 +47,11 @@ do { # xs
     $buffer .= "=head2 archive_read_support_filter_$filter(\$archive)\n\n";
     $buffer .= "Enable $filter decompression filter.\n\n";
     $buffer .= "=cut\n\n";
-    #$buffer .= "#ifdef HAS_archive_read_support_filter_$filter\n\n";
+    $buffer .= "#ifdef HAS_archive_read_support_filter_$filter\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_read_support_filter_$filter(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
-    #$buffer .= "#endif\n\n";
+    $buffer .= "#endif\n\n";
   }
   
   foreach my $format (sort qw( 7zip ar cab cpio empty gnutar iso9660 lha mtree rar raw tar xar zip ))
@@ -59,11 +59,11 @@ do { # xs
     $buffer .= "=head2 archive_read_support_format_$format(\$archive)\n\n";
     $buffer .= "Enable $format archive format.\n\n";
     $buffer .= "=cut\n\n";
-    #$buffer .= "#ifdef HAS_archive_read_support_format_$format\n\n";
+    $buffer .= "#ifdef HAS_archive_read_support_format_$format\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_read_support_format_$format(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
-    #$buffer .= "#endif\n\n";
+    $buffer .= "#endif\n\n";
   }
 
   foreach my $filter (sort qw( b64encode bzip2 compress grzip gzip lrzip lzip lzma lzop none uuencode xz ))
@@ -71,11 +71,11 @@ do { # xs
     $buffer .= "=head2 archive_write_add_filter_$filter(\$archive)\n\n";
     $buffer .= "Add $filter filter\n\n";
     $buffer .= "=cut\n\n";
-    #$buffer .= "#ifdef HAS_archive_write_add_filter_$filter\n\n";
+    $buffer .= "#ifdef HAS_archive_write_add_filter_$filter\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_write_add_filter_$filter(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
-    #$buffer .= "#endif\n\n";
+    $buffer .= "#endif\n\n";
   }
   
   foreach my $format (sort qw( 7zip ar_bsd ar_svr4 cpio cpio_newc gnutar iso9660 mtree mtree_classic pax pax_restricted shar shar_dump ustar v7tar xar zip ))
@@ -83,11 +83,11 @@ do { # xs
     $buffer .= "=head2 archive_write_set_format_$format(\$archive)\n\n";
     $buffer .= "Set the archive format to $format\n\n";
     $buffer .= "=cut\n\n";
-    #$buffer .= "#ifdef HAS_archive_write_set_format_$format\n\n";
+    $buffer .= "#ifdef HAS_archive_write_set_format_$format\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_write_set_format_$format(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
-    #$buffer .= "#endif\n\n";
+    $buffer .= "#endif\n\n";
     
   }
   
