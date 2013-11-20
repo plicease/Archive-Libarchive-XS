@@ -131,7 +131,7 @@ uudecoding, and C<archive_position(a,(0))> would return the number of bytes afte
 
 =cut
 
-#ifdef archive_filter_count
+#ifdef HAS_archive_filter_count
 
 int 
 archive_filter_count(archive);
