@@ -673,6 +673,14 @@ Set the archive format to xar
 
 Set the archive format to zip
 
+=head2 archive_write_zip_set_compression_deflate($archive)
+
+Set the compression method for the zip archive to deflate.
+
+=head2 archive_write_zip_set_compression_store($archive)
+
+Set the compression method for the zip archive to store.
+
 =cut
 
 our %EXPORT_TAGS = (
@@ -929,6 +937,8 @@ our %EXPORT_TAGS = (
     archive_write_set_format_v7tar
     archive_write_set_format_xar
     archive_write_set_format_zip
+    archive_write_zip_set_compression_deflate
+    archive_write_zip_set_compression_store
   )],
 );
 

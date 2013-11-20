@@ -486,11 +486,14 @@ A convenience function to set the filter based on the name.
 
 =cut
 
+#ifdef HAS_archive_write_add_filter_by_name
+
 int
 archive_write_add_filter_by_name(archive, name)
     struct archive *archive
     const char *name
-                     
+
+#endif
 
 =head2 archive_write_add_filter_program($archive, $cmd)
 
@@ -821,6 +824,34 @@ C<getpwnam> and C<getgrnam>.
 int
 archive_write_disk_set_standard_lookup(archive)
     struct archive *archive
+
+=head2 archive_write_zip_set_compression_store($archive)
+
+Set the compression method for the zip archive to store.
+
+=cut
+
+#ifdef HAS_archive_write_zip_set_compression_store
+
+int
+archive_write_zip_set_compression_store(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_write_zip_set_compression_deflate($archive)
+
+Set the compression method for the zip archive to deflate.
+
+=cut
+
+#ifdef HAS_archive_write_zip_set_compression_deflate
+
+int
+archive_write_zip_set_compression_deflate(archive)
+    struct archive *archive
+
+#endif
 
 int
 _constant(name)
