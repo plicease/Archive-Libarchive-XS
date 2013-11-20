@@ -199,6 +199,8 @@ do {
 
   my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS.pm ))->absolute;
   $file->spew($perl);
+  
+  file(__FILE__)->parent->file('functions.txt')->spew(join "\n", sort keys %functions);
 };
 
 # FIXME: don't include thems that are deprecated
@@ -207,3 +209,4 @@ foreach my $symbol (sort keys %symbols)
 {
   warn "unimplemented symbols: $symbol";
 }
+

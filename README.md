@@ -52,11 +52,6 @@ a function or constant is available, for example:
       # grzip filter is available.
     }
 
-You can use this one-liner to determine which functions and constants
-are unavailable:
-
-    % perl -MArchive::Libarchive::XS    -E 'for(@Archive::Libarchive::XS::EXPORT_OK) { say $_ unless Archive::Libarchive::XS->can($_) }'
-
 ## archive\_clear\_error($archive)
 
 Clears any error information left over from a previous call Not

@@ -2,11 +2,17 @@ package Archive::Libarchive::XS;
 
 use strict;
 use warnings;
-use base qw( Exporter );
 use Alien::Libarchive;
+
+BEGIN {
 
 # ABSTRACT: Perl bindings to libarchive via XS
 # VERSION
+
+  require XSLoader;
+  XSLoader::load('Archive::Libarchive::XS', $VERSION);
+
+}
 
 =head1 SYNOPSIS
 
@@ -61,11 +67,6 @@ a function or constant is available, for example:
  {
    # grzip filter is available.
  }
-
-You can use this one-liner to determine which functions and constants
-are unavailable:
-
- % perl -MArchive::Libarchive::XS    -E 'for(@Archive::Libarchive::XS::EXPORT_OK) { say $_ unless Archive::Libarchive::XS->can($_) }'
 
 =head2 archive_clear_error($archive)
 
@@ -683,273 +684,275 @@ Set the compression method for the zip archive to store.
 
 =cut
 
-our %EXPORT_TAGS = (
-  all   => [],
-  const => [qw(
-    AE_IFBLK
-    AE_IFCHR
-    AE_IFDIR
-    AE_IFIFO
-    AE_IFLNK
-    AE_IFMT
-    AE_IFREG
-    AE_IFSOCK
-    ARCHIVE_API_FEATURE
-    ARCHIVE_API_VERSION
-    ARCHIVE_BYTES_PER_RECORD
-    ARCHIVE_COMPRESSION_BZIP2
-    ARCHIVE_COMPRESSION_COMPRESS
-    ARCHIVE_COMPRESSION_GZIP
-    ARCHIVE_COMPRESSION_LRZIP
-    ARCHIVE_COMPRESSION_LZIP
-    ARCHIVE_COMPRESSION_LZMA
-    ARCHIVE_COMPRESSION_NONE
-    ARCHIVE_COMPRESSION_PROGRAM
-    ARCHIVE_COMPRESSION_RPM
-    ARCHIVE_COMPRESSION_UU
-    ARCHIVE_COMPRESSION_XZ
-    ARCHIVE_DEFAULT_BYTES_PER_BLOCK
-    ARCHIVE_ENTRY_ACL_ADD_FILE
-    ARCHIVE_ENTRY_ACL_ADD_SUBDIRECTORY
-    ARCHIVE_ENTRY_ACL_APPEND_DATA
-    ARCHIVE_ENTRY_ACL_DELETE
-    ARCHIVE_ENTRY_ACL_DELETE_CHILD
-    ARCHIVE_ENTRY_ACL_ENTRY_DIRECTORY_INHERIT
-    ARCHIVE_ENTRY_ACL_ENTRY_FAILED_ACCESS
-    ARCHIVE_ENTRY_ACL_ENTRY_FILE_INHERIT
-    ARCHIVE_ENTRY_ACL_ENTRY_INHERIT_ONLY
-    ARCHIVE_ENTRY_ACL_ENTRY_NO_PROPAGATE_INHERIT
-    ARCHIVE_ENTRY_ACL_ENTRY_SUCCESSFUL_ACCESS
-    ARCHIVE_ENTRY_ACL_EVERYONE
-    ARCHIVE_ENTRY_ACL_EXECUTE
-    ARCHIVE_ENTRY_ACL_GROUP
-    ARCHIVE_ENTRY_ACL_GROUP_OBJ
-    ARCHIVE_ENTRY_ACL_INHERITANCE_NFS4
-    ARCHIVE_ENTRY_ACL_LIST_DIRECTORY
-    ARCHIVE_ENTRY_ACL_MASK
-    ARCHIVE_ENTRY_ACL_OTHER
-    ARCHIVE_ENTRY_ACL_PERMS_NFS4
-    ARCHIVE_ENTRY_ACL_PERMS_POSIX1E
-    ARCHIVE_ENTRY_ACL_READ
-    ARCHIVE_ENTRY_ACL_READ_ACL
-    ARCHIVE_ENTRY_ACL_READ_ATTRIBUTES
-    ARCHIVE_ENTRY_ACL_READ_DATA
-    ARCHIVE_ENTRY_ACL_READ_NAMED_ATTRS
-    ARCHIVE_ENTRY_ACL_STYLE_EXTRA_ID
-    ARCHIVE_ENTRY_ACL_STYLE_MARK_DEFAULT
-    ARCHIVE_ENTRY_ACL_SYNCHRONIZE
-    ARCHIVE_ENTRY_ACL_TYPE_ACCESS
-    ARCHIVE_ENTRY_ACL_TYPE_ALARM
-    ARCHIVE_ENTRY_ACL_TYPE_ALLOW
-    ARCHIVE_ENTRY_ACL_TYPE_AUDIT
-    ARCHIVE_ENTRY_ACL_TYPE_DEFAULT
-    ARCHIVE_ENTRY_ACL_TYPE_DENY
-    ARCHIVE_ENTRY_ACL_TYPE_NFS4
-    ARCHIVE_ENTRY_ACL_TYPE_POSIX1E
-    ARCHIVE_ENTRY_ACL_USER
-    ARCHIVE_ENTRY_ACL_USER_OBJ
-    ARCHIVE_ENTRY_ACL_WRITE
-    ARCHIVE_ENTRY_ACL_WRITE_ACL
-    ARCHIVE_ENTRY_ACL_WRITE_ATTRIBUTES
-    ARCHIVE_ENTRY_ACL_WRITE_DATA
-    ARCHIVE_ENTRY_ACL_WRITE_NAMED_ATTRS
-    ARCHIVE_ENTRY_ACL_WRITE_OWNER
-    ARCHIVE_EOF
-    ARCHIVE_EXTRACT_ACL
-    ARCHIVE_EXTRACT_FFLAGS
-    ARCHIVE_EXTRACT_HFS_COMPRESSION_FORCED
-    ARCHIVE_EXTRACT_MAC_METADATA
-    ARCHIVE_EXTRACT_NO_AUTODIR
-    ARCHIVE_EXTRACT_NO_HFS_COMPRESSION
-    ARCHIVE_EXTRACT_NO_OVERWRITE
-    ARCHIVE_EXTRACT_NO_OVERWRITE_NEWER
-    ARCHIVE_EXTRACT_OWNER
-    ARCHIVE_EXTRACT_PERM
-    ARCHIVE_EXTRACT_SECURE_NODOTDOT
-    ARCHIVE_EXTRACT_SECURE_SYMLINKS
-    ARCHIVE_EXTRACT_SPARSE
-    ARCHIVE_EXTRACT_TIME
-    ARCHIVE_EXTRACT_UNLINK
-    ARCHIVE_EXTRACT_XATTR
-    ARCHIVE_FAILED
-    ARCHIVE_FATAL
-    ARCHIVE_FILTER_BZIP2
-    ARCHIVE_FILTER_COMPRESS
-    ARCHIVE_FILTER_GRZIP
-    ARCHIVE_FILTER_GZIP
-    ARCHIVE_FILTER_LRZIP
-    ARCHIVE_FILTER_LZIP
-    ARCHIVE_FILTER_LZMA
-    ARCHIVE_FILTER_LZOP
-    ARCHIVE_FILTER_NONE
-    ARCHIVE_FILTER_PROGRAM
-    ARCHIVE_FILTER_RPM
-    ARCHIVE_FILTER_UU
-    ARCHIVE_FILTER_XZ
-    ARCHIVE_FORMAT_7ZIP
-    ARCHIVE_FORMAT_AR
-    ARCHIVE_FORMAT_AR_BSD
-    ARCHIVE_FORMAT_AR_GNU
-    ARCHIVE_FORMAT_BASE_MASK
-    ARCHIVE_FORMAT_CAB
-    ARCHIVE_FORMAT_CPIO
-    ARCHIVE_FORMAT_CPIO_AFIO_LARGE
-    ARCHIVE_FORMAT_CPIO_BIN_BE
-    ARCHIVE_FORMAT_CPIO_BIN_LE
-    ARCHIVE_FORMAT_CPIO_POSIX
-    ARCHIVE_FORMAT_CPIO_SVR4_CRC
-    ARCHIVE_FORMAT_CPIO_SVR4_NOCRC
-    ARCHIVE_FORMAT_EMPTY
-    ARCHIVE_FORMAT_ISO9660
-    ARCHIVE_FORMAT_ISO9660_ROCKRIDGE
-    ARCHIVE_FORMAT_LHA
-    ARCHIVE_FORMAT_MTREE
-    ARCHIVE_FORMAT_RAR
-    ARCHIVE_FORMAT_RAW
-    ARCHIVE_FORMAT_SHAR
-    ARCHIVE_FORMAT_SHAR_BASE
-    ARCHIVE_FORMAT_SHAR_DUMP
-    ARCHIVE_FORMAT_TAR
-    ARCHIVE_FORMAT_TAR_GNUTAR
-    ARCHIVE_FORMAT_TAR_PAX_INTERCHANGE
-    ARCHIVE_FORMAT_TAR_PAX_RESTRICTED
-    ARCHIVE_FORMAT_TAR_USTAR
-    ARCHIVE_FORMAT_XAR
-    ARCHIVE_FORMAT_ZIP
-    ARCHIVE_LIBRARY_VERSION
-    ARCHIVE_MATCH_CTIME
-    ARCHIVE_MATCH_EQUAL
-    ARCHIVE_MATCH_MTIME
-    ARCHIVE_MATCH_NEWER
-    ARCHIVE_MATCH_OLDER
-    ARCHIVE_OK
-    ARCHIVE_READDISK_HONOR_NODUMP
-    ARCHIVE_READDISK_MAC_COPYFILE
-    ARCHIVE_READDISK_NO_TRAVERSE_MOUNTS
-    ARCHIVE_READDISK_RESTORE_ATIME
-    ARCHIVE_RETRY
-    ARCHIVE_VERSION_NUMBER
-    ARCHIVE_VERSION_STAMP
-    ARCHIVE_WARN
+sub _define_constant ($) {
+  my($name) = @_;
+  my $value = eval { _constant($name) };
+  eval qq{ sub $name() { $value } } unless $@;
+  $name;
+}
+
+use Exporter::Tidy
+  const => [map { _define_constant($_) } qw(
+      AE_IFBLK
+      AE_IFCHR
+      AE_IFDIR
+      AE_IFIFO
+      AE_IFLNK
+      AE_IFMT
+      AE_IFREG
+      AE_IFSOCK
+      ARCHIVE_API_FEATURE
+      ARCHIVE_API_VERSION
+      ARCHIVE_BYTES_PER_RECORD
+      ARCHIVE_COMPRESSION_BZIP2
+      ARCHIVE_COMPRESSION_COMPRESS
+      ARCHIVE_COMPRESSION_GZIP
+      ARCHIVE_COMPRESSION_LRZIP
+      ARCHIVE_COMPRESSION_LZIP
+      ARCHIVE_COMPRESSION_LZMA
+      ARCHIVE_COMPRESSION_NONE
+      ARCHIVE_COMPRESSION_PROGRAM
+      ARCHIVE_COMPRESSION_RPM
+      ARCHIVE_COMPRESSION_UU
+      ARCHIVE_COMPRESSION_XZ
+      ARCHIVE_DEFAULT_BYTES_PER_BLOCK
+      ARCHIVE_ENTRY_ACL_ADD_FILE
+      ARCHIVE_ENTRY_ACL_ADD_SUBDIRECTORY
+      ARCHIVE_ENTRY_ACL_APPEND_DATA
+      ARCHIVE_ENTRY_ACL_DELETE
+      ARCHIVE_ENTRY_ACL_DELETE_CHILD
+      ARCHIVE_ENTRY_ACL_ENTRY_DIRECTORY_INHERIT
+      ARCHIVE_ENTRY_ACL_ENTRY_FAILED_ACCESS
+      ARCHIVE_ENTRY_ACL_ENTRY_FILE_INHERIT
+      ARCHIVE_ENTRY_ACL_ENTRY_INHERIT_ONLY
+      ARCHIVE_ENTRY_ACL_ENTRY_NO_PROPAGATE_INHERIT
+      ARCHIVE_ENTRY_ACL_ENTRY_SUCCESSFUL_ACCESS
+      ARCHIVE_ENTRY_ACL_EVERYONE
+      ARCHIVE_ENTRY_ACL_EXECUTE
+      ARCHIVE_ENTRY_ACL_GROUP
+      ARCHIVE_ENTRY_ACL_GROUP_OBJ
+      ARCHIVE_ENTRY_ACL_INHERITANCE_NFS4
+      ARCHIVE_ENTRY_ACL_LIST_DIRECTORY
+      ARCHIVE_ENTRY_ACL_MASK
+      ARCHIVE_ENTRY_ACL_OTHER
+      ARCHIVE_ENTRY_ACL_PERMS_NFS4
+      ARCHIVE_ENTRY_ACL_PERMS_POSIX1E
+      ARCHIVE_ENTRY_ACL_READ
+      ARCHIVE_ENTRY_ACL_READ_ACL
+      ARCHIVE_ENTRY_ACL_READ_ATTRIBUTES
+      ARCHIVE_ENTRY_ACL_READ_DATA
+      ARCHIVE_ENTRY_ACL_READ_NAMED_ATTRS
+      ARCHIVE_ENTRY_ACL_STYLE_EXTRA_ID
+      ARCHIVE_ENTRY_ACL_STYLE_MARK_DEFAULT
+      ARCHIVE_ENTRY_ACL_SYNCHRONIZE
+      ARCHIVE_ENTRY_ACL_TYPE_ACCESS
+      ARCHIVE_ENTRY_ACL_TYPE_ALARM
+      ARCHIVE_ENTRY_ACL_TYPE_ALLOW
+      ARCHIVE_ENTRY_ACL_TYPE_AUDIT
+      ARCHIVE_ENTRY_ACL_TYPE_DEFAULT
+      ARCHIVE_ENTRY_ACL_TYPE_DENY
+      ARCHIVE_ENTRY_ACL_TYPE_NFS4
+      ARCHIVE_ENTRY_ACL_TYPE_POSIX1E
+      ARCHIVE_ENTRY_ACL_USER
+      ARCHIVE_ENTRY_ACL_USER_OBJ
+      ARCHIVE_ENTRY_ACL_WRITE
+      ARCHIVE_ENTRY_ACL_WRITE_ACL
+      ARCHIVE_ENTRY_ACL_WRITE_ATTRIBUTES
+      ARCHIVE_ENTRY_ACL_WRITE_DATA
+      ARCHIVE_ENTRY_ACL_WRITE_NAMED_ATTRS
+      ARCHIVE_ENTRY_ACL_WRITE_OWNER
+      ARCHIVE_EOF
+      ARCHIVE_EXTRACT_ACL
+      ARCHIVE_EXTRACT_FFLAGS
+      ARCHIVE_EXTRACT_HFS_COMPRESSION_FORCED
+      ARCHIVE_EXTRACT_MAC_METADATA
+      ARCHIVE_EXTRACT_NO_AUTODIR
+      ARCHIVE_EXTRACT_NO_HFS_COMPRESSION
+      ARCHIVE_EXTRACT_NO_OVERWRITE
+      ARCHIVE_EXTRACT_NO_OVERWRITE_NEWER
+      ARCHIVE_EXTRACT_OWNER
+      ARCHIVE_EXTRACT_PERM
+      ARCHIVE_EXTRACT_SECURE_NODOTDOT
+      ARCHIVE_EXTRACT_SECURE_SYMLINKS
+      ARCHIVE_EXTRACT_SPARSE
+      ARCHIVE_EXTRACT_TIME
+      ARCHIVE_EXTRACT_UNLINK
+      ARCHIVE_EXTRACT_XATTR
+      ARCHIVE_FAILED
+      ARCHIVE_FATAL
+      ARCHIVE_FILTER_BZIP2
+      ARCHIVE_FILTER_COMPRESS
+      ARCHIVE_FILTER_GRZIP
+      ARCHIVE_FILTER_GZIP
+      ARCHIVE_FILTER_LRZIP
+      ARCHIVE_FILTER_LZIP
+      ARCHIVE_FILTER_LZMA
+      ARCHIVE_FILTER_LZOP
+      ARCHIVE_FILTER_NONE
+      ARCHIVE_FILTER_PROGRAM
+      ARCHIVE_FILTER_RPM
+      ARCHIVE_FILTER_UU
+      ARCHIVE_FILTER_XZ
+      ARCHIVE_FORMAT_7ZIP
+      ARCHIVE_FORMAT_AR
+      ARCHIVE_FORMAT_AR_BSD
+      ARCHIVE_FORMAT_AR_GNU
+      ARCHIVE_FORMAT_BASE_MASK
+      ARCHIVE_FORMAT_CAB
+      ARCHIVE_FORMAT_CPIO
+      ARCHIVE_FORMAT_CPIO_AFIO_LARGE
+      ARCHIVE_FORMAT_CPIO_BIN_BE
+      ARCHIVE_FORMAT_CPIO_BIN_LE
+      ARCHIVE_FORMAT_CPIO_POSIX
+      ARCHIVE_FORMAT_CPIO_SVR4_CRC
+      ARCHIVE_FORMAT_CPIO_SVR4_NOCRC
+      ARCHIVE_FORMAT_EMPTY
+      ARCHIVE_FORMAT_ISO9660
+      ARCHIVE_FORMAT_ISO9660_ROCKRIDGE
+      ARCHIVE_FORMAT_LHA
+      ARCHIVE_FORMAT_MTREE
+      ARCHIVE_FORMAT_RAR
+      ARCHIVE_FORMAT_RAW
+      ARCHIVE_FORMAT_SHAR
+      ARCHIVE_FORMAT_SHAR_BASE
+      ARCHIVE_FORMAT_SHAR_DUMP
+      ARCHIVE_FORMAT_TAR
+      ARCHIVE_FORMAT_TAR_GNUTAR
+      ARCHIVE_FORMAT_TAR_PAX_INTERCHANGE
+      ARCHIVE_FORMAT_TAR_PAX_RESTRICTED
+      ARCHIVE_FORMAT_TAR_USTAR
+      ARCHIVE_FORMAT_XAR
+      ARCHIVE_FORMAT_ZIP
+      ARCHIVE_LIBRARY_VERSION
+      ARCHIVE_MATCH_CTIME
+      ARCHIVE_MATCH_EQUAL
+      ARCHIVE_MATCH_MTIME
+      ARCHIVE_MATCH_NEWER
+      ARCHIVE_MATCH_OLDER
+      ARCHIVE_OK
+      ARCHIVE_READDISK_HONOR_NODUMP
+      ARCHIVE_READDISK_MAC_COPYFILE
+      ARCHIVE_READDISK_NO_TRAVERSE_MOUNTS
+      ARCHIVE_READDISK_RESTORE_ATIME
+      ARCHIVE_RETRY
+      ARCHIVE_VERSION_NUMBER
+      ARCHIVE_VERSION_STAMP
+      ARCHIVE_WARN
   )],
   func  => [qw(
-    archive_clear_error
-    archive_copy_error
-    archive_entry_clear
-    archive_entry_clone
-    archive_entry_free
-    archive_entry_new
-    archive_entry_new2
-    archive_entry_pathname
-    archive_entry_set_filetype
-    archive_entry_set_mtime
-    archive_entry_set_pathname
-    archive_entry_set_perm
-    archive_entry_set_size
-    archive_entry_size
-    archive_errno
-    archive_error_string
-    archive_file_count
-    archive_filter_code
-    archive_filter_count
-    archive_filter_name
-    archive_format
-    archive_format_name
-    archive_read_close
-    archive_read_data
-    archive_read_data_block
-    archive_read_data_skip
-    archive_read_free
-    archive_read_new
-    archive_read_next_header
-    archive_read_open_filename
-    archive_read_open_memory
-    archive_read_open_stdin
-    archive_read_support_filter_all
-    archive_read_support_filter_bzip2
-    archive_read_support_filter_compress
-    archive_read_support_filter_grzip
-    archive_read_support_filter_gzip
-    archive_read_support_filter_lrzip
-    archive_read_support_filter_lzip
-    archive_read_support_filter_lzma
-    archive_read_support_filter_lzop
-    archive_read_support_filter_none
-    archive_read_support_filter_program
-    archive_read_support_filter_rpm
-    archive_read_support_filter_uu
-    archive_read_support_filter_xz
-    archive_read_support_format_7zip
-    archive_read_support_format_all
-    archive_read_support_format_ar
-    archive_read_support_format_by_code
-    archive_read_support_format_cab
-    archive_read_support_format_cpio
-    archive_read_support_format_empty
-    archive_read_support_format_gnutar
-    archive_read_support_format_iso9660
-    archive_read_support_format_lha
-    archive_read_support_format_mtree
-    archive_read_support_format_rar
-    archive_read_support_format_raw
-    archive_read_support_format_tar
-    archive_read_support_format_xar
-    archive_read_support_format_zip
-    archive_version_number
-    archive_version_string
-    archive_write_add_filter
-    archive_write_add_filter_b64encode
-    archive_write_add_filter_by_name
-    archive_write_add_filter_bzip2
-    archive_write_add_filter_compress
-    archive_write_add_filter_grzip
-    archive_write_add_filter_gzip
-    archive_write_add_filter_lrzip
-    archive_write_add_filter_lzip
-    archive_write_add_filter_lzma
-    archive_write_add_filter_lzop
-    archive_write_add_filter_none
-    archive_write_add_filter_program
-    archive_write_add_filter_uuencode
-    archive_write_add_filter_xz
-    archive_write_close
-    archive_write_data
-    archive_write_data_block
-    archive_write_disk_new
-    archive_write_disk_set_options
-    archive_write_disk_set_standard_lookup
-    archive_write_finish_entry
-    archive_write_free
-    archive_write_header
-    archive_write_new
-    archive_write_open_filename
-    archive_write_open_stdout
-    archive_write_set_format
-    archive_write_set_format_7zip
-    archive_write_set_format_ar_bsd
-    archive_write_set_format_ar_svr4
-    archive_write_set_format_by_name
-    archive_write_set_format_cpio
-    archive_write_set_format_cpio_newc
-    archive_write_set_format_gnutar
-    archive_write_set_format_iso9660
-    archive_write_set_format_mtree
-    archive_write_set_format_mtree_classic
-    archive_write_set_format_pax
-    archive_write_set_format_pax_restricted
-    archive_write_set_format_shar
-    archive_write_set_format_shar_dump
-    archive_write_set_format_ustar
-    archive_write_set_format_v7tar
-    archive_write_set_format_xar
-    archive_write_set_format_zip
-    archive_write_zip_set_compression_deflate
-    archive_write_zip_set_compression_store
-  )],
-);
-
-require XSLoader;
-XSLoader::load('Archive::Libarchive::XS', $VERSION);
+      archive_clear_error
+      archive_copy_error
+      archive_entry_clear
+      archive_entry_clone
+      archive_entry_free
+      archive_entry_new
+      archive_entry_new2
+      archive_entry_pathname
+      archive_entry_set_filetype
+      archive_entry_set_mtime
+      archive_entry_set_pathname
+      archive_entry_set_perm
+      archive_entry_set_size
+      archive_entry_size
+      archive_errno
+      archive_error_string
+      archive_file_count
+      archive_filter_code
+      archive_filter_count
+      archive_filter_name
+      archive_format
+      archive_format_name
+      archive_read_close
+      archive_read_data
+      archive_read_data_block
+      archive_read_data_skip
+      archive_read_free
+      archive_read_new
+      archive_read_next_header
+      archive_read_open_filename
+      archive_read_open_memory
+      archive_read_open_stdin
+      archive_read_support_filter_all
+      archive_read_support_filter_bzip2
+      archive_read_support_filter_compress
+      archive_read_support_filter_grzip
+      archive_read_support_filter_gzip
+      archive_read_support_filter_lrzip
+      archive_read_support_filter_lzip
+      archive_read_support_filter_lzma
+      archive_read_support_filter_lzop
+      archive_read_support_filter_none
+      archive_read_support_filter_program
+      archive_read_support_filter_rpm
+      archive_read_support_filter_uu
+      archive_read_support_filter_xz
+      archive_read_support_format_7zip
+      archive_read_support_format_all
+      archive_read_support_format_ar
+      archive_read_support_format_by_code
+      archive_read_support_format_cab
+      archive_read_support_format_cpio
+      archive_read_support_format_empty
+      archive_read_support_format_gnutar
+      archive_read_support_format_iso9660
+      archive_read_support_format_lha
+      archive_read_support_format_mtree
+      archive_read_support_format_rar
+      archive_read_support_format_raw
+      archive_read_support_format_tar
+      archive_read_support_format_xar
+      archive_read_support_format_zip
+      archive_version_number
+      archive_version_string
+      archive_write_add_filter
+      archive_write_add_filter_b64encode
+      archive_write_add_filter_by_name
+      archive_write_add_filter_bzip2
+      archive_write_add_filter_compress
+      archive_write_add_filter_grzip
+      archive_write_add_filter_gzip
+      archive_write_add_filter_lrzip
+      archive_write_add_filter_lzip
+      archive_write_add_filter_lzma
+      archive_write_add_filter_lzop
+      archive_write_add_filter_none
+      archive_write_add_filter_program
+      archive_write_add_filter_uuencode
+      archive_write_add_filter_xz
+      archive_write_close
+      archive_write_data
+      archive_write_data_block
+      archive_write_disk_new
+      archive_write_disk_set_options
+      archive_write_disk_set_standard_lookup
+      archive_write_finish_entry
+      archive_write_free
+      archive_write_header
+      archive_write_new
+      archive_write_open_filename
+      archive_write_open_stdout
+      archive_write_set_format
+      archive_write_set_format_7zip
+      archive_write_set_format_ar_bsd
+      archive_write_set_format_ar_svr4
+      archive_write_set_format_by_name
+      archive_write_set_format_cpio
+      archive_write_set_format_cpio_newc
+      archive_write_set_format_gnutar
+      archive_write_set_format_iso9660
+      archive_write_set_format_mtree
+      archive_write_set_format_mtree_classic
+      archive_write_set_format_pax
+      archive_write_set_format_pax_restricted
+      archive_write_set_format_shar
+      archive_write_set_format_shar_dump
+      archive_write_set_format_ustar
+      archive_write_set_format_v7tar
+      archive_write_set_format_xar
+      archive_write_set_format_zip
+      archive_write_zip_set_compression_deflate
+      archive_write_zip_set_compression_store
+  )];
 
 =head1 CONSTANTS
 
@@ -1252,18 +1255,6 @@ constants using the C<:const> export tag).
 =back
 
 =cut
-
-foreach my $const (@{ $EXPORT_TAGS{const} }) {
-  my $value = eval { _constant($const) };
-  next if $@;
-  no strict 'refs';
-  # what is the best way to do actually do this?
-  *{"Archive::Libarchive::XS::$const"} = eval qq{ sub { $value } };
-}
-
-
-our @EXPORT_OK = (@{ $EXPORT_TAGS{const} }, @{ $EXPORT_TAGS{func} });
-$EXPORT_TAGS{all} = \@EXPORT_OK;
 
 1;
 

@@ -1,5 +1,5 @@
 Alien::Libarchive
-Exporter
+Exporter::Tidy
 File::Basename
 File::Spec
 File::Temp

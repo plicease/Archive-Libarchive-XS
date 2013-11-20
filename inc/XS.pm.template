@@ -2,11 +2,17 @@ package Archive::Libarchive::XS;
 
 use strict;
 use warnings;
-use base qw( Exporter );
 use Alien::Libarchive;
+
+BEGIN {
 
 # ABSTRACT: Perl bindings to libarchive via XS
 # VERSION
+
+  require XSLoader;
+  XSLoader::load('Archive::Libarchive::XS', $VERSION);
+
+}
 
 =head1 SYNOPSIS
 
@@ -62,34 +68,30 @@ a function or constant is available, for example:
    # grzip filter is available.
  }
 
-You can use this one-liner to determine which functions and constants
-are unavailable:
-
- <%= '%' %> perl -MArchive::Libarchive::XS \
-   -E 'for(@Archive::Libarchive::XS::EXPORT_OK) { say $_ unless Archive::Libarchive::XS->can($_) }'
-
 % foreach my $function (sort keys %$functions) {
 <%= $functions->{$function} %>
 
 % }
 =cut
 
-our %EXPORT_TAGS = (
-  all   => [],
-  const => [qw(
+sub _define_constant ($) {
+  my($name) = @_;
+  my $value = eval { _constant($name) };
+  eval qq{ sub $name() { $value } } unless $@;
+  $name;
+}
+
+use Exporter::Tidy
+  const => [map { _define_constant($_) } qw(
 % foreach my $constant (@$constants) {
-    <%= $constant %>
+      <%= $constant %>
 % }
   )],
   func  => [qw(
 % foreach my $function (sort keys %$functions) {
-    <%= $function %>
+      <%= $function %>
 % }
-  )],
-);
-
-require XSLoader;
-XSLoader::load('Archive::Libarchive::XS', $VERSION);
+  )];
 
 =head1 CONSTANTS
 
@@ -106,18 +108,6 @@ constants using the C<:const> export tag).
 =back
 
 =cut
-
-foreach my $const (@{ $EXPORT_TAGS{const} }) {
-  my $value = eval { _constant($const) };
-  next if $@;
-  no strict 'refs';
-  # what is the best way to do actually do this?
-  *{"Archive::Libarchive::XS::$const"} = eval qq{ sub { $value } };
-}
-
-
-our @EXPORT_OK = (@{ $EXPORT_TAGS{const} }, @{ $EXPORT_TAGS{func} });
-$EXPORT_TAGS{all} = \@EXPORT_OK;
 
 1;
 
