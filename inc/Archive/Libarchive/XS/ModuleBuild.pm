@@ -39,7 +39,7 @@ sub ACTION_build
   print $fh "#ifndef FUNC_H\n";
   print $fh "#define FUNC_H\n\n";
 
-  if($alien->install_type('system'))
+  if($alien->install_type eq 'system')
   {
     foreach my $symbol (@symbols)
     {

@@ -105,10 +105,14 @@ for details of the numbering.
 
 =cut
 
+#ifdef HAS_archive_filter_code
+
 int 
 archive_filter_code(archive, level);
     struct archive *archive;
     int level;
+
+#endif
 
 =head2 archive_filter_count
 
@@ -127,9 +131,13 @@ uudecoding, and C<archive_position(a,(0))> would return the number of bytes afte
 
 =cut
 
+#ifdef archive_filter_count
+
 int 
 archive_filter_count(archive);
     struct archive *archive;
+
+#endif
 
 =head2 archive_filter_name
 
@@ -138,10 +146,14 @@ details of the numbering.
 
 =cut
 
+#ifdef HAS_archive_filter_name
+
 const char * 
 archive_filter_name(archive, level); 
     struct archive *archive;
     int level;
+
+#endif
 
 =head2 archive_format($archive)
 
@@ -175,9 +187,23 @@ Enable all available decompression filters.
 
 =cut
 
+#ifdef HAS_archive_read_support_filter_all
+
 int
 archive_read_support_filter_all(archive)
     struct archive *archive;
+
+#else
+
+int
+archive_read_support_filter_all(archive)
+    struct archive *archive
+  CODE:
+    RETVAL = archive_read_support_compression_all(archive);
+  OUTPUT:
+    RETVAL
+
+#endif
 
 =head2 archive_read_support_filter_program(archive, command)
 
@@ -188,10 +214,14 @@ conjunction with any other decompression option.
 
 =cut
 
+#ifdef HAS_archive_read_support_filter_program
+
 int
 archive_read_support_filter_program(archive, command)
     struct archive *archive;
     const char *command;
+
+#endif
 
 =head2 archive_read_support_format_all($archive)
 
@@ -209,10 +239,14 @@ Enables a single format specified by the format code.
 
 =cut
 
+#ifdef HAS_archive_read_support_format_by_code
+
 int
 archive_read_support_format_by_code(archive, code)
     struct archive *archive;
     int code;
+
+#endif
 
 =head2 archive_read_open_filename($archive, $filename, $block_size)
 
@@ -475,10 +509,14 @@ A convenience function to set the filter based on the code.
 
 =cut
 
+#ifdef HAS_archive_write_add_filter
+
 int
 archive_write_add_filter(archive, code)
     struct archive *archive
     int code
+
+#endif
 
 =head2 archive_write_add_filter_by_name($archive, $name)
 
@@ -503,10 +541,14 @@ write callbacks.
 
 =cut
 
+#ifdef HAS_archive_write_add_filter_program
+
 int
 archive_write_add_filter_program(archive, cmd)
     struct archive *archive
     const char *cmd
+
+#endif
 
 =head2 archive_write_set_format($archive, $code)
 
@@ -613,9 +655,13 @@ default character-set conversion.
 
 =cut
 
+#ifdef HAS_archive_entry_new2
+
 struct archive_entry *
 archive_entry_new2(archive)
     struct archive *archive
+
+#endif
 
 =head2 archive_entry_set_pathname($entry, $name)
 
@@ -892,6 +938,18 @@ _constant(name)
         else if(!strcmp(name, "AE_IFSOCK"))
           RETVAL = AE_IFSOCK;
 #endif
+#ifdef ARCHIVE_API_FEATURE
+        else if(!strcmp(name, "ARCHIVE_API_FEATURE"))
+          RETVAL = ARCHIVE_API_FEATURE;
+#endif
+#ifdef ARCHIVE_API_VERSION
+        else if(!strcmp(name, "ARCHIVE_API_VERSION"))
+          RETVAL = ARCHIVE_API_VERSION;
+#endif
+#ifdef ARCHIVE_BYTES_PER_RECORD
+        else if(!strcmp(name, "ARCHIVE_BYTES_PER_RECORD"))
+          RETVAL = ARCHIVE_BYTES_PER_RECORD;
+#endif
 #ifdef ARCHIVE_COMPRESSION_BZIP2
         else if(!strcmp(name, "ARCHIVE_COMPRESSION_BZIP2"))
           RETVAL = ARCHIVE_COMPRESSION_BZIP2;
@@ -935,6 +993,10 @@ _constant(name)
 #ifdef ARCHIVE_COMPRESSION_XZ
         else if(!strcmp(name, "ARCHIVE_COMPRESSION_XZ"))
           RETVAL = ARCHIVE_COMPRESSION_XZ;
+#endif
+#ifdef ARCHIVE_DEFAULT_BYTES_PER_BLOCK
+        else if(!strcmp(name, "ARCHIVE_DEFAULT_BYTES_PER_BLOCK"))
+          RETVAL = ARCHIVE_DEFAULT_BYTES_PER_BLOCK;
 #endif
 #ifdef ARCHIVE_ENTRY_ACL_ADD_FILE
         else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_ADD_FILE"))
@@ -1364,6 +1426,10 @@ _constant(name)
         else if(!strcmp(name, "ARCHIVE_FORMAT_ZIP"))
           RETVAL = ARCHIVE_FORMAT_ZIP;
 #endif
+#ifdef ARCHIVE_LIBRARY_VERSION
+        else if(!strcmp(name, "ARCHIVE_LIBRARY_VERSION"))
+          RETVAL = ARCHIVE_LIBRARY_VERSION;
+#endif
 #ifdef ARCHIVE_MATCH_CTIME
         else if(!strcmp(name, "ARCHIVE_MATCH_CTIME"))
           RETVAL = ARCHIVE_MATCH_CTIME;
@@ -1407,6 +1473,10 @@ _constant(name)
 #ifdef ARCHIVE_VERSION_NUMBER
         else if(!strcmp(name, "ARCHIVE_VERSION_NUMBER"))
           RETVAL = ARCHIVE_VERSION_NUMBER;
+#endif
+#ifdef ARCHIVE_VERSION_STAMP
+        else if(!strcmp(name, "ARCHIVE_VERSION_STAMP"))
+          RETVAL = ARCHIVE_VERSION_STAMP;
 #endif
 #ifdef ARCHIVE_WARN
         else if(!strcmp(name, "ARCHIVE_WARN"))
