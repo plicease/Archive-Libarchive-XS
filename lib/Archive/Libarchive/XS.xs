@@ -899,6 +899,118 @@ archive_write_zip_set_compression_deflate(archive)
 
 #endif
 
+=head2 archive_write_set_skip_file($archive, $dev, $ino)
+
+The dev/ino of a file that won't be archived.  This is used
+to avoid recursively adding an archive to itself.
+
+=cut
+
+#ifdef HAS_archive_write_set_skip_file
+
+int archive_write_set_skip_file(archive, dev, ino)
+    struct archive *archive
+    __LA_INT64_T dev
+    __LA_INT64_T ino
+
+#endif
+
+=head2 archive_write_set_format_option($archive, $module, $option, $value)
+
+Specifies an option that will be passed to currently-registered format readers.
+
+TODO: translate undefs to NULL for $module, $option and $value
+
+=cut
+
+#ifdef HAS_archive_write_set_format_option
+
+int
+archive_write_set_format_option(archive, m, o, v)
+    struct archive *archive
+    const char *m
+    const char *o
+    const char *v
+
+#endif
+
+=head2 archive_write_set_filter_option($archive, $module, $option, $value)
+
+Specifies an option that will be passed to currently-registered filters (including decompression filters).
+
+TODO: translate undefs to NULL for $module, $option and $value
+
+=cut
+
+#ifdef HAS_archive_write_set_filter_option
+
+int
+archive_write_set_filter_option(archive, m, o, v)
+    struct archive *archive
+    const char *m
+    const char *o
+    const char *v
+
+#endif
+
+=head2 archive_write_set_option($archive, $module, $option, $value)
+
+Calls C<archive_write_set_format_option>, then C<archive_write_set_filter_option>.
+If either function returns C<ARCHIVE_FATAL>, C<ARCHIVE_FATAL> will be returned
+immediately.  Otherwise, greater of the two values will be returned.
+
+TODO: translate undefs to NULL for $module, $option and $value
+
+=cut
+
+#ifdef HAS_archive_write_set_option
+
+int
+archive_write_set_option(archive, m, o, v)
+    struct archive *archive
+    const char *m
+    const char *o
+    const char *v
+
+#endif
+
+=head2 archive_write_set_options($archive, $opts)
+
+options is a comma-separated list of options.  If options is NULL or empty, ARCHIVE_OK will be returned immediately.
+
+Individual options have one of the following forms:
+
+=over 4
+
+=item option=value
+
+The option/value pair will be provided to every module.  Modules that do not accept an option with this name will ignore it.
+
+=item option
+
+The option will be provided to every module with a value of "1".
+
+=item !option
+
+The option will be provided to every module with a NULL value.
+
+=item module:option=value, module:option, module:!option
+
+As above, but the corresponding option and value will be provided only to modules whose name matches module.
+
+=back
+
+=cut
+
+#ifdef HAS_archive_write_set_options
+
+int
+archive_write_set_options(archive, opts)
+    struct archive *archive
+    const char *opts
+
+#endif
+
 int
 _constant(name)
         char *name

@@ -1,4 +1,3 @@
-archive_acl
 archive_clear_error
 archive_close_callback
 archive_copy_error
@@ -248,7 +247,6 @@ archive_read_set_read_callback
 archive_read_set_seek_callback
 archive_read_set_skip_callback
 archive_read_set_switch_callback
-archive_read_support_XXX
 archive_read_support_filter_all
 archive_read_support_filter_bzip2
 archive_read_support_filter_compress

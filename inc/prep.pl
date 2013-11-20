@@ -150,6 +150,13 @@ do { # symbol list
   
   delete $symbols{$_} for @deprecated;
   
+  my @not_real = qw(
+    archive_acl
+    archive_read_support_XXX
+  );
+  
+  delete $symbols{$_} for @not_real;
+
   file(__FILE__)->parent->file('symbols.txt')->spew(join "\n", sort keys %symbols);
 };
 
