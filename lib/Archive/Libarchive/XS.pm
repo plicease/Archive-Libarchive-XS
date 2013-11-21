@@ -687,12 +687,12 @@ Set the compression method for the zip archive to store.
 sub _define_constant ($) {
   my($name) = @_;
   my $value = eval { _constant($name) };
-  eval qq{ sub $name() { $value } } unless $@;
-  $name;
+  return if $@;
+  eval qq{ sub $name() { $value }; 1 };
 }
 
 use Exporter::Tidy
-  const => [map { _define_constant($_) } qw(
+  const => [grep { _define_constant($_) } qw(
       AE_IFBLK
       AE_IFCHR
       AE_IFDIR
@@ -839,7 +839,7 @@ use Exporter::Tidy
       ARCHIVE_VERSION_STAMP
       ARCHIVE_WARN
   )],
-  func  => [qw(
+  func  => [grep { __PACKAGE__->can($_) } qw(
       archive_clear_error
       archive_copy_error
       archive_entry_clear

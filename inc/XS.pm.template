@@ -77,17 +77,17 @@ a function or constant is available, for example:
 sub _define_constant ($) {
   my($name) = @_;
   my $value = eval { _constant($name) };
-  eval qq{ sub $name() { $value } } unless $@;
-  $name;
+  return if $@;
+  eval qq{ sub $name() { $value }; 1 };
 }
 
 use Exporter::Tidy
-  const => [map { _define_constant($_) } qw(
+  const => [grep { _define_constant($_) } qw(
 % foreach my $constant (@$constants) {
       <%= $constant %>
 % }
   )],
-  func  => [qw(
+  func  => [grep { __PACKAGE__->can($_) } qw(
 % foreach my $function (sort keys %$functions) {
       <%= $function %>
 % }
