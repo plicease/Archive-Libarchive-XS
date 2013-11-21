@@ -152,6 +152,8 @@ do { # symbol list
   my @not_real = qw(
     archive_acl
     archive_read_support_XXX
+    archive_write_disk
+    archive_read_open_XXX
   );
   
   delete $symbols{$_} for @not_real;

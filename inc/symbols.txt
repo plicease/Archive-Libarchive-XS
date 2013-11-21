@@ -226,7 +226,6 @@ archive_read_open
 archive_read_open1
 archive_read_open2
 archive_read_open_FILE
-archive_read_open_XXX
 archive_read_open_fd
 archive_read_open_filename
 archive_read_open_filename_w
@@ -304,7 +303,6 @@ archive_write_callback
 archive_write_close
 archive_write_data
 archive_write_data_block
-archive_write_disk
 archive_write_disk_gid
 archive_write_disk_new
 archive_write_disk_set_group_lookup
