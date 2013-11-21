@@ -10,7 +10,6 @@ my @macros = do { # constants
 
   # keep any new macros, even if we are doing a dzil build
   # against an old libarchive
-  # TODO: warn if we find a missing constant.
   my %macros = (map { chomp; $_ => 1 } file(__FILE__)->parent->file('constants.txt')->slurp, grep { $_ ne 'ARCHIVE_VERSION_STRING' } grep { $_ !~ /H_INCLUDED$/ } $alien->_macro_list);
   sort keys %macros;  
 };

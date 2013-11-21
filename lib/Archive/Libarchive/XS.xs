@@ -11,6 +11,8 @@
 #include <archive.h>
 #include <archive_entry.h>
 
+typedef const char *string_or_null;
+
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 
 BOOT:
@@ -254,34 +256,16 @@ Like C<archive_read_open>, except that it accepts a simple filename
 and a block size.  This function is safe for use with tape drives
 or other blocked devices.
 
+If you pass in C<undef> as the C<$filename>, libarchive will use
+standard in as the input archive.
+
 =cut
 
 int
 archive_read_open_filename(archive, filename, block_size)
     struct archive *archive;
-    const char *filename;
+    string_or_null filename;
     size_t block_size;
-
-=head2 archive_read_open_stdin($archive, $block_size)
-
-This is just like C<archive_read_open_filename> except, read from
-standard input instead of a file.
-
-Note: this function does not exist in the C API, it is offered here
-instead this C call, which does the same thing:
-
- archive_read_open_filename(archive, NULL, block_size);
-
-=cut
-
-int
-archive_read_open_stdin(archive, block_size)
-    struct archive *archive
-    size_t block_size
-  CODE:
-    RETVAL = archive_read_open_filename(archive, NULL, block_size);
-  OUTPUT:
-    RETVAL
 
 =head2 archive_read_open_memory($archive, $buffer)
 
@@ -583,27 +567,15 @@ manually invoking C<archive_write_set_bytes_in_last_block> before C<calling
 archive_write_open>.  The C<archive_write_open_filename> function is safe for use 
 with tape drives or other block-oriented devices.
 
+If you pass in C<undef> as the C<$filename>, libarchive will write the
+archive to standard out.
+
 =cut
 
 int
 archive_write_open_filename(archive, filename)
     struct archive *archive
-    const char *filename;
-
-=head2 archive_write_open_stdout($archive, $filename)
-
-This is the same as C<archive_write_open_filename>, except a C NULL pointer is passed
-in for the filename, which indicates stdout.
-
-=cut
-
-int
-archive_write_open_stdout(archive)
-    struct archive *archive
-  CODE:
-    RETVAL = archive_write_open_filename(archive, NULL);
-  OUTPUT:
-    RETVAL
+    string_or_null filename;
 
 =head2 archive_entry_clear
 
@@ -917,9 +889,24 @@ int archive_write_set_skip_file(archive, dev, ino)
 
 =head2 archive_write_set_format_option($archive, $module, $option, $value)
 
-Specifies an option that will be passed to currently-registered format readers.
+Specifies an option that will be passed to currently-registered format 
+readers.
 
-TODO: translate undefs to NULL for $module, $option and $value
+If option and value are both C<undef>, these functions will do nothing 
+and C<ARCHIVE_OK> will be returned.  If option is C<undef> but value
+is not, these functions will do nothing and C<ARCHIVE_FAILED> will
+be returned.
+
+If module is not C<undef>, option and value will be provided to the
+filter or reader named module.  The return value will be that of
+the module.  If there is no such module, C<ARCHIVE_FAILED> will be
+returned.
+
+If module is C<undef>, option and value will be provided to every
+registered module.  If any module returns C<ARCHIVE_FATAL>, this
+value will be returned immediately.  Otherwise, C<ARCHIVE_OK> will
+be returned if any module accepts the option, and C<ARCHIVE_FAILED>
+in all other cases.
 
 =cut
 
@@ -928,9 +915,9 @@ TODO: translate undefs to NULL for $module, $option and $value
 int
 archive_write_set_format_option(archive, m, o, v)
     struct archive *archive
-    const char *m
-    const char *o
-    const char *v
+    string_or_null m
+    string_or_null o
+    string_or_null v
 
 #endif
 
@@ -938,7 +925,21 @@ archive_write_set_format_option(archive, m, o, v)
 
 Specifies an option that will be passed to currently-registered filters (including decompression filters).
 
-TODO: translate undefs to NULL for $module, $option and $value
+If option and value are both C<undef>, these functions will do nothing 
+and C<ARCHIVE_OK> will be returned.  If option is C<undef> but value
+is not, these functions will do nothing and C<ARCHIVE_FAILED> will
+be returned.
+
+If module is not C<undef>, option and value will be provided to the
+filter or reader named module.  The return value will be that of
+the module.  If there is no such module, C<ARCHIVE_FAILED> will be
+returned.
+
+If module is C<undef>, option and value will be provided to every
+registered module.  If any module returns C<ARCHIVE_FATAL>, this
+value will be returned immediately.  Otherwise, C<ARCHIVE_OK> will
+be returned if any module accepts the option, and C<ARCHIVE_FAILED>
+in all other cases.
 
 =cut
 
@@ -947,19 +948,18 @@ TODO: translate undefs to NULL for $module, $option and $value
 int
 archive_write_set_filter_option(archive, m, o, v)
     struct archive *archive
-    const char *m
-    const char *o
-    const char *v
+    string_or_null m
+    string_or_null o
+    string_or_null v
 
 #endif
 
 =head2 archive_write_set_option($archive, $module, $option, $value)
 
-Calls C<archive_write_set_format_option>, then C<archive_write_set_filter_option>.
-If either function returns C<ARCHIVE_FATAL>, C<ARCHIVE_FATAL> will be returned
-immediately.  Otherwise, greater of the two values will be returned.
-
-TODO: translate undefs to NULL for $module, $option and $value
+Calls C<archive_write_set_format_option>, then 
+C<archive_write_set_filter_option>. If either function returns 
+C<ARCHIVE_FATAL>, C<ARCHIVE_FATAL> will be returned immediately.  
+Otherwise, greater of the two values will be returned.
 
 =cut
 
@@ -968,15 +968,16 @@ TODO: translate undefs to NULL for $module, $option and $value
 int
 archive_write_set_option(archive, m, o, v)
     struct archive *archive
-    const char *m
-    const char *o
-    const char *v
+    string_or_null m
+    string_or_null o
+    string_or_null v
 
 #endif
 
 =head2 archive_write_set_options($archive, $opts)
 
-options is a comma-separated list of options.  If options is NULL or empty, ARCHIVE_OK will be returned immediately.
+options is a comma-separated list of options.  If options is C<undef> or 
+empty, C<ARCHIVE_OK> will be returned immediately.
 
 Individual options have one of the following forms:
 
@@ -984,7 +985,8 @@ Individual options have one of the following forms:
 
 =item option=value
 
-The option/value pair will be provided to every module.  Modules that do not accept an option with this name will ignore it.
+The option/value pair will be provided to every module.  Modules that do 
+not accept an option with this name will ignore it.
 
 =item option
 
@@ -996,7 +998,8 @@ The option will be provided to every module with a NULL value.
 
 =item module:option=value, module:option, module:!option
 
-As above, but the corresponding option and value will be provided only to modules whose name matches module.
+As above, but the corresponding option and value will be provided only 
+to modules whose name matches module.
 
 =back
 
@@ -1007,7 +1010,7 @@ As above, but the corresponding option and value will be provided only to module
 int
 archive_write_set_options(archive, opts)
     struct archive *archive
-    const char *opts
+    string_or_null opts
 
 #endif
 
