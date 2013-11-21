@@ -300,8 +300,6 @@ Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the functions documented here with an <$entry> argument.
 
-TODO: maybe use archive_read_next_header2
-
 =cut
 
 int
@@ -311,7 +309,6 @@ archive_read_next_header(archive, output)
   CODE:
     struct archive_entry *entry;
     RETVAL = archive_read_next_header(archive, &entry);
-    /* Question: entry is probably not valid on EOF ? */
     sv_setref_pv(output, "Archive::Libarchive::XS::archive_entry", (void*) entry);
   OUTPUT:
     RETVAL

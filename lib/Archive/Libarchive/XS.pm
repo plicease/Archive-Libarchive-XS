@@ -266,8 +266,6 @@ Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the functions documented here with an <$entry> argument.
 
-TODO: maybe use archive_read_next_header2
-
 =head2 archive_read_open_filename($archive, $filename, $block_size)
 
 Like C<archive_read_open>, except that it accepts a simple filename

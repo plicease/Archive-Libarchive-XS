@@ -239,8 +239,6 @@ Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the functions documented here with an <$entry> argument.
 
-TODO: maybe use archive\_read\_next\_header2
-
 ## archive\_read\_open\_filename($archive, $filename, $block\_size)
 
 Like `archive_read_open`, except that it accepts a simple filename
