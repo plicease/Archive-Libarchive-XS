@@ -638,15 +638,14 @@ Sets the path in the archive as a string.
 
 Does not return anything.
 
-FIXME: this saves the pointer to name
-which is probably not what we want
-
 =cut
 
 void
 archive_entry_set_pathname(entry, name)
     struct archive_entry *entry
     const char *name
+  CODE:
+    archive_entry_copy_pathname(entry, name);
 
 =head2 archive_entry_size($entry)
 
