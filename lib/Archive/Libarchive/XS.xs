@@ -638,6 +638,9 @@ Sets the path in the archive as a string.
 
 Does not return anything.
 
+FIXME: this saves the pointer to name
+which is probably not what we want
+
 =cut
 
 void

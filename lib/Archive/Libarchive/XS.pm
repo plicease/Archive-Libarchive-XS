@@ -145,6 +145,9 @@ Sets the path in the archive as a string.
 
 Does not return anything.
 
+FIXME: this saves the pointer to name
+which is probably not what we want
+
 =head2 archive_entry_set_perm
 
 Set the permission bits for the entry.  This is the usual UNIX octal permission thing.
