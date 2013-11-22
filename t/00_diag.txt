@@ -1,10 +1,5 @@
 Alien::Libarchive
 Exporter::Tidy
-File::Basename
-File::Spec
-File::Temp
-FindBin
 Math::Int64
 Module::Build
 Test::More
-XSLoader
