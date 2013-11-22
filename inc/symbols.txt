@@ -1,5 +1,4 @@
 archive_clear_error
-archive_close_callback
 archive_copy_error
 archive_entry
 archive_entry_acl
@@ -177,7 +176,6 @@ archive_match_path_unmatched_inclusions
 archive_match_path_unmatched_inclusions_next
 archive_match_path_unmatched_inclusions_next_w
 archive_match_time_excluded
-archive_open_callback
 archive_platform
 archive_read
 archive_read_add_callback_data
@@ -185,7 +183,6 @@ archive_read_append_callback_data
 archive_read_append_filter
 archive_read_append_filter_program
 archive_read_append_filter_program_signature
-archive_read_callback
 archive_read_close
 archive_read_data
 archive_read_data_block
@@ -277,11 +274,8 @@ archive_read_support_format_raw
 archive_read_support_format_tar
 archive_read_support_format_xar
 archive_read_support_format_zip
-archive_seek_callback
 archive_seek_data
 archive_set_error
-archive_skip_callback
-archive_switch_callback
 archive_version_number
 archive_version_string
 archive_write_add_filter
@@ -299,7 +293,6 @@ archive_write_add_filter_none
 archive_write_add_filter_program
 archive_write_add_filter_uuencode
 archive_write_add_filter_xz
-archive_write_callback
 archive_write_close
 archive_write_data
 archive_write_data_block

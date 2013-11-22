@@ -157,6 +157,18 @@ do { # symbol list
   );
   
   delete $symbols{$_} for @not_real;
+  
+  my @typedefs = qw(
+    archive_read_callback
+    archive_skip_callback
+    archive_seek_callback
+    archive_write_callback
+    archive_open_callback
+    archive_close_callback
+    archive_switch_callback
+  );
+  
+  delete $symbols{$_} for @typedefs;
 
   file(__FILE__)->parent->file('symbols.txt')->spew(join "\n", sort keys %symbols);
 };
