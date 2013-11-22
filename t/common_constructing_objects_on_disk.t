@@ -19,8 +19,8 @@ is $r, ARCHIVE_OK, 'archive_write_disk_set_options';
 my $entry = archive_entry_new();
 ok $entry, 'archive_entry_new';
 
-eval { archive_entry_set_pathname($entry, $filename) };
-is $@, '', 'archive_entry_set_pathname';
+$r = archive_entry_set_pathname($entry, $filename);
+is $r, ARCHIVE_OK, 'archive_entry_set_pathname';
 
 eval { archive_entry_set_filetype($entry, AE_IFREG) };
 is $@, '', 'archive_entry_set_filetype';

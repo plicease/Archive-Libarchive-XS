@@ -8,6 +8,7 @@
 #include "func.h"
 
 #include <string.h>
+#include <iconv.h>
 #include <archive.h>
 #include <archive_entry.h>
 
@@ -364,9 +365,25 @@ Returns a string value.
 
 =cut
 
-const char *
-archive_entry_pathname(archive_entry);
-    struct archive_entry *archive_entry;
+SV *
+archive_entry_pathname(entry);
+    struct archive_entry *entry;
+  CODE:
+    const char *name = archive_entry_pathname(entry);
+    if(0) /* for when locale != UTF-8 */
+    {
+      /* FIXME
+       * iconv_t cd = iconv_open("UTF-8", "");    
+       * iconv_close(cd);
+       */
+    }
+    else
+    {
+      RETVAL = newSVpv(name, strlen(name));
+      SvUTF8_on(RETVAL);
+    }
+  OUTPUT:
+    RETVAL
 
 =head2 archive_read_data($archive, $buffer, $max_size)
 
@@ -636,17 +653,30 @@ archive_entry_new2(archive)
 
 Sets the path in the archive as a string.
 
-Does not return anything.
+Returns C<ARCHIVE_OK> on success.
 
-FIXME: this saves the pointer to name
-which is probably not what we want
+Note: Unlike the C version, this function returns a status value
+because Unicode conversions may raise an error.
 
 =cut
 
-void
-archive_entry_set_pathname(entry, name)
+int
+archive_entry_set_pathname(entry, sv_name)
     struct archive_entry *entry
-    const char *name
+    SV *sv_name
+  CODE:
+    char *name = SvPV_nolen(sv_name);
+    if(SvUTF8(sv_name))
+    {
+      RETVAL = archive_entry_update_pathname_utf8(entry, name);
+    }
+    else
+    {
+      archive_entry_copy_pathname(entry, name);
+      RETVAL = ARCHIVE_OK;
+    }
+  OUTPUT:
+    RETVAL
 
 =head2 archive_entry_size($entry)
 

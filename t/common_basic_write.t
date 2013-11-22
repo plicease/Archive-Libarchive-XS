@@ -42,8 +42,8 @@ foreach my $name (qw( foo bar baz ))
     my $entry = eval { archive_entry_new() };
     ok $entry, 'archive_entry_new';
   
-    eval { archive_entry_set_pathname($entry, $name) };
-    is $@, '', 'archive_entry_set_pathname';
+    $r = archive_entry_set_pathname($entry, $name);
+    is $r, ARCHIVE_OK, 'archive_entry_set_pathname';
 
     eval { archive_entry_set_size($entry, length($data{$name})) };
     is $@, '', 'archive_entry_set_size';

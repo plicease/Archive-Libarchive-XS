@@ -8,3 +8,4 @@ Math::Int64
 Module::Build
 Test::More
 XSLoader
+utf8

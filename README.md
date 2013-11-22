@@ -116,10 +116,10 @@ Does not return a value.
 
 Sets the path in the archive as a string.
 
-Does not return anything.
+Returns `ARCHIVE_OK` on success.
 
-FIXME: this saves the pointer to name
-which is probably not what we want
+Note: Unlike the C version, this function returns a status value
+because Unicode conversions may raise an error.
 
 ## archive\_entry\_set\_perm
 
