@@ -1096,7 +1096,7 @@ These examples are also included with the distribution.
     sub list_archive
     {
       my $name = shift;
-      my %mydata = {};
+      my %mydata;
       my $a = archive_read_new();
       $mydata{name} = $name;
       open $mydata{fh}, '<', $name;
@@ -1105,9 +1105,9 @@ These examples are also included with the distribution.
       archive_read_open($a, \%mydata, undef, \&myread, \&myclose);
       while(archive_read_next_header($a, my $entry) == ARCHIVE_OK)
       {
-        print archive_entry_pathname($entry);
+        print archive_entry_pathname($entry), "\n";
       }
-      archive_read_finish($a);
+      archive_read_free($a);
     }
     
     sub myread

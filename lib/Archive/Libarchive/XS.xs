@@ -20,15 +20,65 @@ myopen(struct archive *a, void *client_data)
 }
 
 static __LA_INT64_T
-myread(struct archive *a, void *client_data, const void **buff)
+myread(struct archive *archive, void *client_data, const void **buffer)
 {
-  return ARCHIVE_EOF;
+  int count;
+  int status;
+  STRLEN len;
+  SV *sv_buffer;
+  
+  dSP;
+  ENTER;
+  SAVETMPS;
+  PUSHMARK(SP);
+  XPUSHs(sv_2mortal(newSViv(PTR2IV((void*)archive))));
+  PUTBACK;
+  
+  count = call_pv("Archive::Libarchive::XS::_myread", G_ARRAY);
+
+  SPAGAIN;
+  
+  sv_buffer = POPs;
+  status = POPi;
+  if(status == ARCHIVE_OK)
+  {
+    *buffer = (void*) SvPV(sv_buffer, len);
+  }
+  
+  PUTBACK;
+  FREETMPS;
+  LEAVE;
+
+  if(status == ARCHIVE_OK)
+    return len == 1 ? 0 : len;
+  else
+    return status;
 }
 
 static __LA_INT64_T
-myskip(struct archive *a, void *client_data, __LA_INT64_T request)
+myskip(struct archive *archive, void *client_data, __LA_INT64_T request)
 {
-  return ARCHIVE_OK;
+  int count;
+  int status;
+  
+  dSP;
+  ENTER;
+  SAVETMPS;
+  PUSHMARK(SP);
+  XPUSHs(sv_2mortal(newSViv(PTR2IV((void*)archive))));
+  PUTBACK;
+  
+  count = call_pv("Archive::Libarchive::XS::_myskip", G_SCALAR);
+  
+  SPAGAIN;
+  
+  status = POPi;
+  
+  PUTBACK;
+  FREETMPS;
+  LEAVE;
+  
+  return status;
 }
 
 

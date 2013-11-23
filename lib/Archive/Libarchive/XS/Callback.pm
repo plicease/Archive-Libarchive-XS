@@ -22,39 +22,54 @@ use constant {
     
 my %callbacks;
 
-sub ARCHIVE_OK   ();
-sub ARCHIVE_WARN ();
+sub ARCHIVE_OK    ();
+sub ARCHIVE_WARN  ();
+sub ARCHIVE_FATAL ();
+
+sub _myread
+{
+  my($archive) = @_;
+  my($status, $buffer) = eval { $callbacks{$archive}->[CB_READ]->($callbacks{$archive}->[CB_DATA]) };
+  if($@)
+  {
+    warn $@;
+    return (ARCHIVE_FATAL, undef);
+  }
+  ($status, $buffer);
+}
+
+sub _myclose
+{
+  my($archive) = @_;
+  my $status = eval { $callbacks{$archive}->[CB_CLOSE]->($callbacks{$archive}->[CB_DATA]) };
+  if($@)
+  {
+    warn $@;
+    return ARCHIVE_FATAL;
+  }
+  $status;
+}
 
 sub archive_read_open ($$$$$)
 {
   my($archive, $data, $opencb, $readcb, $closecb) = @_;
+  $callbacks{$archive}->[CB_DATA]  = $data    if defined $data;
+  $callbacks{$archive}->[CB_OPEN]  = $opencb  if defined $opencb;
+  $callbacks{$archive}->[CB_READ]  = $readcb  if defined $readcb;
+  $callbacks{$archive}->[CB_CLOSE] = $closecb if defined $closecb;
   my $ret = _archive_read_open($archive, $data, $opencb, $readcb, $closecb);
-  
-  if($ret == ARCHIVE_OK || $ret == ARCHIVE_WARN)
-  {
-    $callbacks{$archive}->[CB_DATA]  = $data    if defined $data;
-    $callbacks{$archive}->[CB_OPEN]  = $opencb  if defined $opencb;
-    $callbacks{$archive}->[CB_READ]  = $readcb  if defined $readcb;
-    $callbacks{$archive}->[CB_CLOSE] = $closecb if defined $closecb;
-  }
-  
   $ret;
 }
 
 sub archive_read_open2 ($$$$$$)
 {
   my($archive, $data, $opencb, $readcb, $skipcb, $closecb) = @_;
+  $callbacks{$archive}->[CB_DATA]  = $data    if defined $data;
+  $callbacks{$archive}->[CB_OPEN]  = $opencb  if defined $opencb;
+  $callbacks{$archive}->[CB_READ]  = $readcb  if defined $readcb;
+  $callbacks{$archive}->[CB_SKIP]  = $skipcb  if defined $skipcb;
+  $callbacks{$archive}->[CB_CLOSE] = $closecb if defined $closecb;
   my $ret = _archive_read_open2($archive, $data, $opencb, $readcb, $skipcb, $closecb);
-  
-  if($ret == ARCHIVE_OK || $ret == ARCHIVE_WARN)
-  {
-    $callbacks{$archive}->[CB_DATA]  = $data    if defined $data;
-    $callbacks{$archive}->[CB_OPEN]  = $opencb  if defined $opencb;
-    $callbacks{$archive}->[CB_READ]  = $readcb  if defined $readcb;
-    $callbacks{$archive}->[CB_SKIP]  = $skipcb  if defined $skipcb;
-    $callbacks{$archive}->[CB_CLOSE] = $closecb if defined $closecb;
-  }
-  
   $ret;
 }
 
