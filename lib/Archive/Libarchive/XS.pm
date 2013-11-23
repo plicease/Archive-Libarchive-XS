@@ -271,6 +271,18 @@ Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the functions documented here with an <$entry> argument.
 
+=head2 archive_read_open($archive, $data, $open_cb, $read_cb, $close_cb)
+
+The same as C<archive_read_open2>, except that the skip callback is assumed to be C<undef>.
+
+=head2 archive_read_open2($archive, $data, $open_cb, $read_cb, $skip_cb, $close_cb)
+
+Freeze the settings, open the archive, and prepare for reading entries.  This is the most
+generic version of this call, which accepts four callback functions.  Most clients will
+want to use C<archive_read_open_filename>, C<archive_read_open_FILE>, C<archive_read_open_fd>,
+or C<archive_read_open_memory> instead.  The library invokes the client-provided functions to 
+obtain raw bytes from the archive.
+
 =head2 archive_read_open_filename($archive, $filename, $block_size)
 
 Like C<archive_read_open>, except that it accepts a simple filename
@@ -906,8 +918,12 @@ sub _define_constant ($) {
   eval qq{ sub $name() { $value }; 1 };
 }
 
-use Exporter::Tidy
-  const => [grep { _define_constant($_) } qw(
+require Archive::Libarchive::XS::Callback;
+
+eval q{
+  use Exporter::Tidy
+    func  => [grep /^archive_/,       keys %Archive::Libarchive::XS::],
+    const => [grep { _define_constant($_) } qw(
       AE_IFBLK
       AE_IFCHR
       AE_IFDIR
@@ -1054,138 +1070,9 @@ use Exporter::Tidy
       ARCHIVE_VERSION_STAMP
       ARCHIVE_WARN
   )],
-  func  => [grep { __PACKAGE__->can($_) } qw(
-      archive_clear_error
-      archive_copy_error
-      archive_entry_clear
-      archive_entry_clone
-      archive_entry_free
-      archive_entry_new
-      archive_entry_new2
-      archive_entry_pathname
-      archive_entry_set_filetype
-      archive_entry_set_mtime
-      archive_entry_set_pathname
-      archive_entry_set_perm
-      archive_entry_set_size
-      archive_entry_size
-      archive_errno
-      archive_error_string
-      archive_file_count
-      archive_filter_code
-      archive_filter_count
-      archive_filter_name
-      archive_format
-      archive_format_name
-      archive_read_close
-      archive_read_data
-      archive_read_data_block
-      archive_read_data_skip
-      archive_read_free
-      archive_read_header_position
-      archive_read_new
-      archive_read_next_header
-      archive_read_open_filename
-      archive_read_open_memory
-      archive_read_set_filter_option
-      archive_read_set_format
-      archive_read_set_format_option
-      archive_read_set_option
-      archive_read_set_options
-      archive_read_support_filter_all
-      archive_read_support_filter_bzip2
-      archive_read_support_filter_compress
-      archive_read_support_filter_grzip
-      archive_read_support_filter_gzip
-      archive_read_support_filter_lrzip
-      archive_read_support_filter_lzip
-      archive_read_support_filter_lzma
-      archive_read_support_filter_lzop
-      archive_read_support_filter_none
-      archive_read_support_filter_program
-      archive_read_support_filter_rpm
-      archive_read_support_filter_uu
-      archive_read_support_filter_xz
-      archive_read_support_format_7zip
-      archive_read_support_format_all
-      archive_read_support_format_ar
-      archive_read_support_format_by_code
-      archive_read_support_format_cab
-      archive_read_support_format_cpio
-      archive_read_support_format_empty
-      archive_read_support_format_gnutar
-      archive_read_support_format_iso9660
-      archive_read_support_format_lha
-      archive_read_support_format_mtree
-      archive_read_support_format_rar
-      archive_read_support_format_raw
-      archive_read_support_format_tar
-      archive_read_support_format_xar
-      archive_read_support_format_zip
-      archive_seek_data
-      archive_version_number
-      archive_version_string
-      archive_write_add_filter
-      archive_write_add_filter_b64encode
-      archive_write_add_filter_by_name
-      archive_write_add_filter_bzip2
-      archive_write_add_filter_compress
-      archive_write_add_filter_grzip
-      archive_write_add_filter_gzip
-      archive_write_add_filter_lrzip
-      archive_write_add_filter_lzip
-      archive_write_add_filter_lzma
-      archive_write_add_filter_lzop
-      archive_write_add_filter_none
-      archive_write_add_filter_program
-      archive_write_add_filter_uuencode
-      archive_write_add_filter_xz
-      archive_write_close
-      archive_write_data
-      archive_write_data_block
-      archive_write_disk_gid
-      archive_write_disk_new
-      archive_write_disk_set_options
-      archive_write_disk_set_skip_file
-      archive_write_disk_set_standard_lookup
-      archive_write_disk_uid
-      archive_write_fail
-      archive_write_finish_entry
-      archive_write_free
-      archive_write_get_bytes_in_last_block
-      archive_write_get_bytes_per_block
-      archive_write_header
-      archive_write_new
-      archive_write_open_filename
-      archive_write_set_bytes_in_last_block
-      archive_write_set_bytes_per_block
-      archive_write_set_filter_option
-      archive_write_set_format
-      archive_write_set_format_7zip
-      archive_write_set_format_ar_bsd
-      archive_write_set_format_ar_svr4
-      archive_write_set_format_by_name
-      archive_write_set_format_cpio
-      archive_write_set_format_cpio_newc
-      archive_write_set_format_gnutar
-      archive_write_set_format_iso9660
-      archive_write_set_format_mtree
-      archive_write_set_format_mtree_classic
-      archive_write_set_format_option
-      archive_write_set_format_pax
-      archive_write_set_format_pax_restricted
-      archive_write_set_format_shar
-      archive_write_set_format_shar_dump
-      archive_write_set_format_ustar
-      archive_write_set_format_v7tar
-      archive_write_set_format_xar
-      archive_write_set_format_zip
-      archive_write_set_option
-      archive_write_set_options
-      archive_write_set_skip_file
-      archive_write_zip_set_compression_deflate
-      archive_write_zip_set_compression_store
-  )];
+}; die $@ if $@;
+
+1;
 
 =head1 CONSTANTS
 
@@ -1487,10 +1374,6 @@ constants using the C<:const> export tag).
 
 =back
 
-=cut
-
-1;
-
 =head1 EXAMPLES
 
 These examples are translated from equivalent C versions provided on the
@@ -1507,7 +1390,7 @@ These examples are also included with the distribution.
 
 =head2 List contents of archive with custom read functions
 
-TODO
+# EXAMPLE: example/list_contents_of_archive_with_custom_read_functions.pl
 
 =head2 A universal decompressor
 

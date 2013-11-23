@@ -168,6 +168,8 @@ do { # symbol list
     archive_switch_callback
   );
   
+  delete $symbols{$_} for grep /_(w|utf8)$/, keys %symbols;
+  
   delete $symbols{$_} for @typedefs;
 
   file(__FILE__)->parent->file('symbols.txt')->spew(join "\n", sort keys %symbols);
@@ -225,8 +227,11 @@ do {
 
 # FIXME: don't include thems that are deprecated
 # hrm.
+my $count = 0;
 foreach my $symbol (sort keys %symbols)
 {
   warn "unimplemented symbols: $symbol";
+  $count ++;
 }
+warn "total unimplemented symbols: $count";
 

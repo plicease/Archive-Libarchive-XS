@@ -13,6 +13,31 @@
 
 typedef const char *string_or_null;
 
+static int
+myopen(struct archive *a, void *client_data)
+{
+  return ARCHIVE_OK;
+}
+
+static __LA_INT64_T
+myread(struct archive *a, void *client_data, const void **buff)
+{
+  return ARCHIVE_EOF;
+}
+
+static __LA_INT64_T
+myskip(struct archive *a, void *client_data, __LA_INT64_T request)
+{
+  return ARCHIVE_OK;
+}
+
+
+static int
+myclose(struct archive *a, void *client_data)
+{
+  return ARCHIVE_OK;
+}
+
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 
 BOOT:
@@ -48,8 +73,12 @@ release all resources.
 =cut
 
 int
-archive_read_free(archive)
+_archive_read_free(archive)
     struct archive *archive;
+  CODE:
+    RETVAL = archive_read_free(archive);
+  OUTPUT:
+    RETVAL
 
 =head2 archive_error_string($archive)
 
@@ -481,8 +510,12 @@ release all resources.
 =cut
 
 int
-archive_write_free(archive)
+_archive_write_free(archive)
     struct archive *archive
+  CODE:
+    RETVAL = archive_write_free(archive);
+  OUTPUT:
+    RETVAL
 
 =head2 archive_write_add_filter($archive, $code)
 
@@ -1325,6 +1358,68 @@ header started.
 __LA_INT64_T
 archive_read_header_position(archive)
     struct archive *archive
+
+#endif
+
+=head2 archive_read_open($archive, $data, $open_cb, $read_cb, $close_cb)
+
+The same as C<archive_read_open2>, except that the skip callback is assumed to be C<undef>.
+
+=cut
+
+#ifdef HAS_archive_read_open
+
+int
+_archive_read_open(archive, data, open_cb, read_cb, close_cb)
+    struct archive *archive
+    SV *data
+    SV *open_cb
+    SV *read_cb
+    SV *close_cb
+  CODE:
+    RETVAL = archive_read_open(
+      archive,
+      NULL,
+      SvOK(open_cb)  ? myopen : NULL,
+      SvOK(read_cb)  ? myread : NULL,
+      SvOK(close_cb) ? myclose : NULL
+    );
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_read_open2($archive, $data, $open_cb, $read_cb, $skip_cb, $close_cb)
+
+Freeze the settings, open the archive, and prepare for reading entries.  This is the most
+generic version of this call, which accepts four callback functions.  Most clients will
+want to use C<archive_read_open_filename>, C<archive_read_open_FILE>, C<archive_read_open_fd>,
+or C<archive_read_open_memory> instead.  The library invokes the client-provided functions to 
+obtain raw bytes from the archive.
+
+=cut
+
+#ifdef HAS_archive_read_open2
+
+int
+_archive_read_open2(archive, data, open_cb, read_cb, skip_cb, close_cb)
+    struct archive *archive
+    SV *data
+    SV *open_cb
+    SV *read_cb
+    SV *skip_cb
+    SV *close_cb
+  CODE:
+    RETVAL = archive_read_open2(
+      archive,
+      NULL,
+      SvOK(open_cb)  ? myopen : NULL,
+      SvOK(read_cb)  ? myread : NULL,
+      SvOK(skip_cb)  ? myskip : NULL,
+      SvOK(close_cb) ? myclose : NULL
+    );
+  OUTPUT:
+    RETVAL
 
 #endif
 

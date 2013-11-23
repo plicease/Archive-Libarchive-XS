@@ -244,6 +244,18 @@ Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the functions documented here with an <$entry> argument.
 
+## archive\_read\_open($archive, $data, $open\_cb, $read\_cb, $close\_cb)
+
+The same as `archive_read_open2`, except that the skip callback is assumed to be `undef`.
+
+## archive\_read\_open2($archive, $data, $open\_cb, $read\_cb, $skip\_cb, $close\_cb)
+
+Freeze the settings, open the archive, and prepare for reading entries.  This is the most
+generic version of this call, which accepts four callback functions.  Most clients will
+want to use `archive_read_open_filename`, `archive_read_open_FILE`, `archive_read_open_fd`,
+or `archive_read_open_memory` instead.  The library invokes the client-provided functions to 
+obtain raw bytes from the archive.
+
 ## archive\_read\_open\_filename($archive, $filename, $block\_size)
 
 Like `archive_read_open`, except that it accepts a simple filename
@@ -1075,7 +1087,43 @@ These examples are also included with the distribution.
 
 ## List contents of archive with custom read functions
 
-TODO
+    use strict;
+    use warnings;
+    use Archive::Libarchive::XS qw( :all );
+    
+    list_archive(shift @ARGV);
+    
+    sub list_archive
+    {
+      my $name = shift;
+      my %mydata = {};
+      my $a = archive_read_new();
+      $mydata{name} = $name;
+      open $mydata{fh}, '<', $name;
+      archive_read_support_filter_all($a);
+      archive_read_support_format_all($a);
+      archive_read_open($a, \%mydata, undef, \&myread, \&myclose);
+      while(archive_read_next_header($a, my $entry) == ARCHIVE_OK)
+      {
+        print archive_entry_pathname($entry);
+      }
+      archive_read_finish($a);
+    }
+    
+    sub myread
+    {
+      my $mydata = shift;
+      my $br = read $mydata->{fh}, my $buffer, 10240;
+      return (ARCHIVE_OK, $buffer);
+    }
+    
+    sub myclose
+    {
+      my $mydata = shift;
+      close $mydata->{fh};
+      %$mydata = ();
+      return ARCHIVE_OK;
+    }
 
 ## A universal decompressor
 

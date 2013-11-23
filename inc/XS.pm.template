@@ -81,17 +81,19 @@ sub _define_constant ($) {
   eval qq{ sub $name() { $value }; 1 };
 }
 
-use Exporter::Tidy
-  const => [grep { _define_constant($_) } qw(
+require Archive::Libarchive::XS::Callback;
+
+eval q{
+  use Exporter::Tidy
+    func  => [grep /^archive_/,       keys %Archive::Libarchive::XS::],
+    const => [grep { _define_constant($_) } qw(
 % foreach my $constant (@$constants) {
       <%= $constant %>
 % }
   )],
-  func  => [grep { __PACKAGE__->can($_) } qw(
-% foreach my $function (sort keys %$functions) {
-      <%= $function %>
-% }
-  )];
+}; die $@ if $@;
+
+1;
 
 =head1 CONSTANTS
 
@@ -106,10 +108,6 @@ constants using the C<:const> export tag).
 
 % }
 =back
-
-=cut
-
-1;
 
 =head1 EXAMPLES
 
@@ -127,7 +125,7 @@ These examples are also included with the distribution.
 
 =head2 List contents of archive with custom read functions
 
-TODO
+# EXAMPLE: example/list_contents_of_archive_with_custom_read_functions.pl
 
 =head2 A universal decompressor
 
