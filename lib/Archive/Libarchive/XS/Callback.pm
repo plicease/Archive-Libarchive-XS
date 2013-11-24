@@ -24,6 +24,27 @@ use constant {
 my %callbacks;
 
 sub ARCHIVE_FATAL ();
+sub ARCHIVE_OK    ();
+
+sub archive_read_set_callback_data ($$)
+{
+  my($archive, $data) = @_;
+  $callbacks{$archive}->[CB_DATA] = $data;
+  ARCHIVE_OK;
+}
+
+foreach my $name (qw( open read skip close ))
+{
+  my $const = 'CB_' . uc $name;
+  eval '# line '. __LINE__ . ' "' . __FILE__ . "\n" . qq{
+    sub archive_read_set_$name\_callback (\$\$)
+    {
+      my(\$archive, \$callback) = \@_;
+      \$callbacks{\$archive}->[$const] = \$callback;
+      _archive_read_set_$name\_callback(\$archive, \$callback);
+    }
+  }; die $@ if $@;
+}
 
 foreach my $name (qw( open skip close ))
 {

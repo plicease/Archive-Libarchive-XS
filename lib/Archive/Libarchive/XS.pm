@@ -303,6 +303,14 @@ Bad things will happen if the buffer falls out of scope and is deallocated
 before you free the archive, so make sure that there is a reference to the
 buffer somewhere in your programmer until C<archive_read_free> is called.
 
+=head2 archive_read_set_callback_data($archive, $data)
+
+Set the client data for callbacks.
+
+=head2 archive_read_set_close_callback($archive, $callback)
+
+Set the close callback for the archive object.
+
 =head2 archive_read_set_filter_option($archive, $module, $option, $value)
 
 Specifies an option that will be passed to currently-registered filters 
@@ -345,6 +353,10 @@ module.  If any module returns C<ARCHIVE_FATAL>, this value will be
 returned immediately.  Otherwise, C<ARCHIVE_OK> will be returned if any 
 module accepts the option, and C<ARCHIVE_FAILED> in all other cases.
 
+=head2 archive_read_set_open_callback($archive, $callback)
+
+Set the open callback for the archive object.
+
 =head2 archive_read_set_option($archive, $module, $option, $value)
 
 Calls C<archive_read_set_format_option> then 
@@ -382,6 +394,14 @@ As above, but the corresponding option and value will be provided only
 to modules whose name matches module.
 
 =back
+
+=head2 archive_read_set_read_callback($archive, $callback)
+
+Set the read callback for the archive object.
+
+=head2 archive_read_set_skip_callback($archive, $callback)
+
+Set the skip callback for the archive object.
 
 =head2 archive_read_support_filter_all($archive)
 

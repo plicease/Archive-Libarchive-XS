@@ -1514,6 +1514,113 @@ _archive_read_open2(archive, data, open_cb, read_cb, skip_cb, close_cb)
 
 #endif
 
+=head2 archive_read_set_open_callback($archive, $callback)
+
+Set the open callback for the archive object.
+
+=cut
+
+#ifdef HAS_archive_read_set_open_callback
+
+int
+_archive_read_set_open_callback(archive, callback)
+    struct archive *archive
+    SV *callback
+  CODE:
+    RETVAL = archive_read_set_open_callback(
+      archive,
+      SvOK(callback) ? myopen : NULL
+    );
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_read_set_read_callback($archive, $callback)
+
+Set the read callback for the archive object.
+
+=cut
+
+#ifdef HAS_archive_read_set_read_callback
+
+int
+_archive_read_set_read_callback(archive, callback)
+    struct archive *archive
+    SV *callback
+  CODE:
+    RETVAL = archive_read_set_read_callback(
+      archive,
+      SvOK(callback) ? myread : NULL
+    );
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_read_set_skip_callback($archive, $callback)
+
+Set the skip callback for the archive object.
+
+=cut
+
+#ifdef HAS_archive_read_set_skip_callback
+
+int
+_archive_read_set_skip_callback(archive, callback)
+    struct archive *archive
+    SV *callback
+  CODE:
+    RETVAL = archive_read_set_skip_callback(
+      archive,
+      SvOK(callback) ? myskip : NULL
+    );
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_read_set_close_callback($archive, $callback)
+
+Set the close callback for the archive object.
+
+=cut
+
+#ifdef HAS_archive_read_set_close_callback
+
+int
+_archive_read_set_close_callback(archive, callback)
+    struct archive *archive
+    SV *callback
+  CODE:
+    RETVAL = archive_read_set_close_callback(
+      archive,
+      SvOK(callback) ? myclose : NULL
+    );
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_read_set_callback_data($archive, $data)
+
+Set the client data for callbacks.
+
+=cut
+
+int
+_archive_read_set_callback_data(archive, data)
+    struct archive *archive
+    void *data
+  CODE:
+    /*
+     * note: this isn't actually usedit is implemented
+     * at the Perl level
+     */
+    RETVAL = archive_read_set_callback_data(archive, data);
+  OUTPUT:
+    RETVAL
+
 int
 _constant(name)
         char *name
