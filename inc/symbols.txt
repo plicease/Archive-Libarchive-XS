@@ -150,7 +150,6 @@ archive_read_data
 archive_read_data_block
 archive_read_data_into_fd
 archive_read_data_skip
-archive_read_disk
 archive_read_disk_can_descend
 archive_read_disk_current_filesystem
 archive_read_disk_current_filesystem_is_remote

@@ -157,6 +157,7 @@ do { # symbol list
     archive_write_disk
     archive_read_open_XXX
     archive_platform
+    archive_read_disk
   );
   
   delete $symbols{$_} for @not_real;

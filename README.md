@@ -694,6 +694,12 @@ Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the write functions documented here with an `$archive` argument.
 
+## archive\_write\_open($archive, $data, $open\_cb, $read\_cb, $close\_cb)
+
+Freeze the settings, open the archive, and prepare for writing entries.  This is the most
+generic form of this function, which accepts pointers to three callback functions which will
+be invoked by the compression layer to write the constructed archive.
+
 ## archive\_write\_open\_filename($archive, $filename)
 
 A convenience form of `archive_write_open` that accepts a filename.  If you have 

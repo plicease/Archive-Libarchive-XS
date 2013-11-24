@@ -159,8 +159,6 @@ myseek(struct archive *archive, void *client_data, __LA_INT64_T offset, int when
 static __LA_INT64_T
 mywrite(struct archive *archive, void *client_data, const void *buffer, size_t length)
 {
-  /* TODO */
-  /*
   int count;
   __LA_INT64_T status;
   
@@ -169,8 +167,20 @@ mywrite(struct archive *archive, void *client_data, const void *buffer, size_t l
   SAVETMPS;
   PUSHMARK(SP);
   XPUSHs(sv_2mortal(newSViv(PTR2IV((void*)archive))));
-  */
-  return ARCHIVE_OK;
+  XPUSHs(sv_2mortal(newSVpvn(buffer, length)));
+  PUTBACK;
+  
+  count = call_pv("Archive::Libarchive::XS::_mywrite", G_SCALAR);
+  
+  SPAGAIN;
+  
+  status = SvI64(POPs);
+
+  PUTBACK;
+  FREETMPS;
+  LEAVE;
+  
+  return status;
 }
 
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
@@ -1517,6 +1527,36 @@ _archive_read_open(archive, data, open_cb, read_cb, close_cb)
       NULL,
       SvOK(open_cb)  ? myopen : NULL,
       SvOK(read_cb)  ? myread : NULL,
+      SvOK(close_cb) ? myclose : NULL
+    );
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_write_open($archive, $data, $open_cb, $read_cb, $close_cb)
+
+Freeze the settings, open the archive, and prepare for writing entries.  This is the most
+generic form of this function, which accepts pointers to three callback functions which will
+be invoked by the compression layer to write the constructed archive.
+
+=cut
+
+#ifdef HAS_archive_write_open
+
+int
+_archive_write_open(archive, data, open_cb, write_cb, close_cb)
+    struct archive *archive
+    SV *data
+    SV *open_cb
+    SV *write_cb
+    SV *close_cb
+  CODE:
+    RETVAL = archive_write_open(
+      archive,
+      NULL,
+      SvOK(open_cb)  ? myopen : NULL,
+      SvOK(write_cb) ? mywrite : NULL,
       SvOK(close_cb) ? myclose : NULL
     );
   OUTPUT:

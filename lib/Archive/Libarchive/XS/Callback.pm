@@ -33,7 +33,7 @@ sub archive_read_set_callback_data ($$)
   ARCHIVE_OK;
 }
 
-foreach my $name (qw( open read skip close ))
+foreach my $name (qw( open read skip close seek ))
 {
   my $const = 'CB_' . uc $name;
   eval '# line '. __LINE__ . ' "' . __FILE__ . "\n" . qq{
@@ -46,7 +46,7 @@ foreach my $name (qw( open read skip close ))
   }; die $@ if $@;
 }
 
-foreach my $name (qw( open skip close ))
+foreach my $name (qw( open skip close seek ))
 {
   my $uc_name = uc $name;
   eval '# line '. __LINE__ . ' "' . __FILE__ . "\n" . qq{
@@ -67,7 +67,12 @@ foreach my $name (qw( open skip close ))
 sub _myread
 {
   my($archive) = @_;
-  my ($status, $buffer) = eval { $callbacks{$archive}->[CB_READ]->(\$archive, $callbacks{$archive}->[CB_DATA]) };
+  my ($status, $buffer) = eval {
+    $callbacks{$archive}->[CB_READ]->(
+      $archive, 
+      $callbacks{$archive}->[CB_DATA],
+    )
+  };
   if($@)
   {
     warn $@;
@@ -75,6 +80,24 @@ sub _myread
   }
   $callbacks{$archive}->[CB_BUFFER] = \$buffer;
   ($status, $callbacks{$archive}->[CB_BUFFER]);
+}
+
+sub _mywrite
+{
+  my($archive, $buffer) = @_;
+  my $status = eval {
+    $callbacks{$archive}->[CB_WRITE]->(
+      $archive, 
+      $callbacks{$archive}->[CB_DATA],
+      $buffer,
+    )
+  };
+  if($@)
+  {
+    warn $@;
+    return ARCHIVE_FATAL;
+  }
+  $status;
 }
 
 sub archive_read_open ($$$$$)
@@ -85,6 +108,17 @@ sub archive_read_open ($$$$$)
   $callbacks{$archive}->[CB_READ]  = $readcb  if defined $readcb;
   $callbacks{$archive}->[CB_CLOSE] = $closecb if defined $closecb;
   my $ret = _archive_read_open($archive, $data, $opencb, $readcb, $closecb);
+  $ret;
+}
+
+sub archive_write_open ($$$$$)
+{
+  my($archive, $data, $opencb, $writecb, $closecb) = @_;
+  $callbacks{$archive}->[CB_DATA]  = $data    if defined $data;
+  $callbacks{$archive}->[CB_OPEN]  = $opencb  if defined $opencb;
+  $callbacks{$archive}->[CB_WRITE] = $writecb if defined $writecb;
+  $callbacks{$archive}->[CB_CLOSE] = $closecb if defined $closecb;
+  my $ret = _archive_write_open($archive, $data, $opencb, $writecb, $closecb);
   $ret;
 }
 
