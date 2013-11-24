@@ -38,7 +38,7 @@ myread(struct archive *archive, void *client_data, const void **buffer)
 
   SPAGAIN;
   
-  sv_buffer = POPs;
+  sv_buffer = SvRV(POPs);
   status = POPi;
   if(status == ARCHIVE_OK)
   {

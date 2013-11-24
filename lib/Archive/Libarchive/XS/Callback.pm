@@ -18,24 +18,24 @@ use constant {
   CB_SEEK        => 5,
   CB_WRITE       => 6,
   CB_SWITCH      => 7,
+  CB_BUFFER      => 8,
 };
     
 my %callbacks;
 
-sub ARCHIVE_OK    ();
-sub ARCHIVE_WARN  ();
 sub ARCHIVE_FATAL ();
 
 sub _myread
 {
   my($archive) = @_;
-  my($status, $buffer) = eval { $callbacks{$archive}->[CB_READ]->($callbacks{$archive}->[CB_DATA]) };
+  my ($status, $buffer) = eval { $callbacks{$archive}->[CB_READ]->($callbacks{$archive}->[CB_DATA]) };
   if($@)
   {
     warn $@;
     return (ARCHIVE_FATAL, undef);
   }
-  ($status, $buffer);
+  $callbacks{$archive}->[CB_BUFFER] = \$buffer;
+  ($status, $callbacks{$archive}->[CB_BUFFER]);
 }
 
 sub _myclose
