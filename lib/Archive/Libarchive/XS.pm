@@ -271,9 +271,17 @@ Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the functions documented here with an <$entry> argument.
 
+=head2 archive_read_next_header2($archive, $entry)
+
+Read the header for the next entry and populate the provided entry object.
+
 =head2 archive_read_open($archive, $data, $open_cb, $read_cb, $close_cb)
 
 The same as C<archive_read_open2>, except that the skip callback is assumed to be C<undef>.
+
+=head2 archive_read_open1($archive)
+
+Opening freezes the callbacks.
 
 =head2 archive_read_open2($archive, $data, $open_cb, $read_cb, $skip_cb, $close_cb)
 
@@ -398,6 +406,10 @@ to modules whose name matches module.
 =head2 archive_read_set_read_callback($archive, $callback)
 
 Set the read callback for the archive object.
+
+=head2 archive_read_set_seek_callback($archive, $callback)
+
+Set the seek callback for the archive object.
 
 =head2 archive_read_set_skip_callback($archive, $callback)
 

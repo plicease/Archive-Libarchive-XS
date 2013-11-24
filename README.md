@@ -244,9 +244,17 @@ Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
 any of the functions documented here with an <$entry> argument.
 
+## archive\_read\_next\_header2($archive, $entry)
+
+Read the header for the next entry and populate the provided entry object.
+
 ## archive\_read\_open($archive, $data, $open\_cb, $read\_cb, $close\_cb)
 
 The same as `archive_read_open2`, except that the skip callback is assumed to be `undef`.
+
+## archive\_read\_open1($archive)
+
+Opening freezes the callbacks.
 
 ## archive\_read\_open2($archive, $data, $open\_cb, $read\_cb, $skip\_cb, $close\_cb)
 
@@ -367,6 +375,10 @@ Calls `archive_read_set_option` with each option in turn.  If any
 ## archive\_read\_set\_read\_callback($archive, $callback)
 
 Set the read callback for the archive object.
+
+## archive\_read\_set\_seek\_callback($archive, $callback)
+
+Set the seek callback for the archive object.
 
 ## archive\_read\_set\_skip\_callback($archive, $callback)
 

@@ -152,14 +152,18 @@ do { # symbol list
   
   my @not_real = qw(
     archive_acl
+    archive_read
     archive_read_support_XXX
     archive_write_disk
     archive_read_open_XXX
+    archive_platform
   );
   
   delete $symbols{$_} for @not_real;
   
   my @typedefs = qw(
+    archive_entry
+    archive_match
     archive_read_callback
     archive_skip_callback
     archive_seek_callback
@@ -176,6 +180,11 @@ do { # symbol list
     archive_read_append_callback_data
     archive_read_prepend_callback_data
     archive_read_set_callback_data2
+    archive_read_open_FILE
+    archive_read_open_fd
+    archive_read_open_memory2
+    archive_write_open_fd
+    archive_write_open_FILE
   );
   
   delete $symbols{$_} for @wontimplement;

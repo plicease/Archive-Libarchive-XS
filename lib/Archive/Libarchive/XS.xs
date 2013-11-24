@@ -43,7 +43,7 @@ static __LA_INT64_T
 myread(struct archive *archive, void *client_data, const void **buffer)
 {
   int count;
-  int status;
+  __LA_INT64_T status;
   STRLEN len;
   SV *sv_buffer;
   
@@ -59,7 +59,7 @@ myread(struct archive *archive, void *client_data, const void **buffer)
   SPAGAIN;
   
   sv_buffer = SvRV(POPs);
-  status = POPi;
+  status = SvI64(POPs);
   if(status == ARCHIVE_OK)
   {
     *buffer = (void*) SvPV(sv_buffer, len);
@@ -79,7 +79,7 @@ static __LA_INT64_T
 myskip(struct archive *archive, void *client_data, __LA_INT64_T request)
 {
   int count;
-  int status;
+  __LA_INT64_T status;
   
   dSP;
   ENTER;
@@ -93,7 +93,7 @@ myskip(struct archive *archive, void *client_data, __LA_INT64_T request)
   
   SPAGAIN;
   
-  status = POPi;
+  status = SvI64(POPs);
   
   PUTBACK;
   FREETMPS;
@@ -101,7 +101,6 @@ myskip(struct archive *archive, void *client_data, __LA_INT64_T request)
   
   return status;
 }
-
 
 static int
 myclose(struct archive *archive, void *client_data)
@@ -127,6 +126,51 @@ myclose(struct archive *archive, void *client_data)
   LEAVE;
   
   return status;
+}
+
+static __LA_INT64_T
+myseek(struct archive *archive, void *client_data, __LA_INT64_T offset, int whence)
+{
+  int count;
+  __LA_INT64_T status;
+  
+  dSP;
+  ENTER;
+  SAVETMPS;
+  PUSHMARK(SP);
+  XPUSHs(sv_2mortal(newSViv(PTR2IV((void*)archive))));
+  XPUSHs(sv_2mortal(newSVi64(offset)));
+  XPUSHs(sv_2mortal(newSViv(whence)));
+  PUTBACK;
+  
+  count = call_pv("Archive::Libarchive::XS::_myskip", G_SCALAR);
+  
+  SPAGAIN;
+  
+  status = SvI64(POPs);
+  
+  PUTBACK;
+  FREETMPS;
+  LEAVE;
+  
+  return status;
+}
+
+static __LA_INT64_T
+mywrite(struct archive *archive, void *client_data, const void *buffer, size_t length)
+{
+  /* TODO */
+  /*
+  int count;
+  __LA_INT64_T status;
+  
+  dSP;
+  ENTER;
+  SAVETMPS;
+  PUSHMARK(SP);
+  XPUSHs(sv_2mortal(newSViv(PTR2IV((void*)archive))));
+  */
+  return ARCHIVE_OK;
 }
 
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
@@ -1602,6 +1646,28 @@ _archive_read_set_close_callback(archive, callback)
 
 #endif
 
+=head2 archive_read_set_seek_callback($archive, $callback)
+
+Set the seek callback for the archive object.
+
+=cut
+
+#ifdef HAS_archive_read_set_seek_callback
+
+int
+_archive_read_set_seek_callback(archive, callback)
+    struct archive *archive
+    SV *callback
+  CODE:
+    RETVAL = archive_read_set_seek_callback(
+      archive,
+      SvOK(callback) ? myseek : NULL
+    );
+  OUTPUT:
+    RETVAL
+
+#endif
+
 =head2 archive_read_set_callback_data($archive, $data)
 
 Set the client data for callbacks.
@@ -1620,6 +1686,35 @@ _archive_read_set_callback_data(archive, data)
     RETVAL = archive_read_set_callback_data(archive, data);
   OUTPUT:
     RETVAL
+
+=head2 archive_read_open1($archive)
+
+Opening freezes the callbacks.
+
+=cut
+
+#ifdef HAS_archive_read_open1
+
+int
+archive_read_open1(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_read_next_header2($archive, $entry)
+
+Read the header for the next entry and populate the provided entry object.
+
+=cut
+
+#ifdef HAS_archive_read_next_header2
+
+int
+archive_read_next_header2(archive, entry)
+    struct archive *archive
+    struct archive_entry *entry
+
+#endif
 
 int
 _constant(name)
