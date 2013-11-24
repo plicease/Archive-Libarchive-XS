@@ -25,6 +25,18 @@ my %callbacks;
 
 sub ARCHIVE_FATAL ();
 
+sub _myopen
+{
+  my($archive) = @_;
+  my $status = eval { $callbacks{$archive}->[CB_OPEN]->($callbacks{$archive}->[CB_DATA]) };
+  if($@)
+  {
+    warn $@;
+    return ARCHIVE_FATAL;
+  }
+  $status;
+}
+
 sub _myread
 {
   my($archive) = @_;
@@ -36,6 +48,18 @@ sub _myread
   }
   $callbacks{$archive}->[CB_BUFFER] = \$buffer;
   ($status, $callbacks{$archive}->[CB_BUFFER]);
+}
+
+sub _myskip
+{
+  my($archive, $request) = @_;
+  my $status = eval { $callbacks{$archive}->[CB_SKIP]->($callbacks{$archive}->[CB_DATA], $request) };
+  if($@)
+  {
+    warn $@;
+    return ARCHIVE_FATAL;
+  }
+  $status;
 }
 
 sub _myclose

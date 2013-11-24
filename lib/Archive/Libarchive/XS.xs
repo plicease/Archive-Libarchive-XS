@@ -14,9 +14,29 @@
 typedef const char *string_or_null;
 
 static int
-myopen(struct archive *a, void *client_data)
+myopen(struct archive *archive, void *client_data)
 {
-  return ARCHIVE_OK;
+  int count;
+  int status;
+  
+  dSP;
+  ENTER;
+  SAVETMPS;
+  PUSHMARK(SP);
+  XPUSHs(sv_2mortal(newSViv(PTR2IV((void*)archive))));
+  PUTBACK;
+  
+  count = call_pv("Archive::Libarchive::XS::_myopen", G_SCALAR);
+  
+  SPAGAIN;
+  
+  status = POPi;
+  
+  PUTBACK;
+  FREETMPS;
+  LEAVE;
+  
+  return status;
 }
 
 static __LA_INT64_T
@@ -66,6 +86,7 @@ myskip(struct archive *archive, void *client_data, __LA_INT64_T request)
   SAVETMPS;
   PUSHMARK(SP);
   XPUSHs(sv_2mortal(newSViv(PTR2IV((void*)archive))));
+  XPUSHs(sv_2mortal(newSVi64(request)));
   PUTBACK;
   
   count = call_pv("Archive::Libarchive::XS::_myskip", G_SCALAR);
@@ -83,9 +104,29 @@ myskip(struct archive *archive, void *client_data, __LA_INT64_T request)
 
 
 static int
-myclose(struct archive *a, void *client_data)
+myclose(struct archive *archive, void *client_data)
 {
-  return ARCHIVE_OK;
+  int count;
+  int status;
+  
+  dSP;
+  ENTER;
+  SAVETMPS;
+  PUSHMARK(SP);
+  XPUSHs(sv_2mortal(newSViv(PTR2IV((void*)archive))));
+  PUTBACK;
+  
+  count = call_pv("Archive::Libarchive::XS::_myclose", G_SCALAR);
+  
+  SPAGAIN;
+  
+  status = POPi;
+  
+  PUTBACK;
+  FREETMPS;
+  LEAVE;
+  
+  return status;
 }
 
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
