@@ -483,7 +483,7 @@ archive_read_next_header(archive, output)
   CODE:
     struct archive_entry *entry;
     RETVAL = archive_read_next_header(archive, &entry);
-    sv_setref_pv(output, "Archive::Libarchive::XS::archive_entry", (void*) entry);
+    sv_setiv(output, PTR2IV((void*)entry));
   OUTPUT:
     RETVAL
     output
