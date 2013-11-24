@@ -1756,6 +1756,171 @@ archive_read_next_header2(archive, entry)
 
 #endif
 
+=head2 archive_entry_atime_is_set($entry)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_atime_is_set
+
+int
+archive_entry_atime_is_set(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_atime($entry)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_atime
+
+time_t
+archive_entry_atime(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_atime_nsec($entry)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_atime_nsec
+
+long
+archive_entry_atime_nsec(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_birthtime_is_set($entry)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_birthtime_is_set
+
+int
+archive_entry_birthtime_is_set(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_birthtime($entry)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_birthtime
+
+time_t
+archive_entry_birthtime(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_birthtime_nsec($entry)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_birthtime_nsec
+
+long
+archive_entry_birthtime_nsec(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_ctime_is_set($entry)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_ctime_is_set
+
+int
+archive_entry_ctime_is_set(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_ctime($entry)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_ctime
+
+time_t
+archive_entry_ctime(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_ctime_nsec($entry)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_ctime_nsec
+
+long
+archive_entry_ctime_nsec(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_dev_is_set($entry)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_dev_is_set
+
+int
+archive_entry_dev_is_set(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_fflags($entry, $set, $clear)
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_fflags
+
+void
+archive_entry_fflags(entry, sv_set, sv_clear)
+    struct archive_entry *entry 
+    SV *sv_set
+    SV *sv_clear
+  CODE:
+    unsigned long set;
+    unsigned long clear;
+    archive_entry_fflags(entry, &set, &clear);
+    sv_setiv(sv_set, set);
+    sv_setiv(sv_clear, clear);
+  OUTPUT:
+    sv_set
+    sv_clear
+
+#endif
+
 int
 _constant(name)
         char *name

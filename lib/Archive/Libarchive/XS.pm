@@ -77,6 +77,30 @@ generally used in client code.  Does not return a value.
 
 Copies error information from one archive to another.
 
+=head2 archive_entry_atime($entry)
+
+FIXME
+
+=head2 archive_entry_atime_is_set($entry)
+
+FIXME
+
+=head2 archive_entry_atime_nsec($entry)
+
+FIXME
+
+=head2 archive_entry_birthtime($entry)
+
+FIXME
+
+=head2 archive_entry_birthtime_is_set($entry)
+
+FIXME
+
+=head2 archive_entry_birthtime_nsec($entry)
+
+FIXME
+
 =head2 archive_entry_clear
 
 Erases the object, resetting all internal fields to the same state as a newly-created object.  This is provided
@@ -85,6 +109,26 @@ to allow you to quickly recycle objects without thrashing the heap.
 =head2 archive_entry_clone
 
 A deep copy operation; all text fields are duplicated.
+
+=head2 archive_entry_ctime($entry)
+
+FIXME
+
+=head2 archive_entry_ctime_is_set($entry)
+
+FIXME
+
+=head2 archive_entry_ctime_nsec($entry)
+
+FIXME
+
+=head2 archive_entry_dev_is_set($entry)
+
+FIXME
+
+=head2 archive_entry_fflags($entry, $set, $clear)
+
+FIXME
 
 =head2 archive_entry_free
 
