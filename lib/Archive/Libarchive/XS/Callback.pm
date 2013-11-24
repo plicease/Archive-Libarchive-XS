@@ -25,16 +25,22 @@ my %callbacks;
 
 sub ARCHIVE_FATAL ();
 
-sub _myopen
+foreach my $name (qw( open skip close ))
 {
-  my($archive) = @_;
-  my $status = eval { $callbacks{$archive}->[CB_OPEN]->($callbacks{$archive}->[CB_DATA]) };
-  if($@)
-  {
-    warn $@;
-    return ARCHIVE_FATAL;
-  }
-  $status;
+  my $uc_name = uc $name;
+  eval '# line '. __LINE__ . ' "' . __FILE__ . "\n" . qq{
+    sub _my$name
+    {
+      my \$archive = shift;
+      my \$status = eval { \$callbacks{\$archive}->[CB_$uc_name]->(\$callbacks{\$archive}->[CB_DATA],@_) };
+      if(\$\@)
+      {
+        warn \$\@;
+        return ARCHIVE_FATAL;
+      }
+      \$status;
+    }
+  }; die $@ if $@;
 }
 
 sub _myread
@@ -48,30 +54,6 @@ sub _myread
   }
   $callbacks{$archive}->[CB_BUFFER] = \$buffer;
   ($status, $callbacks{$archive}->[CB_BUFFER]);
-}
-
-sub _myskip
-{
-  my($archive, $request) = @_;
-  my $status = eval { $callbacks{$archive}->[CB_SKIP]->($callbacks{$archive}->[CB_DATA], $request) };
-  if($@)
-  {
-    warn $@;
-    return ARCHIVE_FATAL;
-  }
-  $status;
-}
-
-sub _myclose
-{
-  my($archive) = @_;
-  my $status = eval { $callbacks{$archive}->[CB_CLOSE]->($callbacks{$archive}->[CB_DATA]) };
-  if($@)
-  {
-    warn $@;
-    return ARCHIVE_FATAL;
-  }
-  $status;
 }
 
 sub archive_read_open ($$$$$)
