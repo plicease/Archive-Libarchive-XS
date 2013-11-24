@@ -5,6 +5,7 @@ use Alien::Libarchive;
 use Path::Class qw( file dir );
 
 my $alien = Alien::Libarchive->new;
+my $report = '';
 
 my @macros = do { # constants
 
@@ -168,10 +169,19 @@ do { # symbol list
     archive_switch_callback
   );
   
-  delete $symbols{$_} for grep /_(w|utf8)$/, keys %symbols;
-  
   delete $symbols{$_} for @typedefs;
 
+  my @wontimplement = qw(
+    archive_read_add_callback_data
+    archive_read_append_callback_data
+    archive_read_prepend_callback_data
+    archive_read_set_callback_data2
+  );
+  
+  delete $symbols{$_} for @wontimplement;
+
+  delete $symbols{$_} for grep /_(w|utf8)$/, keys %symbols;
+  
   file(__FILE__)->parent->file('symbols.txt')->spew(join "\n", sort keys %symbols);
 };
 
@@ -200,7 +210,7 @@ do {
       }
       else
       {
-        warn "extra symbol: $name";
+        $report .= "extra: $name\n";
       }
       $functions{$name} = $pod->pod;
       $functions{$name} =~ s/\s+$//;
@@ -228,10 +238,16 @@ do {
 # FIXME: don't include thems that are deprecated
 # hrm.
 my $count = 0;
+
+$report .= "\n";
+
 foreach my $symbol (sort keys %symbols)
 {
-  warn "unimplemented symbols: $symbol";
+  $report .= "unimplemented: $symbol\n";
   $count ++;
 }
-warn "total unimplemented symbols: $count";
+
+$report .= "\ntotal unimplemented symbols: $count\n";
+
+file(__FILE__)->parent->file('report.txt')->spew($report);
 
