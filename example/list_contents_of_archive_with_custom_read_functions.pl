@@ -23,14 +23,14 @@ sub list_archive
 
 sub myread
 {
-  my $mydata = shift;
+  my($archive, $mydata) = @_;
   my $br = read $mydata->{fh}, my $buffer, 10240;
   return (ARCHIVE_OK, $buffer);
 }
 
 sub myclose
 {
-  my $mydata = shift;
+  my($archive, $mydata) = @_;
   close $mydata->{fh};
   %$mydata = ();
   return ARCHIVE_OK;

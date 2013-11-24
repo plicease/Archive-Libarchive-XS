@@ -1,13 +1,13 @@
 use strict;
 use warnings;
 use Archive::Libarchive::XS qw( :all );
-use Test::More tests => 8;
+use Test::More tests => 4 * 3;
 use FindBin ();
 use File::Spec;
 
 my %failures;
 
-foreach my $mode (qw( memory filename ))
+foreach my $mode (qw( memory filename callback ))
 {
   # TODO: add xar back in if we can figure it out.
   foreach my $format (qw( tar tar.gz tar.bz2 zip ))
@@ -36,6 +36,11 @@ foreach my $mode (qw( memory filename ))
         my $buffer = do { local $/; <$fh> };
         close $fh;
         $r = archive_read_open_memory($a, $buffer);
+      }
+      elsif($mode eq 'callback')
+      {
+        my %data = ( filename => $filename );
+        archive_read_open($a, \%data, \&myopen, \&myread, \&myclose);
       }
       else
       {
@@ -98,4 +103,30 @@ if(%failures)
 {
   diag "failure summary:";
   diag "  $_" for keys %failures;
+}
+
+sub myopen
+{
+  my($a, $d) = @_;
+  open my $fh, '<', $d->{filename};
+  $d->{fh} = $fh;
+  note "callback: open ", $d->{filename};
+  ARCHIVE_OK;
+}
+
+sub myread
+{
+  my($a, $d) = @_;
+  my $br = read $d->{fh}, my $buffer, 100;
+  note "callback: read ", $br;
+  (ARCHIVE_OK, $buffer);
+}
+
+sub myclose
+{
+  my($a, $d) = @_;
+  my $fh = $d->{fh};
+  close $fh;
+  note "callback: close";
+  ARCHIVE_OK;
 }

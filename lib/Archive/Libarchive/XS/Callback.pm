@@ -32,7 +32,7 @@ foreach my $name (qw( open skip close ))
     sub _my$name
     {
       my \$archive = shift;
-      my \$status = eval { \$callbacks{\$archive}->[CB_$uc_name]->(\$callbacks{\$archive}->[CB_DATA],@_) };
+      my \$status = eval { \$callbacks{\$archive}->[CB_$uc_name]->(\$archive, \$callbacks{\$archive}->[CB_DATA],@_) };
       if(\$\@)
       {
         warn \$\@;
@@ -46,7 +46,7 @@ foreach my $name (qw( open skip close ))
 sub _myread
 {
   my($archive) = @_;
-  my ($status, $buffer) = eval { $callbacks{$archive}->[CB_READ]->($callbacks{$archive}->[CB_DATA]) };
+  my ($status, $buffer) = eval { $callbacks{$archive}->[CB_READ]->(\$archive, $callbacks{$archive}->[CB_DATA]) };
   if($@)
   {
     warn $@;
