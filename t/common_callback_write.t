@@ -1,9 +1,13 @@
 use strict;
 use warnings;
-use Test::More tests => 10;
+use Test::More;
 use File::Temp qw( tempdir );
 use File::Spec;
 use Archive::Libarchive::XS qw( :all );
+
+plan skip_all => 'requires archive_write_open'
+  unless Archive::Libarchive::XS->can('archive_write_open');
+plan tests => 10;
 
 my %data = (
   foo => 'one',

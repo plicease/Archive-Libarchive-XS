@@ -14,6 +14,9 @@ foreach my $mode (qw( memory filename callback ))
   {
     my $testname = "$format $mode";
     my $ok = subtest $testname=> sub {
+      plan skip_all => 'requires archive_read_open'
+        unless Archive::Libarchive::XS->can('archive_read_open');
+    
       plan tests => 17;
     
       my $filename = File::Spec->catfile($FindBin::Bin, "foo.$format");
