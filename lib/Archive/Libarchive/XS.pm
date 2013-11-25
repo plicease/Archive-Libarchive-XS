@@ -79,27 +79,27 @@ Copies error information from one archive to another.
 
 =head2 archive_entry_atime($entry)
 
-FIXME
+Returns the access time for the archive entry.
 
 =head2 archive_entry_atime_is_set($entry)
 
-FIXME
+Returns true if the access time property has been set on the archive entry.
 
 =head2 archive_entry_atime_nsec($entry)
 
-FIXME
+Returns the access time (nanoseconds).
 
 =head2 archive_entry_birthtime($entry)
 
-FIXME
+Returns the birthtime (creation time) for the archive entry.
 
 =head2 archive_entry_birthtime_is_set($entry)
 
-FIXME
+Returns true if the birthtime (creation time) property has been set on the archive entry.
 
 =head2 archive_entry_birthtime_nsec($entry)
 
-FIXME
+Returns the birthtime (creation time) for the archive entry.
 
 =head2 archive_entry_clear
 
@@ -112,27 +112,54 @@ A deep copy operation; all text fields are duplicated.
 
 =head2 archive_entry_ctime($entry)
 
-FIXME
+Returns the ctime (last time an inode property was changed) property for the archive entry.
 
 =head2 archive_entry_ctime_is_set($entry)
 
-FIXME
+Returns true if the ctime (last time an inode property was changed) property has been set
+on the archive entry.
 
 =head2 archive_entry_ctime_nsec($entry)
 
-FIXME
+Returns the ctime (last time an inode property was changed) property (nanoseconds).
+
+=head2 archive_entry_dev($entry)
+
+Returns the device property for the archive entry.
+
+The device property is an integer identifying the device, and is used by
+C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
 
 =head2 archive_entry_dev_is_set($entry)
 
-FIXME
+Returns true if the device property on the archive entry is set.
+
+The device property is an integer identifying the device, and is used by
+C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
+
+=head2 archive_entry_devmajor
+
+Returns the device major property for the archive entry.
+
+=head2 archive_entry_devminor
+
+Returns the device minor property for the archive entry.
 
 =head2 archive_entry_fflags($entry, $set, $clear)
 
-FIXME
+Returns the file flags property for the archive entry.
+
+=head2 archive_entry_fflags_text($entry)
+
+Returns the file flags property as a string.
 
 =head2 archive_entry_free
 
 Releases the struct archive_entry object.
+
+=head2 archive_entry_gid($entry)
+
+Returns the group id property for the archive entry.
 
 =head2 archive_entry_new
 
@@ -1497,8 +1524,14 @@ and need to be freed using one of C<archive_read_free>, C<archive_write_free>
 or C<archive_entry_free>, in order to free the resources associated
 with those objects.
 
-The documentation that comes with libarchive is not that great, but
-is serviceable.  The documentation for this library is copied largely
-from libarchive, with adjustments for Perl.
+The documentation that comes with libarchive is not that great (by its own
+admission), being somewhat incomplete, and containing a few subtle errors.
+In writing the documentation for this distribution, I borrowed heavily (read:
+stole wholesale) from the libarchive documentation, making changes where 
+appropriate for use under Perl (changing C<NULL> to C<undef> for example, along 
+with the interface change to make that work).  I may and probably have introduced 
+additional subtle errors.  Patches to the documentation that match the
+implementation, or fixes to the implementation so that it matches the
+documentation (which ever is appropriate) would greatly appreciated.
 
 =cut

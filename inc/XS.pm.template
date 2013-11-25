@@ -150,8 +150,14 @@ and need to be freed using one of C<archive_read_free>, C<archive_write_free>
 or C<archive_entry_free>, in order to free the resources associated
 with those objects.
 
-The documentation that comes with libarchive is not that great, but
-is serviceable.  The documentation for this library is copied largely
-from libarchive, with adjustments for Perl.
+The documentation that comes with libarchive is not that great (by its own
+admission), being somewhat incomplete, and containing a few subtle errors.
+In writing the documentation for this distribution, I borrowed heavily (read:
+stole wholesale) from the libarchive documentation, making changes where 
+appropriate for use under Perl (changing C<NULL> to C<undef> for example, along 
+with the interface change to make that work).  I may and probably have introduced 
+additional subtle errors.  Patches to the documentation that match the
+implementation, or fixes to the implementation so that it matches the
+documentation (which ever is appropriate) would greatly appreciated.
 
 =cut

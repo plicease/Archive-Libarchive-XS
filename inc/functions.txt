@@ -11,9 +11,14 @@ archive_entry_clone
 archive_entry_ctime
 archive_entry_ctime_is_set
 archive_entry_ctime_nsec
+archive_entry_dev
 archive_entry_dev_is_set
+archive_entry_devmajor
+archive_entry_devminor
 archive_entry_fflags
+archive_entry_fflags_text
 archive_entry_free
+archive_entry_gid
 archive_entry_new
 archive_entry_new2
 archive_entry_pathname

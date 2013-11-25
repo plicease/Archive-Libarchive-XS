@@ -17,12 +17,7 @@ unimplemented: archive_entry_copy_sourcepath
 unimplemented: archive_entry_copy_stat
 unimplemented: archive_entry_copy_symlink
 unimplemented: archive_entry_copy_uname
-unimplemented: archive_entry_dev
-unimplemented: archive_entry_devmajor
-unimplemented: archive_entry_devminor
-unimplemented: archive_entry_fflags_text
 unimplemented: archive_entry_filetype
-unimplemented: archive_entry_gid
 unimplemented: archive_entry_gname
 unimplemented: archive_entry_hardlink
 unimplemented: archive_entry_ino
@@ -147,4 +142,4 @@ unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_open_memory
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 147
+total unimplemented symbols: 142

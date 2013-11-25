@@ -593,7 +593,7 @@ archive_read_data_block(archive, sv_buff, sv_offset)
     __LA_INT64_T offset = 0;
     int r = archive_read_data_block(archive, &buff, &size, &offset);
     sv_setpvn(sv_buff, buff, size);
-    tmp = newSVi64(offset);
+    tmp = sv_2mortal(newSVi64(offset));
     sv_setsv(sv_offset, tmp);
     RETVAL = r;
   OUTPUT:
@@ -1758,7 +1758,7 @@ archive_read_next_header2(archive, entry)
 
 =head2 archive_entry_atime_is_set($entry)
 
-FIXME
+Returns true if the access time property has been set on the archive entry.
 
 =cut
 
@@ -1772,7 +1772,7 @@ archive_entry_atime_is_set(entry)
 
 =head2 archive_entry_atime($entry)
 
-FIXME
+Returns the access time for the archive entry.
 
 =cut
 
@@ -1786,7 +1786,7 @@ archive_entry_atime(entry)
 
 =head2 archive_entry_atime_nsec($entry)
 
-FIXME
+Returns the access time (nanoseconds).
 
 =cut
 
@@ -1800,7 +1800,7 @@ archive_entry_atime_nsec(entry)
 
 =head2 archive_entry_birthtime_is_set($entry)
 
-FIXME
+Returns true if the birthtime (creation time) property has been set on the archive entry.
 
 =cut
 
@@ -1814,7 +1814,7 @@ archive_entry_birthtime_is_set(entry)
 
 =head2 archive_entry_birthtime($entry)
 
-FIXME
+Returns the birthtime (creation time) for the archive entry.
 
 =cut
 
@@ -1828,7 +1828,7 @@ archive_entry_birthtime(entry)
 
 =head2 archive_entry_birthtime_nsec($entry)
 
-FIXME
+Returns the birthtime (creation time) for the archive entry.
 
 =cut
 
@@ -1842,7 +1842,8 @@ archive_entry_birthtime_nsec(entry)
 
 =head2 archive_entry_ctime_is_set($entry)
 
-FIXME
+Returns true if the ctime (last time an inode property was changed) property has been set
+on the archive entry.
 
 =cut
 
@@ -1856,7 +1857,7 @@ archive_entry_ctime_is_set(entry)
 
 =head2 archive_entry_ctime($entry)
 
-FIXME
+Returns the ctime (last time an inode property was changed) property for the archive entry.
 
 =cut
 
@@ -1870,7 +1871,7 @@ archive_entry_ctime(entry)
 
 =head2 archive_entry_ctime_nsec($entry)
 
-FIXME
+Returns the ctime (last time an inode property was changed) property (nanoseconds).
 
 =cut
 
@@ -1884,7 +1885,10 @@ archive_entry_ctime_nsec(entry)
 
 =head2 archive_entry_dev_is_set($entry)
 
-FIXME
+Returns true if the device property on the archive entry is set.
+
+The device property is an integer identifying the device, and is used by
+C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
 
 =cut
 
@@ -1898,7 +1902,7 @@ archive_entry_dev_is_set(entry)
 
 =head2 archive_entry_fflags($entry, $set, $clear)
 
-FIXME
+Returns the file flags property for the archive entry.
 
 =cut
 
@@ -1910,16 +1914,93 @@ archive_entry_fflags(entry, sv_set, sv_clear)
     SV *sv_set
     SV *sv_clear
   CODE:
+    SV *tmp;
     unsigned long set;
     unsigned long clear;
     archive_entry_fflags(entry, &set, &clear);
-    sv_setiv(sv_set, set);
-    sv_setiv(sv_clear, clear);
+    tmp = sv_2mortal(newSVi64(set));
+    sv_setsv(sv_set, tmp);
+    tmp = sv_2mortal(newSVi64(clear));
+    sv_setsv(sv_clear, tmp);
   OUTPUT:
     sv_set
     sv_clear
 
 #endif
+
+=head2 archive_entry_dev($entry)
+
+Returns the device property for the archive entry.
+
+The device property is an integer identifying the device, and is used by
+C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
+
+=cut
+
+#ifdef HAS_archive_entry_dev
+
+dev_t
+archive_entry_dev(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_devmajor
+
+Returns the device major property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_devmajor
+
+dev_t
+archive_entry_devmajor(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_devminor
+
+Returns the device minor property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_devminor
+
+dev_t
+archive_entry_devminor(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_fflags_text($entry)
+
+Returns the file flags property as a string.
+
+=cut
+
+#ifdef HAS_archive_entry_fflags_text
+
+const char *
+archive_entry_fflags_text(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_gid($entry)
+
+Returns the group id property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_gid
+
+__LA_INT64_T
+archive_entry_gid(entry)
+    struct archive_entry *entry
+
+#endif
+
 
 int
 _constant(name)

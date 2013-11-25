@@ -72,6 +72,19 @@ foreach my $mode (qw( memory filename callback ))
       $r = archive_read_next_header($a, $entry);
       is $r, ARCHIVE_OK, "r = ARCHIVE_OK (archive_read_next_header 2)";
 
+      if(Archive::Libarchive::XS->can('archive_entry_atime_is_set'))
+      {
+        if(archive_entry_atime_is_set($entry))
+        {
+          note '+ atime      = ', archive_entry_atime($entry);
+          note '+ atime_nsec = ', archive_entry_atime($entry);
+        }
+        else
+        {
+          note '+ no atime';
+        }
+      }
+
       is archive_file_count($a), 2, "archive_file_count = 2";
 
       is archive_entry_pathname($entry), "foo/bar.txt", 'archive_entry_pathname($entry) = foo/bar.txt';
