@@ -245,8 +245,6 @@ do {
   file(__FILE__)->parent->file('functions.txt')->spew(join "\n", sort keys %functions);
 };
 
-# FIXME: don't include thems that are deprecated
-# hrm.
 my $count = 0;
 
 $report .= "\n";
