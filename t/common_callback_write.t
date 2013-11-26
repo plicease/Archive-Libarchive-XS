@@ -35,6 +35,7 @@ is $r, ARCHIVE_OK, 'archive_write_set_format_pax_restricted';
 
 $r = archive_write_open($a, { filename => $fn }, \&myopen, \&mywrite, \&myclose);
 is $r, ARCHIVE_OK, 'archive_write_open';
+diag archive_error_string($a) if $r != ARCHIVE_OK;
 
 foreach my $name (qw( foo bar baz ))
 {
@@ -71,7 +72,7 @@ foreach my $name (qw( foo bar baz ))
 
 $r = archive_write_close($a);
 is $r, ARCHIVE_OK, 'archive_write_close';
-diag 'archive_error_string = ', archive_error_string($a) unless ARCHIVE_OK;
+diag 'archive_error_string = ', archive_error_string($a) unless $r == ARCHIVE_OK;
 
 $r = archive_write_free($a);
 is $r, ARCHIVE_OK, 'archive_write_free';
