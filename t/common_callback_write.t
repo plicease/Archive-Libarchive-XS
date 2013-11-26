@@ -95,7 +95,6 @@ do {
 sub myopen
 {
   my($archive, $data) = @_;
-  $DB::single = 1;
   note "myopen: ", $data->{filename};
   open my $fh, '>', $data->{filename};
   $data->{fh} = $fh;
@@ -105,7 +104,6 @@ sub myopen
 sub mywrite
 {
   my($archive, $data, $buffer) = @_;
-  $DB::single = 1;
   note "mywrite: ", length $buffer;
   my $fh = $data->{fh};
   print $fh $buffer;
@@ -115,7 +113,6 @@ sub mywrite
 sub myclose
 {
   my($archive, $data) = @_;
-  $DB::single = 1;
   note "myclose: ()";
   my $fh = $data->{fh};
   close $fh;
