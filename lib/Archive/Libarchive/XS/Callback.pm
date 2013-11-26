@@ -14,9 +14,9 @@ use constant {
   CB_READ        => 1,
   CB_CLOSE       => 2,
   CB_OPEN        => 3,
-  CB_SKIP        => 4,
-  CB_SEEK        => 5,
-  CB_WRITE       => 6,
+  CB_WRITE       => 4,
+  CB_SKIP        => 5,
+  CB_SEEK        => 6,
   CB_SWITCH      => 7,
   CB_BUFFER      => 8,
 };
