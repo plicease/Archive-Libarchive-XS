@@ -65,7 +65,7 @@ foreach my $name (qw( foo bar baz ))
     my $len = archive_write_data($a, $data{$name});
     is $len, length($data{$name}), 'archive_write_data';;
   
-    $r = archive_entry_free($entry); };
+    $r = archive_entry_free($entry);
     is $r, ARCHIVE_OK, 'archive_entry_free';
   };
 }

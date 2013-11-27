@@ -12,7 +12,6 @@
 #include <archive_entry.h>
 
 typedef const char *string_or_null;
-typedef int void_always_ok;
 
 static int
 myopen(struct archive *archive, void *client_data)
@@ -270,9 +269,14 @@ generally used in client code.  Does not return a value.
 
 =cut
 
-void_always_ok
+int
 archive_clear_error(archive)
     struct archive *archive;
+  CODE:
+    archive_clear_error(archive);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 =head2 archive_copy_error($archive1, $archive2)
 
@@ -280,10 +284,15 @@ Copies error information from one archive to another.
 
 =cut
 
-void_always_ok
+int
 archive_copy_error(archive1, archive2)
     struct archive *archive1;
     struct archive *archive2;
+  CODE:
+    archive_copy_error(archive1, archive2);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 =head2 archive_filter_code
 
@@ -806,9 +815,14 @@ to allow you to quickly recycle objects without thrashing the heap.
 
 =cut
 
-void_always_ok
-archive_entry_clear(archive_entry)
-    struct archive_entry *archive_entry
+int
+archive_entry_clear(entry)
+    struct archive_entry *entry
+  CODE:
+    archive_entry_clear(entry);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 =head2 archive_entry_clone
 
@@ -826,10 +840,14 @@ Releases the struct archive_entry object.
 
 =cut
 
-void_always_ok
-archive_entry_free(archive_entry)
-    struct archive_entry *archive_entry
-
+int
+archive_entry_free(entry)
+    struct archive_entry *entry
+  CODE:
+    archive_entry_free(entry);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 =head2 archive_entry_new
 
@@ -865,12 +883,15 @@ Does not return anything.
 
 =cut
 
-void_always_ok
+int
 archive_entry_set_pathname(entry, name)
     struct archive_entry *entry
     const char *name
   CODE:
     archive_entry_copy_pathname(entry, name);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 =head2 archive_entry_size($entry)
 
@@ -890,10 +911,15 @@ Does not return anything.
 
 =cut
 
-void_always_ok
+int
 archive_entry_set_size(entry, size)
     struct archive_entry *entry
     __LA_INT64_T size
+  CODE:
+    archive_entry_set_size(entry, size);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 =head2 archive_entry_set_filetype($entry, $code)
 
@@ -923,10 +949,15 @@ Does not return anything.
 
 =cut
 
-void_always_ok
+int
 archive_entry_set_filetype(entry, code)
     struct archive_entry *entry
     unsigned int code
+  CODE:
+    archive_entry_set_filetype(entry, code);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 =head2 archive_entry_set_perm
 
@@ -936,10 +967,15 @@ Does not return anything.
 
 =cut
 
-void_always_ok
+int
 archive_entry_set_perm(entry, perm)
     struct archive_entry *entry
     int perm
+  CODE:
+    archive_entry_set_perm(entry, perm);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 =head2 archive_write_header($archive, $entry)
 
@@ -1030,11 +1066,16 @@ Does not return a value.
 
 =cut
 
-void_always_ok
+int
 archive_entry_set_mtime(entry, sec, nanosec)
     struct archive_entry *entry
     time_t sec
     long nanosec
+  CODE:
+    archive_entry_set_mtime(entry, sec, nanosec);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 =head2 archive_write_finish_entry($archive)
 
@@ -1955,7 +1996,7 @@ Returns the file flags property for the archive entry.
 
 #ifdef HAS_archive_entry_fflags
 
-void_always_ok
+int
 archive_entry_fflags(entry, sv_set, sv_clear)
     struct archive_entry *entry 
     SV *sv_set
@@ -1969,9 +2010,11 @@ archive_entry_fflags(entry, sv_set, sv_clear)
     sv_setsv(sv_set, tmp);
     tmp = sv_2mortal(newSVi64(clear));
     sv_setsv(sv_clear, tmp);
+    RETVAL = ARCHIVE_OK;
   OUTPUT:
     sv_set
     sv_clear
+    RETVAL
 
 #endif
 
