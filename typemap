@@ -3,11 +3,13 @@ struct archive_entry *   T_PTR
 __LA_INT64_T             T_INT64
 string_or_null           T_PV_OR_NULL
 dev_t                    T_INT64
-void_always_ok           T_ALWAYS_ARCHIVE_OK
 
 OUTPUT
 T_ALWAYS_ARCHIVE_OK
   sv_setiv($arg, (IV)ARCHIVE_OK);
+
+T_PV_OR_NULL
+  $var != NULL ? sv_setpv((SV*)$arg, $var) : sv_setsv((SV*)$arg, &PL_sv_undef);
 
 INPUT
 T_PV_OR_NULL

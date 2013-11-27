@@ -2276,6 +2276,261 @@ archive_entry_gid(entry)
 
 #endif
 
+=head2 archive_read_disk_descend
+
+ my $status = archive_read_disk_descend($archive);
+
+Request that current entry be visited.  If you invoke it on every
+directory, you'll get a physical traversal.  This is ignored if the
+current entry isn't a directory or a link to a directory.  So, if
+you invoke this on every returned path, you'll get a full logical
+traversal.
+
+=cut
+
+#ifdef HAS_archive_read_disk_descend
+
+int
+archive_read_disk_descend(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_read_disk_can_descend
+
+ my $bool = archive_read_disk_can_descend($archive);
+
+Undocumented libarchive function.
+
+=cut
+
+#ifdef HAS_archive_read_disk_can_descend
+
+int
+archive_read_disk_can_descend(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_read_disk_current_filesystem
+
+ my $status = archive_read_disk_current_filesystem($archive);
+
+Undocumented libarchive function.
+
+=cut
+
+#ifdef HAS_archive_read_disk_current_filesystem
+
+int
+archive_read_disk_current_filesystem(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_read_disk_current_filesystem_is_synthetic
+
+ my $status = archive_read_disk_current_filesystem_is_synthetic($archive);
+
+Undocumented libarchive function.
+
+=cut
+
+#ifdef HAS_archive_read_disk_current_filesystem_is_synthetic
+
+int
+archive_read_disk_current_filesystem_is_synthetic(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_read_disk_current_filesystem_is_remote
+
+ my $status = archive_read_disk_current_filesystem_is_remote($archive);
+
+Undocumented libarchive function.
+
+=cut
+
+#ifdef HAS_archive_read_disk_current_filesystem_is_remote
+
+int
+archive_read_disk_current_filesystem_is_remote(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_read_disk_set_atime_restored
+
+ my $status = archive_read_disk_set_atime_restored($archive);
+
+Request that the access time of the entry visited by traversal be restored.
+
+=cut
+
+#ifdef HAS_archive_read_disk_set_atime_restored
+
+int
+archive_read_disk_set_atime_restored(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_read_disk_open
+
+ my $status = archive_read_disk_open($archive, $string)
+
+Allocates and initializes an archive object suitable for reading objects from disk.
+
+=cut
+
+#ifdef HAS_archive_read_disk_open
+
+int
+archive_read_disk_open(archive, name)
+    struct archive *archive
+    const char *name
+
+#endif
+
+=head2 archive_read_disk_gname
+
+ my $string = archive_read_disk_gname($archive, $gid);
+
+Returns a group name given a gid value.  By default always
+returns C<undef>.
+
+=cut
+
+#ifdef HAS_archive_read_disk_gname
+
+string_or_null
+archive_read_disk_gname(archive, gid)
+    struct archive *archive
+    __LA_INT64_T gid
+
+#endif
+
+=head2 archive_read_disk_uname
+
+ my $string = archive_read_disk_uname($archive, $gid);
+
+Returns a user name given a uid value.  By default always
+returns C<undef>.
+
+=cut
+
+#ifdef HAS_archive_read_disk_uname
+
+string_or_null
+archive_read_disk_uname(archive, gid)
+    struct archive *archive
+    __LA_INT64_T gid
+
+#endif
+
+=head2 archive_read_disk_new
+
+ my $archive = archive_read_disk_new();
+
+Allocates and initializes an archive object suitable for reading object information
+from disk.
+
+=cut
+
+#ifdef HAS_archive_read_disk_new
+
+struct archive *
+archive_read_disk_new()
+
+#endif
+
+=head2 archive_read_disk_set_behavior
+
+ my $status = archive_read_disk_set_behavior($archive, $flags);
+ 
+Undocumented libarchive function.
+
+=cut
+
+#ifdef HAS_archive_read_disk_set_behavior
+
+int
+archive_read_disk_set_behavior(archive, flags)
+    struct archive *archive
+    int flags
+
+#endif
+
+=head2 archive_read_disk_set_standard_lookup
+
+ my $status = archive_read_disk_set_standard_lookup($archive);
+
+This convenience function installs a standard set of user and group name lookup functions.
+These functions use C<getpwuid> and C<getgrgid> to convert ids to names, defaulting to C<undef>.
+if the names cannot be looked up.  These functions also implement a simple memory cache to
+reduce the number of calls to C<getpwuid> and C<getgrgid>.
+
+=cut
+
+#ifdef HAS_archive_read_disk_set_standard_lookup
+
+int
+archive_read_disk_set_standard_lookup(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_read_disk_set_symlink_hybrid
+
+ my $status = archive_read_disk_set_symlink_hybrid($archive);
+
+This sets the mode used for handling symbolic links.  The "hybrid" mode currently
+behaves identically to the "logical" mode.
+
+=cut
+
+#ifdef HAS_archive_read_disk_set_symlink_hybrid
+
+int
+archive_read_disk_set_symlink_hybrid(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_read_disk_set_symlink_logical
+
+ my $status = archive_read_disk_set_symlink_logical($archive);
+
+This sets the mode used for handling symbolic links.  The "logical" mode follows
+all symbolic links.
+
+=cut
+
+#ifdef HAS_archive_read_disk_set_symlink_logical
+
+int
+archive_read_disk_set_symlink_logical(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_read_disk_set_symlink_physical
+
+ my $status = archive_read_disk_set_symlink_physical($archive);
+
+This sets the mode used for handling symbolic links.  The "physical" mode does not
+follow any symbolic links.
+
+=cut
+
+#ifdef HAS_archive_read_disk_set_symlink_physical
+
+int
+archive_read_disk_set_symlink_physical(archive)
+    struct archive *archive
+
+#endif
 
 int
 _constant(name)
