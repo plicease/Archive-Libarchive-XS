@@ -22,8 +22,9 @@ to distinguish them (example: $archive1, $archive2).
 An archive object identifier (actually a pointer to the C structure used by
 libarchive as the archive object).
 
-These are created with L<#archive_read_new> or L<#archive_write_new> and
-deleted with L<#archive_read_free> or L<#archive_write_free>.
+These are created with L<#archive_read_new>, L<#archive_write_new> or
+L<#archive_write_disk_new> and deleted with L<#archive_read_free> or 
+L<#archive_write_free>.
 
 =item $entry
 
@@ -95,12 +96,16 @@ a function or constant is available, for example:
 
 =head1 FUNCTIONS
 
-=head2 archive_clear_error($archive)
+=head2 archive_clear_error
+
+ my $status = archive_clear_error($archive);
 
 Clears any error information left over from a previous call Not
 generally used in client code.  Does not return a value.
 
-=head2 archive_copy_error($archive1, $archive2)
+=head2 archive_copy_error
+
+ my $status = archive_copy_error($archive1, $archive2);
 
 Copies error information from one archive to another.
 
@@ -130,10 +135,14 @@ Returns the birthtime (creation time) for the archive entry.
 
 =head2 archive_entry_clear
 
+ my $status = archive_entry_clear($entry);
+
 Erases the object, resetting all internal fields to the same state as a newly-created object.  This is provided
 to allow you to quickly recycle objects without thrashing the heap.
 
 =head2 archive_entry_clone
+
+ my $entry1 = archive_entry_clone($entry2);
 
 A deep copy operation; all text fields are duplicated.
 
@@ -182,6 +191,8 @@ Returns the file flags property as a string.
 
 =head2 archive_entry_free
 
+ my $status = archive_entry_free($entry);
+
 Releases the struct archive_entry object.
 
 =head2 archive_entry_gid($entry)
@@ -190,9 +201,13 @@ Returns the group id property for the archive entry.
 
 =head2 archive_entry_new
 
+ my $entry = archive_entry_new();
+
 Allocate and return a blank struct archive_entry object.
 
-=head2 archive_entry_new2($archive)
+=head2 archive_entry_new2
+
+ my $entry = archive_entry_new2($archive)
 
 This form of C<archive_entry_new2> will pull character-set
 conversion information from the specified archive handle.  The
@@ -208,6 +223,8 @@ Retrieve the pathname of the entry.
 Returns a string value.
 
 =head2 archive_entry_set_filetype($entry, $code)
+
+ my $status = archive_entry_set_filetype($entry, $code);
 
 Sets the filetype in the archive.  Code should be one of
 
@@ -231,15 +248,17 @@ Sets the filetype in the archive.  Code should be one of
 
 =back
 
-Does not return anything.
+=head2 archive_entry_set_mtime
 
-=head2 archive_entry_set_mtime($entry, $sec, $nanosec)
+ my $status = archive_entry_set_mtime($entry, $sec, $nanosec);
 
 Set the mtime for the entry object.
 
 Does not return a value.
 
-=head2 archive_entry_set_pathname($entry, $name)
+=head2 archive_entry_set_pathname
+
+ my $status = archive_entry_set_pathname($entry, $string);
 
 Sets the path in the archive as a string.
 
@@ -247,17 +266,21 @@ Does not return anything.
 
 =head2 archive_entry_set_perm
 
+ my $status = archive_entry_set_perm($entry, $perm);
+
 Set the permission bits for the entry.  This is the usual UNIX octal permission thing.
 
-Does not return anything.
+=head2 archive_entry_set_size
 
-=head2 archive_entry_set_size($entry, $size)
+ my $status = archive_entry_set_size($entry, $size);
 
 Sets the size of the file in the archive.
 
 Does not return anything.
 
 =head2 archive_entry_size($entry)
+
+ my $size = archive_entry_size($entry);
 
 Returns the size of the entry in bytes.
 
@@ -352,7 +375,9 @@ any gaps with nulls so that callers see a single continuous stream of
 data.  Returns the actual number of bytes read, 0 on end of data and
 a negative value on error.
 
-=head2 archive_read_data_block($archive, $buff, $offset)
+=head2 archive_read_data_block
+
+ my $count_or_status = archive_read_data_block($archive, $buffer, $offset);
 
 Return the next available block of data for this entry.  Unlike
 C<archive_read_data>, this function allows you to correctly
@@ -474,7 +499,9 @@ module accepts the option, and C<ARCHIVE_FAILED> in all other cases.
 
 Undocumented libarchive function.
 
-=head2 archive_read_set_format_option($archive, $module, $option, $value)
+=head2 archive_read_set_format_option
+
+ my $status = archive_read_set_format_option($archive, $module, $option, $value);
 
 Specifies an option that will be passed to currently-registered format 
 readers.
@@ -553,39 +580,57 @@ Set the skip callback for the archive object.
 
 Enable all available decompression filters.
 
-=head2 archive_read_support_filter_bzip2($archive)
+=head2 archive_read_support_filter_bzip2
+
+ my $status = archive_read_support_filter_bzip2($archive)
 
 Enable bzip2 decompression filter.
 
-=head2 archive_read_support_filter_compress($archive)
+=head2 archive_read_support_filter_compress
+
+ my $status = archive_read_support_filter_compress($archive)
 
 Enable compress decompression filter.
 
-=head2 archive_read_support_filter_grzip($archive)
+=head2 archive_read_support_filter_grzip
+
+ my $status = archive_read_support_filter_grzip($archive)
 
 Enable grzip decompression filter.
 
-=head2 archive_read_support_filter_gzip($archive)
+=head2 archive_read_support_filter_gzip
+
+ my $status = archive_read_support_filter_gzip($archive)
 
 Enable gzip decompression filter.
 
-=head2 archive_read_support_filter_lrzip($archive)
+=head2 archive_read_support_filter_lrzip
+
+ my $status = archive_read_support_filter_lrzip($archive)
 
 Enable lrzip decompression filter.
 
-=head2 archive_read_support_filter_lzip($archive)
+=head2 archive_read_support_filter_lzip
+
+ my $status = archive_read_support_filter_lzip($archive)
 
 Enable lzip decompression filter.
 
-=head2 archive_read_support_filter_lzma($archive)
+=head2 archive_read_support_filter_lzma
+
+ my $status = archive_read_support_filter_lzma($archive)
 
 Enable lzma decompression filter.
 
-=head2 archive_read_support_filter_lzop($archive)
+=head2 archive_read_support_filter_lzop
+
+ my $status = archive_read_support_filter_lzop($archive)
 
 Enable lzop decompression filter.
 
-=head2 archive_read_support_filter_none($archive)
+=head2 archive_read_support_filter_none
+
+ my $status = archive_read_support_filter_none($archive)
 
 Enable none decompression filter.
 
@@ -598,19 +643,27 @@ dearchived.  Note that this disables automatic detection of the
 compression format, so it makes no sense to specify this in
 conjunction with any other decompression option.
 
-=head2 archive_read_support_filter_rpm($archive)
+=head2 archive_read_support_filter_rpm
+
+ my $status = archive_read_support_filter_rpm($archive)
 
 Enable rpm decompression filter.
 
-=head2 archive_read_support_filter_uu($archive)
+=head2 archive_read_support_filter_uu
+
+ my $status = archive_read_support_filter_uu($archive)
 
 Enable uu decompression filter.
 
-=head2 archive_read_support_filter_xz($archive)
+=head2 archive_read_support_filter_xz
+
+ my $status = archive_read_support_filter_xz($archive)
 
 Enable xz decompression filter.
 
-=head2 archive_read_support_format_7zip($archive)
+=head2 archive_read_support_format_7zip
+
+ my $status = archive_read_support_format_7zip($archive)
 
 Enable 7zip archive format.
 
@@ -620,7 +673,9 @@ Enable 7zip archive format.
 
 Enable all available archive formats.
 
-=head2 archive_read_support_format_ar($archive)
+=head2 archive_read_support_format_ar
+
+ my $status = archive_read_support_format_ar($archive)
 
 Enable ar archive format.
 
@@ -630,55 +685,81 @@ Enable ar archive format.
 
 Enables a single format specified by the format code.
 
-=head2 archive_read_support_format_cab($archive)
+=head2 archive_read_support_format_cab
+
+ my $status = archive_read_support_format_cab($archive)
 
 Enable cab archive format.
 
-=head2 archive_read_support_format_cpio($archive)
+=head2 archive_read_support_format_cpio
+
+ my $status = archive_read_support_format_cpio($archive)
 
 Enable cpio archive format.
 
-=head2 archive_read_support_format_empty($archive)
+=head2 archive_read_support_format_empty
+
+ my $status = archive_read_support_format_empty($archive)
 
 Enable empty archive format.
 
-=head2 archive_read_support_format_gnutar($archive)
+=head2 archive_read_support_format_gnutar
+
+ my $status = archive_read_support_format_gnutar($archive)
 
 Enable gnutar archive format.
 
-=head2 archive_read_support_format_iso9660($archive)
+=head2 archive_read_support_format_iso9660
+
+ my $status = archive_read_support_format_iso9660($archive)
 
 Enable iso9660 archive format.
 
-=head2 archive_read_support_format_lha($archive)
+=head2 archive_read_support_format_lha
+
+ my $status = archive_read_support_format_lha($archive)
 
 Enable lha archive format.
 
-=head2 archive_read_support_format_mtree($archive)
+=head2 archive_read_support_format_mtree
+
+ my $status = archive_read_support_format_mtree($archive)
 
 Enable mtree archive format.
 
-=head2 archive_read_support_format_rar($archive)
+=head2 archive_read_support_format_rar
+
+ my $status = archive_read_support_format_rar($archive)
 
 Enable rar archive format.
 
-=head2 archive_read_support_format_raw($archive)
+=head2 archive_read_support_format_raw
+
+ my $status = archive_read_support_format_raw($archive)
 
 Enable raw archive format.
 
-=head2 archive_read_support_format_tar($archive)
+=head2 archive_read_support_format_tar
+
+ my $status = archive_read_support_format_tar($archive)
 
 Enable tar archive format.
 
-=head2 archive_read_support_format_xar($archive)
+=head2 archive_read_support_format_xar
+
+ my $status = archive_read_support_format_xar($archive)
 
 Enable xar archive format.
 
-=head2 archive_read_support_format_zip($archive)
+=head2 archive_read_support_format_zip
+
+ my $status = archive_read_support_format_zip($archive)
 
 Enable zip archive format.
 
-=head2 archive_seek_data($archive, $offset, $whence)
+=head2 archive_seek_data
+
+ my $count_or_status = archive_seek_data($archive, $offset, $whence);
 
 Seek within the body of an entry.  Similar to C<lseek>.
 
@@ -696,88 +777,128 @@ Return the libarchive as a version.
 
 Returns a string value.
 
-=head2 archive_write_add_filter($archive, $code)
+=head2 archive_write_add_filter
+
+ my $status = archive_write_add_filter($archive, $code);
 
 A convenience function to set the filter based on the code.
 
-=head2 archive_write_add_filter_b64encode($archive)
+=head2 archive_write_add_filter_b64encode
+
+ my $status = archive_write_add_filter_b64encode($archive)
 
 Add b64encode filter
 
-=head2 archive_write_add_filter_by_name($archive, $name)
+=head2 archive_write_add_filter_by_name
+
+ my $status = archive_write_add_filter_by_name($archive, $name);
 
 A convenience function to set the filter based on the name.
 
-=head2 archive_write_add_filter_bzip2($archive)
+=head2 archive_write_add_filter_bzip2
+
+ my $status = archive_write_add_filter_bzip2($archive)
 
 Add bzip2 filter
 
-=head2 archive_write_add_filter_compress($archive)
+=head2 archive_write_add_filter_compress
+
+ my $status = archive_write_add_filter_compress($archive)
 
 Add compress filter
 
-=head2 archive_write_add_filter_grzip($archive)
+=head2 archive_write_add_filter_grzip
+
+ my $status = archive_write_add_filter_grzip($archive)
 
 Add grzip filter
 
-=head2 archive_write_add_filter_gzip($archive)
+=head2 archive_write_add_filter_gzip
+
+ my $status = archive_write_add_filter_gzip($archive)
 
 Add gzip filter
 
-=head2 archive_write_add_filter_lrzip($archive)
+=head2 archive_write_add_filter_lrzip
+
+ my $status = archive_write_add_filter_lrzip($archive)
 
 Add lrzip filter
 
-=head2 archive_write_add_filter_lzip($archive)
+=head2 archive_write_add_filter_lzip
+
+ my $status = archive_write_add_filter_lzip($archive)
 
 Add lzip filter
 
-=head2 archive_write_add_filter_lzma($archive)
+=head2 archive_write_add_filter_lzma
+
+ my $status = archive_write_add_filter_lzma($archive)
 
 Add lzma filter
 
-=head2 archive_write_add_filter_lzop($archive)
+=head2 archive_write_add_filter_lzop
+
+ my $status = archive_write_add_filter_lzop($archive)
 
 Add lzop filter
 
-=head2 archive_write_add_filter_none($archive)
+=head2 archive_write_add_filter_none
+
+ my $status = archive_write_add_filter_none($archive)
 
 Add none filter
 
-=head2 archive_write_add_filter_program($archive, $cmd)
+=head2 archive_write_add_filter_program
+
+ my $status = archive_write_add_filter_program($archive, $cmd);
 
 The archive will be fed into the specified compression program. 
 The output of that program is blocked and written to the client
 write callbacks.
 
-=head2 archive_write_add_filter_uuencode($archive)
+=head2 archive_write_add_filter_uuencode
+
+ my $status = archive_write_add_filter_uuencode($archive)
 
 Add uuencode filter
 
-=head2 archive_write_add_filter_xz($archive)
+=head2 archive_write_add_filter_xz
+
+ my $status = archive_write_add_filter_xz($archive)
 
 Add xz filter
 
-=head2 archive_write_close(archive)
+=head2 archive_write_close
+
+ my $status = archive_write_close($archive)
 
 Complete the archive and invoke the close callback.
 
-=head2 archive_write_data(archive, buffer)
+=head2 archive_write_data
+
+ my $status = archive_write_data($archive, $buffer);
 
 Write data corresponding to the header just written.
 
 This function returns the number of bytes actually written, or -1 on error.
 
-=head2 archive_write_data_block($archive, $buff, $offset)
+=head2 archive_write_data_block
+
+ my $count_or_status = archive_write_data_block($archive, $buffer, $offset
 
 Writes the buffer to the current entry in the given archive
 starting at the given offset.
 
-=head2 archive_write_disk_gid($archive, $string, $int64)
+=head2 archive_write_disk_gid
+
+ my $int64 = archive_write_disk_gid($archive, $string, $int64);
 
 Undocumented libarchive function.
 
 =head2 archive_write_disk_new
+
+ my $archive = archive_write_disk_new();
 
 Allocates and initializes a struct archive object suitable for
 writing objects to disk.
@@ -786,7 +907,9 @@ Returns an opaque archive which may be a perl style object, or a C pointer
 (Depending on the implementation), either way, it can be passed into
 any of the write functions documented here with an C<$archive> argument.
 
-=head2 archive_write_disk_set_options($archive, $flags)
+=head2 archive_write_disk_set_options
+
+ my $status = archive_write_disk_set_options($archive, $flags);
 
 The options field consists of a bitwise OR of one or more of the 
 following values:
@@ -817,7 +940,9 @@ following values:
 
 =back
 
-=head2 archive_write_disk_set_skip_file($archive, $device, $inode)
+=head2 archive_write_disk_set_skip_file
+
+ my $status = archive_write_disk_set_skip_file($archive, $device, $inode);
 
 Records the device and inode numbers of a file that should not be 
 overwritten.  This is typically used to ensure that an extraction 
@@ -825,7 +950,9 @@ process does not overwrite the archive from which objects are being
 read.  This capability is technically unnecessary but can be a 
 significant performance optimization in practice.
 
-=head2 archive_write_disk_set_standard_lookup($archive)
+=head2 archive_write_disk_set_standard_lookup
+
+ my $status = archive_write_finish_entry($archive);
 
 This convenience function installs a standard set of user and
 group lookup functions.  These functions use C<getpwnam> and
@@ -834,17 +961,23 @@ if the names cannot be looked up.  These functions also implement
 a simple memory cache to reduce the number of calls to 
 C<getpwnam> and C<getgrnam>.
 
-=head2 archive_write_disk_uid($archive, $string, $int64)
+=head2 archive_write_disk_uid
+
+ my $int64 = archive_write_disk_uid($archive, $string, $int64);
 
 Undocumented libarchive function.
 
-=head2 archive_write_fail($archive)
+=head2 archive_write_fail
+
+ my $status = archive_write_fail($archive);
 
 Marks the archive as FATAL so that a subsequent C<free> operation
 won't try to C<close> cleanly.  Provides a fast abort capability
 when the client discovers that things have gone wrong.
 
-=head2 archive_write_finish_entry($archive)
+=head2 archive_write_finish_entry
+
+ my $status = archive_write_finish_entry($archive)
 
 Close out the entry just written.  Ordinarily, 
 clients never need to call this, as it is called 
@@ -856,27 +989,37 @@ if you need to work with the file on disk right away.
 
 =head2 archive_write_free($archive)
 
+ my $status = archive_write_free($archive);
+
 Invokes C<archive_write_close> if it was not invoked manually, then
 release all resources.
 
-=head2 archive_write_get_bytes_in_last_block($archive)
+=head2 archive_write_get_bytes_in_last_block
+
+ my $count = archive_write_get_bytes_per_block($archive);
 
 Retrieve the currently-set value for last block size.  A value of -1 
 here indicates that the library should use default values.
 
-=head2 archive_write_get_bytes_per_block($archive)
+=head2 archive_write_get_bytes_per_block
+
+ my $count = archive_write_get_bytes_per_block($archive);
 
 Retrieve the block size to be used for writing.  A value of -1 here 
 indicates that the library should use default values.  A value of zero 
 indicates that internal blocking is suppressed.
 
-=head2 archive_write_header($archive, $entry)
+=head2 archive_write_header
+
+ my $status = archive_write_header($archive, $entry);
 
 Build and write a header using the data in the provided struct archive_entry structure.
 You can use C<archive_entry_new> to create an C<$entry> object and populate it with
 C<archive_entry_set*> functions.
 
 =head2 archive_write_new
+
+ my $archive = archive_write_new();
 
 Allocates and initializes a archive object suitable for writing an new archive.
 Returns an opaque archive which may be a perl style object, or a C pointer
@@ -889,7 +1032,9 @@ Freeze the settings, open the archive, and prepare for writing entries.  This is
 generic form of this function, which accepts pointers to three callback functions which will
 be invoked by the compression layer to write the constructed archive.
 
-=head2 archive_write_open_filename($archive, $filename)
+=head2 archive_write_open_filename
+
+ my $status = archive_write_open_filename($archive, $filename);
 
 A convenience form of C<archive_write_open> that accepts a filename.  If you have 
 not invoked C<archive_write_set_bytes_in_last_block>, then 
@@ -903,7 +1048,9 @@ with tape drives or other block-oriented devices.
 If you pass in C<undef> as the C<$filename>, libarchive will write the
 archive to standard out.
 
-=head2 archive_write_set_bytes_in_last_block($archive, $bytes_in_last_block)
+=head2 archive_write_set_bytes_in_last_block
+
+ my $status = archive_write_set_bytes_in_last_block($archive, $bytes_in_last_block);
 
 Sets the block size used for writing the last block.  If this value is 
 zero, the last block will be padded to the same size as the other 
@@ -916,7 +1063,9 @@ unpadded.  The default is to pad the last block to the full block size
 type).  Unlike the other "set" functions, this function can be called 
 after the archive is opened.
 
-=head2 archive_write_set_bytes_per_block($archive, $bytes_per_block)
+=head2 archive_write_set_bytes_per_block
+
+ my $status = archive_write_set_bytes_per_block($archive, $bytes_per_block);
 
 Sets the block size used for writing the archive data.  Every call to 
 the write callback function, except possibly the last one, will use this 
@@ -926,6 +1075,8 @@ and cause writes to be sent directly to the write callback as they
 occur.
 
 =head2 archive_write_set_filter_option($archive, $module, $option, $value)
+
+ my $status = archive_write_set_filter_option($archive, $module, $option, $value);
 
 Specifies an option that will be passed to currently-registered filters (including decompression filters).
 
@@ -945,51 +1096,75 @@ value will be returned immediately.  Otherwise, C<ARCHIVE_OK> will
 be returned if any module accepts the option, and C<ARCHIVE_FAILED>
 in all other cases.
 
-=head2 archive_write_set_format($archive, $code)
+=head2 archive_write_set_format
+
+ my $status = archive_write_set_format($archive, $code);
 
 A convenience function to set the format based on the code.
 
 =head2 archive_write_set_format_7zip($archive)
 
+ my $status = archive_write_set_format_7zip($archive)
+
 Set the archive format to 7zip
 
 =head2 archive_write_set_format_ar_bsd($archive)
+
+ my $status = archive_write_set_format_ar_bsd($archive)
 
 Set the archive format to ar_bsd
 
 =head2 archive_write_set_format_ar_svr4($archive)
 
+ my $status = archive_write_set_format_ar_svr4($archive)
+
 Set the archive format to ar_svr4
 
-=head2 archive_write_set_format_by_name($archive, $name)
+=head2 archive_write_set_format_by_name
+
+ my $status = archive_write_set_format_by_name($archive, $name);
 
 A convenience function to set the format based on the name.
 
 =head2 archive_write_set_format_cpio($archive)
 
+ my $status = archive_write_set_format_cpio($archive)
+
 Set the archive format to cpio
 
 =head2 archive_write_set_format_cpio_newc($archive)
+
+ my $status = archive_write_set_format_cpio_newc($archive)
 
 Set the archive format to cpio_newc
 
 =head2 archive_write_set_format_gnutar($archive)
 
+ my $status = archive_write_set_format_gnutar($archive)
+
 Set the archive format to gnutar
 
 =head2 archive_write_set_format_iso9660($archive)
+
+ my $status = archive_write_set_format_iso9660($archive)
 
 Set the archive format to iso9660
 
 =head2 archive_write_set_format_mtree($archive)
 
+ my $status = archive_write_set_format_mtree($archive)
+
 Set the archive format to mtree
 
 =head2 archive_write_set_format_mtree_classic($archive)
 
+ my $status = archive_write_set_format_mtree_classic($archive)
+
 Set the archive format to mtree_classic
 
-=head2 archive_write_set_format_option($archive, $module, $option, $value)
+=head2 archive_write_set_format_option
+
+ my $status = archive_write_set_format_option($archive, $module, $option, $value);
 
 Specifies an option that will be passed to currently-registered format 
 readers.
@@ -1012,44 +1187,64 @@ in all other cases.
 
 =head2 archive_write_set_format_pax($archive)
 
+ my $status = archive_write_set_format_pax($archive)
+
 Set the archive format to pax
 
 =head2 archive_write_set_format_pax_restricted($archive)
+
+ my $status = archive_write_set_format_pax_restricted($archive)
 
 Set the archive format to pax_restricted
 
 =head2 archive_write_set_format_shar($archive)
 
+ my $status = archive_write_set_format_shar($archive)
+
 Set the archive format to shar
 
 =head2 archive_write_set_format_shar_dump($archive)
+
+ my $status = archive_write_set_format_shar_dump($archive)
 
 Set the archive format to shar_dump
 
 =head2 archive_write_set_format_ustar($archive)
 
+ my $status = archive_write_set_format_ustar($archive)
+
 Set the archive format to ustar
 
 =head2 archive_write_set_format_v7tar($archive)
+
+ my $status = archive_write_set_format_v7tar($archive)
 
 Set the archive format to v7tar
 
 =head2 archive_write_set_format_xar($archive)
 
+ my $status = archive_write_set_format_xar($archive)
+
 Set the archive format to xar
 
 =head2 archive_write_set_format_zip($archive)
 
+ my $status = archive_write_set_format_zip($archive)
+
 Set the archive format to zip
 
-=head2 archive_write_set_option($archive, $module, $option, $value)
+=head2 archive_write_set_option
+
+ my $status = archive_write_set_option($archive, $module, $option, $value);
 
 Calls C<archive_write_set_format_option>, then 
 C<archive_write_set_filter_option>. If either function returns 
 C<ARCHIVE_FATAL>, C<ARCHIVE_FATAL> will be returned immediately.  
 Otherwise, greater of the two values will be returned.
 
-=head2 archive_write_set_options($archive, $opts)
+=head2 archive_write_set_options
+
+ my $status = archive_write_set_options($archive, $options);
 
 options is a comma-separated list of options.  If options is C<undef> or 
 empty, C<ARCHIVE_OK> will be returned immediately.
@@ -1078,16 +1273,22 @@ to modules whose name matches module.
 
 =back
 
-=head2 archive_write_set_skip_file($archive, $dev, $ino)
+=head2 archive_write_set_skip_file
+
+ my $status = archive_write_set_skip_file($archive, $dev, $ino);
 
 The dev/ino of a file that won't be archived.  This is used
 to avoid recursively adding an archive to itself.
 
-=head2 archive_write_zip_set_compression_deflate($archive)
+=head2 archive_write_zip_set_compression_deflate
+
+ my $status = archive_write_zip_set_compression_deflate($archive);
 
 Set the compression method for the zip archive to deflate.
 
-=head2 archive_write_zip_set_compression_store($archive)
+=head2 archive_write_zip_set_compression_store
+
+ my $status = archive_write_zip_set_compression_store($archive);
 
 Set the compression method for the zip archive to store.
 

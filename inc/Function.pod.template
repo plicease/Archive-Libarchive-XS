@@ -22,8 +22,9 @@ to distinguish them (example: $archive1, $archive2).
 An archive object identifier (actually a pointer to the C structure used by
 libarchive as the archive object).
 
-These are created with L<#archive_read_new> or L<#archive_write_new> and
-deleted with L<#archive_read_free> or L<#archive_write_free>.
+These are created with L<#archive_read_new>, L<#archive_write_new> or
+L<#archive_write_disk_new> and deleted with L<#archive_read_free> or 
+L<#archive_write_free>.
 
 =item $entry
 
