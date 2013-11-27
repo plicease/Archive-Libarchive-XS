@@ -16,7 +16,85 @@ BEGIN {
 
 =head1 SYNOPSIS
 
- use Archive::Libarchive::XS;
+list archive filenames
+
+ use Archive::Libarchive::XS qw( :all );
+ 
+ my $archive = archive_read_new();
+ archive_read_support_filter_all($archive);
+ archive_read_support_format_all($archive);
+ # example is a tar file, but any supported format should work
+ # (zip, iso9660, etc.)
+ archive_read_open_filename($archive, 'archive.tar', 10240);
+ 
+ while(archive_read_next_header($archive, my $entry) == ARCHIVE_OK)
+ {
+   print archive_entry_pathname($entry), "\n";
+   archive_read_data_skip($archive);
+ }
+ 
+ archive_read_free($archive);
+
+extract archive
+
+ use Archive::Libarchive::XS qw( :all );
+ 
+ my $archive = archive_read_new();
+ archive_read_support_filter_all($archive);
+ archive_read_support_format_all($archive);
+ my $disk = archive_write_disk_new();
+ archive_write_disk_set_options($disk, 
+   ARCHIVE_EXTRACT_TIME   |
+   ARCHIVE_EXTRACT_PERM   |
+   ARCHIVE_EXTRACT_ACL    |
+   ARCHIVE_EXTRACT_FFLAGS
+ );
+ archive_write_disk_set_standard_lookup($disk);
+ archive_read_open_filename($archive, 'archive.tar', 10240);
+ 
+ while(1)
+ {
+   my $r = archive_read_next_header($archive, my $entry);
+   last if $r == ARCHIVE_EOF;
+   
+   archive_write_header($disk, $entry);
+   
+   while(1)
+   {
+     my $r = archive_read_data_block($archive, my $buffer, my $offset);
+     last if $r == ARCHIVE_EOF;
+     archive_write_data_block($disk, $buffer, $offset);
+   }
+ }
+ 
+ archive_read_close($archive);
+ archive_read_free($archive);
+ archive_write_close($disk);
+ archive_write_free($disk);
+
+write archive
+
+ use File::stat;
+ use File::Slurp qw( read_file );
+ use Archive::Libarchive::XS qw( :all );
+ 
+ my $archive = archive_write_new();
+ archive_write_set_format_pax_restricted($archive);
+ archive_write_open_filename($archive, 'archive.tar');
+ 
+ foreach my $filename (@filenames)
+ {
+   my $entry = archive_entry_new();
+   archive_entry_set_pathname($entry, $filename);
+   archive_entry_set_size($entry, stat($filename)->size);
+   archive_entry_set_filetype($entry, AE_IFREG);
+   archive_entry_set_perm($entry, 0644);
+   archive_write_header($archive, $entry);
+   archive_write_data($archive, scalar read_file($filename));
+   archive_entry_free($entry);
+ }
+ archive_write_close($archive);
+ archive_write_free($archive);
 
 =head1 DESCRIPTION
 
