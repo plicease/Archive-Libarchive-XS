@@ -47,17 +47,17 @@ foreach my $name (qw( foo bar baz ))
     my $entry = eval { archive_entry_new() };
     ok $entry, 'archive_entry_new';
   
-    eval { archive_entry_set_pathname($entry, $name) };
-    is $@, '', 'archive_entry_set_pathname';
+    $r = archive_entry_set_pathname($entry, $name);
+    is $r, ARCHIVE_OK, 'archive_entry_set_pathname';
 
-    eval { archive_entry_set_size($entry, length($data{$name})) };
-    is $@, '', 'archive_entry_set_size';
+    $r = archive_entry_set_size($entry, length($data{$name}));
+    is $r, ARCHIVE_OK, 'archive_entry_set_size';
 
-    eval { archive_entry_set_filetype($entry, AE_IFREG) };
-    is $@, '', 'archive_entry_set_filetype';
+    $r = archive_entry_set_filetype($entry, AE_IFREG);
+    is $r, ARCHIVE_OK, 'archive_entry_set_filetype';
 
-    eval { archive_entry_set_perm($entry, 0644) };
-    is $@, '', 'archive_entry_set_perm';
+    $r = archive_entry_set_perm($entry, 0644);
+    is $r, ARCHIVE_OK, 'archive_entry_set_perm';
 
     $r = archive_write_header($a, $entry);
     is $r, ARCHIVE_OK, 'archive_write_header';
@@ -65,8 +65,8 @@ foreach my $name (qw( foo bar baz ))
     my $len = archive_write_data($a, $data{$name});
     is $len, length($data{$name}), 'archive_write_data';;
   
-    eval { archive_entry_free($entry); };
-    is $@, '', 'archive_entry_free';
+    $r = archive_entry_free($entry); };
+    is $r, ARCHIVE_OK, 'archive_entry_free';
   };
 }
 

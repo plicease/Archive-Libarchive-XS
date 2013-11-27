@@ -12,6 +12,7 @@
 #include <archive_entry.h>
 
 typedef const char *string_or_null;
+typedef int void_always_ok;
 
 static int
 myopen(struct archive *archive, void *client_data)
@@ -269,7 +270,7 @@ generally used in client code.  Does not return a value.
 
 =cut
 
-void
+void_always_ok
 archive_clear_error(archive)
     struct archive *archive;
 
@@ -279,7 +280,7 @@ Copies error information from one archive to another.
 
 =cut
 
-void
+void_always_ok
 archive_copy_error(archive1, archive2)
     struct archive *archive1;
     struct archive *archive2;
@@ -805,7 +806,7 @@ to allow you to quickly recycle objects without thrashing the heap.
 
 =cut
 
-void
+void_always_ok
 archive_entry_clear(archive_entry)
     struct archive_entry *archive_entry
 
@@ -825,7 +826,7 @@ Releases the struct archive_entry object.
 
 =cut
 
-void
+void_always_ok
 archive_entry_free(archive_entry)
     struct archive_entry *archive_entry
 
@@ -864,7 +865,7 @@ Does not return anything.
 
 =cut
 
-void
+void_always_ok
 archive_entry_set_pathname(entry, name)
     struct archive_entry *entry
     const char *name
@@ -889,7 +890,7 @@ Does not return anything.
 
 =cut
 
-void
+void_always_ok
 archive_entry_set_size(entry, size)
     struct archive_entry *entry
     __LA_INT64_T size
@@ -922,7 +923,7 @@ Does not return anything.
 
 =cut
 
-void
+void_always_ok
 archive_entry_set_filetype(entry, code)
     struct archive_entry *entry
     unsigned int code
@@ -935,7 +936,7 @@ Does not return anything.
 
 =cut
 
-void
+void_always_ok
 archive_entry_set_perm(entry, perm)
     struct archive_entry *entry
     int perm
@@ -1029,7 +1030,7 @@ Does not return a value.
 
 =cut
 
-void
+void_always_ok
 archive_entry_set_mtime(entry, sec, nanosec)
     struct archive_entry *entry
     time_t sec
@@ -1954,7 +1955,7 @@ Returns the file flags property for the archive entry.
 
 #ifdef HAS_archive_entry_fflags
 
-void
+void_always_ok
 archive_entry_fflags(entry, sv_set, sv_clear)
     struct archive_entry *entry 
     SV *sv_set
