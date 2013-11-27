@@ -237,10 +237,23 @@ do {
     my \$constants = from_json(q[} . to_json(\@macros) . qq{] );
   });
   
-  my $perl = $mt->render( scalar file(__FILE__)->parent->file(qw( XS.pm.template ))->slurp );
+  do {
+    my $perl = $mt->render( scalar file(__FILE__)->parent->file(qw( XS.pm.template ))->slurp );
+    my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS.pm ))->absolute;
+    $file->spew($perl);
+  };
 
-  my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS.pm ))->absolute;
-  $file->spew($perl);
+  do {
+    my $pod = $mt->render( scalar file(__FILE__)->parent->file(qw( Function.pod.template ))->slurp );
+    my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS Function.pod ))->absolute;
+    $file->spew($pod);
+  };
+
+  do {
+    my $pod = $mt->render( scalar file(__FILE__)->parent->file(qw( Constant.pod.template ))->slurp );
+    my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS Constant.pod ))->absolute;
+    $file->spew($pod);
+  };
   
   file(__FILE__)->parent->file('functions.txt')->spew(join "\n", sort keys %functions);
 };

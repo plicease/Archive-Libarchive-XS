@@ -24,54 +24,43 @@ This module provides a functional interface to C<libarchive>.  C<libarchive> is 
 C library that can read and write archives in a variety of formats and with a 
 variety of compression filters, optimized in a stream oriented way.  A familiarity
 with the C<libarchive> documentation would be helpful, but may not be necessary
-for simple tasks.
-
-=head1 FUNCTIONS
-
-Unless otherwise specified, each function will return an integer return code,
-with one of the following values:
+for simple tasks.  The documentation for this module is split into four separate
+documents:
 
 =over 4
 
-=item ARCHIVE_OK
+=item L<Archive::Libarchive::XS>
 
-Operation was successful
+This document, contains an overview and some examples.
 
-=item ARCHIVE_EOF
+=item L<Archive::Libarchive::XS::Callback>
 
-Fond end of archive
+Documents the callback interface, used for customizing input and output.
 
-=item ARCHIVE_RETRY
+=item L<Archive::Libarchive::XS::Constant>
 
-Retry might succeed
+Documents the constants provided by this module.
 
-=item ARCHIVE_WARN
+=item L<Archive::Libarchive::XS::Function>
 
-Partial success
-
-=item ARCHIVE_FAILED
-
-Current operation cannot complete
-
-=item ARCHIVE_FATAL
-
-No more operations are possible
+The function reference, includes a list of all functions provided by this module.
 
 =back
 
-If you are linking against an older version of libarchive, some of these 
-functions may not be available.  You can use the C<can> method to test if
+If you are linking against an older version of libarchive, some functions
+and constants may not be available.  You can use the C<can> method to test if
 a function or constant is available, for example:
 
  if(Archive::Libarchive::XS->can('archive_read_support_filter_grzip')
  {
    # grzip filter is available.
  }
+ 
+ if(Archive::Libarchive::XS->can('ARCHIVE_OK'))
+ {
+   # ... although ARCHIVE_OK should always be available.
+ }
 
-% foreach my $function (sort keys %$functions) {
-<%= $functions->{$function} %>
-
-% }
 =cut
 
 sub _define_constant ($) {
@@ -94,20 +83,6 @@ eval q{
 }; die $@ if $@;
 
 1;
-
-=head1 CONSTANTS
-
-If provided by your libarchive library, these constants will be available and
-exportable from the L<Archive::Libarchive::XS> (you may import all available
-constants using the C<:const> export tag).
-
-=over 4
-
-% foreach my $constant (@$constants) {
-=item <%= $constant %>
-
-% }
-=back
 
 =head1 EXAMPLES
 

@@ -1,0 +1,75 @@
+# PODNAME: Archive::Libarchive::XS::Function
+# ABSTRACT: libarchive function reference
+# VERSION
+
+=head1 SYNOPSIS
+
+ use Archive::Libarchive::XS qw( :func );
+
+=head1 DESCRIPTION
+
+This is the function reference for the Perl bindings to libarchive.  
+
+Unless otherwise specified, each function will return an integer return code,
+with one of the following values:
+
+=over 4
+
+=item ARCHIVE_OK
+
+Operation was successful
+
+=item ARCHIVE_EOF
+
+Fond end of archive
+
+=item ARCHIVE_RETRY
+
+Retry might succeed
+
+=item ARCHIVE_WARN
+
+Partial success
+
+=item ARCHIVE_FAILED
+
+Current operation cannot complete
+
+=item ARCHIVE_FATAL
+
+No more operations are possible
+
+=back
+
+(There are additional non-status code constants provided by libarchive,
+see L<Archive::Libarchive::XS::Constant> for a full listing).
+
+If you are linking against an older version of libarchive, some of these 
+functions may not be available.  You can use the C<can> method to test if
+a function or constant is available, for example:
+
+ if(Archive::Libarchive::XS->can('archive_read_support_filter_grzip')
+ {
+   # grzip filter is available.
+ }
+
+=head1 FUNCTIONS
+
+% foreach my $function (sort keys %$functions) {
+<%= $functions->{$function} %>
+
+% }
+=head1 SEE ALSO
+
+=over 4
+
+=item L<Archive::Libarchive::XS>
+
+=item L<Archive::Libarchive::XS::Constant>
+
+=item L<Archive::Libarchive::XS::Callback>
+
+=back
+
+=cut
+

@@ -6,6 +6,31 @@ use warnings;
 # ABSTRACT: libarchive callback functions
 # VERSION
 
+=head1 SYNOPSIS
+
+ # TODO
+
+=head1 DESCRIPTION
+
+This document provides information of callback routines for writing
+custom input/output interfaces to the libarchive perl bindings.
+
+=head2 data
+
+=head2 open
+
+=head2 read
+
+=head2 write
+
+=head2 skip
+
+=head2 seek
+
+=head2 close
+
+=cut
+
 package
   Archive::Libarchive::XS;
 
@@ -17,8 +42,7 @@ use constant {
   CB_WRITE       => 4,
   CB_SKIP        => 5,
   CB_SEEK        => 6,
-  CB_SWITCH      => 7,
-  CB_BUFFER      => 8,
+  CB_BUFFER      => 7,
 };
     
 my %callbacks;
@@ -151,3 +175,18 @@ sub archive_write_free ($)
 }
 
 1;
+
+=head1 SEE ALSO
+
+=over 4
+
+=item L<Archive::Libarchive::XS>
+
+=item L<Archive::Libarchive::XS::Constant>
+
+=item L<Archive::Libarchive::XS::Function>
+
+=back
+
+=cut
+
