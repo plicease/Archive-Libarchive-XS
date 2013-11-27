@@ -67,6 +67,7 @@ write archive
     use Archive::Libarchive::XS qw( :all );
     
     my $archive = archive_write_new();
+    # many other formats are supported ...
     archive_write_set_format_pax_restricted($archive);
     archive_write_open_filename($archive, 'archive.tar');
     
