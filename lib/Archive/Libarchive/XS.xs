@@ -188,6 +188,21 @@ MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 BOOT:
      PERL_MATH_INT64_LOAD_OR_CROAK;
 
+=head2 archive_read_open_fh
+
+ my $status = archive_read_open_fh($archive, $fh, $block_size);
+
+Like L<#archive_read_open_filename>, except that it accepts a file handle and block
+size rather than a filename.  Note that the file handle will not be automatically
+closed at end-of-archive.  This function is safe for use with tape drives or other
+blocked devices.
+
+If not specified, a block size of 10240 will be used.
+
+There is no corresponding archive_read_open_fh in the C version of libarchive.
+This is provided in the place of C<archive_read_open_FILE> and C<archive_read_open_fd>,
+which are not in the Perl bindings for libarchive.
+
 =head2 archive_read_new
 
  my $archive = archive_read_new();

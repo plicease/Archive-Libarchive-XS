@@ -48,6 +48,7 @@ archive_read_next_header2
 archive_read_open
 archive_read_open1
 archive_read_open2
+archive_read_open_fh
 archive_read_open_filename
 archive_read_open_memory
 archive_read_set_callback_data

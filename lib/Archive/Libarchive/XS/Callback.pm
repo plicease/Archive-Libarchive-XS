@@ -135,6 +135,44 @@ sub archive_read_open ($$$$$)
   $ret;
 }
 
+sub archive_read_open_fh ($$;$)
+{
+  my($archive, $fh, $bs) = @_;
+  $bs ||= 10240;
+  my $data = { bs => $bs, fh => $fh };
+  archive_read_open($archive, $data, undef, \&_archive_read_open_fh_read, \&_archive_read_open_fh_close);
+}
+
+sub _archive_read_open_fh_read
+{
+  my($archive, $data) = @_;
+  my $br = read $data->{fh}, my $buffer, $data->{bs};
+  if(defined $br)
+  {
+    return (ARCHIVE_OK(), $buffer);
+  }
+  else
+  {
+    warn 'read error';
+    return ARCHIVE_FAILED();
+  }
+}
+
+sub _archive_read_open_fh_close
+{
+  my($archive, $data) = @_;
+  my $status = close $data->{fh};
+  if($status)
+  {
+    return ARCHIVE_OK();
+  }
+  else
+  {
+    warn 'close error';
+    return ARCHIVE_FATAL();
+  }
+}
+
 sub archive_write_open ($$$$$)
 {
   my($archive, $data, $opencb, $writecb, $closecb) = @_;
