@@ -79,9 +79,19 @@ Returns the number of bytes read/written on success (or 0 at EOF),
 returns a negative status value (see $status above) on error or
 warning.
 
+=item $callback
+
+A code reference pointing to a Perl callback subroutine.  The arguments
+that are passed into the callback and the return values expected from
+the callback are documented in L<Archive::Libarchive::XS::Callback>.
+
 =item $string
 
 A plain string scalar value.
+
+=item $bool
+
+A boolean value, either 0 or 1 (probably not C<undef> for return values).
 
 =back
 
