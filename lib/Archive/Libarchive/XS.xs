@@ -194,13 +194,23 @@ BOOT:
 
 Like L<#archive_read_open_filename>, except that it accepts a file handle and block
 size rather than a filename.  Note that the file handle will not be automatically
-closed at end-of-archive.  This function is safe for use with tape drives or other
-blocked devices.
+closed at end-of-archive.
 
 If not specified, a block size of 10240 will be used.
 
 There is no corresponding archive_read_open_fh in the C version of libarchive.
 This is provided in the place of C<archive_read_open_FILE> and C<archive_read_open_fd>,
+which are not in the Perl bindings for libarchive.
+
+=head2 archive_write_open_fh
+
+ my $status = archive_write_open_fh($archive, $fh);
+
+A convenience form of archive_write_open() that accepts a file descriptor.  Note
+that the file handle will not be automatically closed.
+
+There is no corresponding archive_read_write_fh in the C version of libarchive.
+This is provided in the place of C<archive_write_open_FILE> and C<archive_write_open_fd>,
 which are not in the Perl bindings for libarchive.
 
 =head2 archive_read_new
