@@ -190,17 +190,21 @@ BOOT:
 
 =head2 archive_read_new
 
+ my $archive = archive_read_new();
+
 Allocates and initializes a archive object suitable for reading from an archive.
 Returns an opaque archive which may be a perl style object, or a C pointer
 (depending on the implementation), either way, it can be passed into
-any of the read functions documented here with an <$archive> argument.
+any of the read functions documented here with an C<$archive> argument.
 
 =cut
 
 struct archive *
 archive_read_new();
 
-=head2 archive_read_close($archive)
+=head2 archive_read_close
+
+ my $status = archive_read_close($archive);
 
 Complete the archive and invoke the close callback.
 
@@ -210,9 +214,11 @@ int
 archive_read_close(archive)
     struct archive *archive
 
-=head2 archive_read_free($archive)
+=head2 archive_read_free
 
-Invokes C<archive_read_close> if it was not invoked manually, then
+ my $status = archive_read_free($archive)
+
+Invokes L<#archive_read_close> if it was not invoked manually, then
 release all resources.
 
 =cut
@@ -225,7 +231,9 @@ _archive_read_free(archive)
   OUTPUT:
     RETVAL
 
-=head2 archive_error_string($archive)
+=head2 archive_error_string
+
+ my $string = archive_error_string($archive)
 
 Returns a textual error message suitable for display.  The error
 message here is usually more specific than that obtained from
@@ -239,7 +247,9 @@ const char *
 archive_error_string(archive)
     struct archive *archive;
 
-=head2 archive_errno($archive)
+=head2 archive_errno
+
+ my $errno = archive_errno($archive);
 
 Returns a numeric error code indicating the reason for the most
 recent error return.
@@ -276,8 +286,10 @@ archive_copy_error(archive1, archive2)
 
 =head2 archive_filter_code
 
-Returns a numeric code identifying the indicated filter.  See C<archive_filter_count>
-for details of the numbering.
+ my $code = archive_filter_code($archive, $level);
+
+Returns a numeric code identifying the indicated filter.  See L<#archive_filter_count>
+for details of the level numbering.
 
 =cut
 
@@ -291,6 +303,8 @@ archive_filter_code(archive, level);
 #endif
 
 =head2 archive_filter_count
+
+ my $count = archive_filter_count($archive)
 
 Returns the number of filters in the current pipeline. For read archive handles, these 
 filters are added automatically by the automatic format detection. For write archive 
@@ -317,6 +331,8 @@ archive_filter_count(archive);
 
 =head2 archive_filter_name
 
+ my $string = archive_filter_name($archive, $level)
+
 Returns a textual name identifying the indicated filter.  See L<#archive_filter_count> for
 details of the numbering.
 
@@ -331,7 +347,9 @@ archive_filter_name(archive, level);
 
 #endif
 
-=head2 archive_format($archive)
+=head2 archive_format
+
+ my $code = archive_format($archive);
 
 Returns a numeric code indicating the format of the current archive
 entry.  This value is set by a successful call to
@@ -347,7 +365,9 @@ int
 archive_format(archive)
     struct archive *archive;
 
-=head2 archive_format_name($archive)
+=head2 archive_format_name
+
+ my $string = archive_format_name($archive);
 
 A textual description of the format of the current entry.
 
@@ -357,7 +377,9 @@ const char *
 archive_format_name(archive)
     struct archive *archive;
 
-=head2 archive_read_support_filter_all($archive)
+=head2 archive_read_support_filter_all
+
+ my $status = archive_read_support_filter_all($archive)
 
 Enable all available decompression filters.
 
@@ -383,6 +405,8 @@ archive_read_support_filter_all(archive)
 
 =head2 archive_read_support_filter_program(archive, command)
 
+ my $status = archive_read_support_filter_program($archive, $command);
+
 Data is feed through the specified external program before being
 dearchived.  Note that this disables automatic detection of the
 compression format, so it makes no sense to specify this in
@@ -399,7 +423,9 @@ archive_read_support_filter_program(archive, command)
 
 #endif
 
-=head2 archive_read_support_format_all($archive)
+=head2 archive_read_support_format_all
+
+ my $status = archive_read_support_format_all($archive);
 
 Enable all available archive formats.
 
@@ -409,7 +435,9 @@ int
 archive_read_support_format_all(archive)
     struct archive *archive;
 
-=head2 archive_read_support_format_by_code($archive, $code)
+=head2 archive_read_support_format_by_code
+
+ my $status = archive_read_support_format_by_code($archive, $code);
 
 Enables a single format specified by the format code.
 
@@ -424,7 +452,9 @@ archive_read_support_format_by_code(archive, code)
 
 #endif
 
-=head2 archive_read_open_filename($archive, $filename, $block_size)
+=head2 archive_read_open_filename
+
+ my $status = archive_read_open_filename($archive, $filename, $block_size)
 
 Like C<archive_read_open>, except that it accepts a simple filename
 and a block size.  This function is safe for use with tape drives
@@ -441,7 +471,9 @@ archive_read_open_filename(archive, filename, block_size)
     string_or_null filename;
     size_t block_size;
 
-=head2 archive_read_open_memory($archive, $buffer)
+=head2 archive_read_open_memory
+
+ my $status = archive_read_open_memory($archive, $buffer)
 
 Like C<archive_read_open>, except that it uses a Perl scalar that holds the 
 content of the archive.  This function does not make a copy of the data stored 
@@ -467,7 +499,9 @@ archive_read_open_memory(archive, input)
     RETVAL
 
 
-=head2 archive_read_next_header($archive, $entry)
+=head2 archive_read_next_header
+
+ my $status = archive_read_next_header($archive, $entry) 
 
 Read the header for the next entry and return an entry object
 Returns an opaque archive which may be a perl style object, or a C pointer
@@ -488,7 +522,9 @@ archive_read_next_header(archive, output)
     RETVAL
     output
 
-=head2 archive_read_data_skip($archive)
+=head2 archive_read_data_skip
+
+ my $status = archive_read_data_skip($archive);
 
 A convenience function that repeatedly calls C<archive_read_data> to skip
 all of the data for this archive entry.
@@ -499,7 +535,9 @@ int
 archive_read_data_skip(archive)
     struct archive *archive;
 
-=head2 archive_file_count($archive)
+=head2 archive_file_count
+
+ my $count = archive_file_count($archive)
 
 Returns a count of the number of files processed by this archive object.  The count
 is incremented by calls to C<archive_write_header> or C<archive_read_next_header>.
@@ -512,6 +550,8 @@ archive_file_count(archive)
 
 =head2 archive_version_string
 
+ my $string = archive_version_string();
+
 Return the libarchive as a version.
 
 Returns a string value.
@@ -523,6 +563,8 @@ archive_version_string();
 
 =head2 archive_version_number
 
+ my $version = archive_version_number();
+
 Return the libarchive version as an integer.
 
 =cut
@@ -530,7 +572,9 @@ Return the libarchive version as an integer.
 int
 archive_version_number();
 
-=head2 archive_entry_pathname($entry)
+=head2 archive_entry_pathname
+
+ my $string = archive_entry_pathname($entry)
 
 Retrieve the pathname of the entry.
 
@@ -542,7 +586,9 @@ const char *
 archive_entry_pathname(archive_entry);
     struct archive_entry *archive_entry;
 
-=head2 archive_read_data($archive, $buffer, $max_size)
+=head2 archive_read_data
+
+ my $count_or_status = archive_read_data($archive, $buffer, $max_size);
 
 Read data associated with the header just read.  Internally, this is a
 convenience function that calls C<archive_read_data_block> and fills

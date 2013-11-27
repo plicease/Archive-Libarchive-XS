@@ -10,8 +10,36 @@
 
 This is the function reference for the Perl bindings to libarchive.  
 
-Unless otherwise specified, each function will return an integer return code,
-with one of the following values:
+This document provides example calls to each function with argument and return
+value variable names that infer their types.  Functions that take multiple 
+arguments or return multiple values of the same type will use numbered suffixes
+to distinguish them (example: $archive1, $archive2).
+
+=over 4
+
+=item $archive
+
+An archive object identifier (actually a pointer to the C structure used by
+libarchive as the archive object).
+
+These are created with L<#archive_read_new> or L<#archive_write_new> and
+deleted with L<#archive_read_free> or L<#archive_write_free>.
+
+=item $entry
+
+An archive entry identifier (actually a pointer to the C structure used by
+libarchive as the archive entry object).
+
+These are created with L<#archive_entry_new> and deleted with
+L<#archive_entry_free>.  They can also be returned by L<#archive_read_next_header>,
+but in that case libarchive will handle the allocation and freeing of
+resources for the entry.
+
+=item $status
+
+Integer value indicating the success or failure of an operation.  Most functions
+use this as their return value.  This value may be compared to any of these
+constants:
 
 =over 4
 
@@ -43,6 +71,18 @@ No more operations are possible
 
 (There are additional non-status code constants provided by libarchive,
 see L<Archive::Libarchive::XS::Constant> for a full listing).
+
+=item $count_or_status
+
+Returns the number of bytes read/written on success (or 0 at EOF),
+returns a negative status value (see $status above) on error or
+warning.
+
+=item $string
+
+A plain string scalar value.
+
+=back
 
 If you are linking against an older version of libarchive, some of these 
 functions may not be available.  You can use the C<can> method to test if
