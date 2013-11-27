@@ -2532,6 +2532,107 @@ archive_read_disk_set_symlink_physical(archive)
 
 #endif
 
+=head2 archive_match_new
+
+ my $archive = archive_match_new();
+
+Allocates and initializes a archive object suitable for reading and matching with an archive.
+
+=cut
+
+#ifdef HAS_archive_match_new
+
+struct archive *
+archive_match_new()
+
+#endif
+
+=head2 archive_match_free
+
+ my $status = archive_match_free($archive);
+
+Free the resources previously allocated with L<#archive_match_new>.
+
+=cut
+
+#ifdef HAS_archive_match_free
+
+int
+archive_match_free(archive)
+    struct archive *archive
+
+#endif
+
+=head2 archive_match_excluded
+
+ my $bool = archive_match_excluded($archive, $entry);
+
+Test if archive_entry is excluded. This is a convenience function. This is the
+same as calling all L<#archive_match_path_excluded>, L<#archive_match_time_excluded>
+and L<#archive_match_owner_excluded>.
+
+=cut
+
+#ifdef HAS_archive_match_excluded
+
+int
+archive_match_excluded(archive, entry)
+    struct archive *archive
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_match_path_excluded
+
+ my $bool = archive_match_path_excluded($archive, $entry);
+
+Test if pathname is excluded.
+
+=cut
+
+#ifdef HAS_archive_match_path_excluded
+
+int
+archive_match_path_excluded(archive, entry)
+    struct archive *archive
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_match_time_excluded
+
+ my $bool = archive_match_time_excluded($archive, $entry);
+
+Test if a file is excluded by its time stamp.
+
+=cut
+
+#ifdef HAS_archive_match_time_excluded
+
+int
+archive_match_time_excluded(archive, entry)
+    struct archive *archive
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_match_owner_excluded
+
+ my $bool = archive_match_owner_excluded($archive, $entry);
+
+Test if a file is excluded by its uid, gid, user name or group name.
+
+=cut
+
+#ifdef HAS_archive_match_owner_excluded
+
+int
+archive_match_owner_excluded(archive, entry)
+    struct archive *archive
+    struct archive_entry *entry
+
+#endif
+
 int
 _constant(name)
         char *name

@@ -36,6 +36,12 @@ archive_filter_count
 archive_filter_name
 archive_format
 archive_format_name
+archive_match_excluded
+archive_match_free
+archive_match_new
+archive_match_owner_excluded
+archive_match_path_excluded
+archive_match_time_excluded
 archive_read_close
 archive_read_data
 archive_read_data_block

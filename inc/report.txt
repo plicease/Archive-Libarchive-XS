@@ -90,8 +90,6 @@ unimplemented: archive_filter_bytes
 unimplemented: archive_match_exclude_entry
 unimplemented: archive_match_exclude_pattern
 unimplemented: archive_match_exclude_pattern_from_file
-unimplemented: archive_match_excluded
-unimplemented: archive_match_free
 unimplemented: archive_match_include_date
 unimplemented: archive_match_include_file_time
 unimplemented: archive_match_include_gid
@@ -101,12 +99,8 @@ unimplemented: archive_match_include_pattern_from_file
 unimplemented: archive_match_include_time
 unimplemented: archive_match_include_uid
 unimplemented: archive_match_include_uname
-unimplemented: archive_match_new
-unimplemented: archive_match_owner_excluded
-unimplemented: archive_match_path_excluded
 unimplemented: archive_match_path_unmatched_inclusions
 unimplemented: archive_match_path_unmatched_inclusions_next
-unimplemented: archive_match_time_excluded
 unimplemented: archive_read_append_filter
 unimplemented: archive_read_append_filter_program
 unimplemented: archive_read_append_filter_program_signature
@@ -129,4 +123,4 @@ unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_open_memory
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 127
+total unimplemented symbols: 121
