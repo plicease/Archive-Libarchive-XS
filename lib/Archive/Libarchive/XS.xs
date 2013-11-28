@@ -5,6 +5,7 @@
 
 #define MATH_INT64_NATIVE_IF_AVAILABLE
 #include "perl_math_int64.h"
+#include "perl_archive.h"
 #include "func.h"
 
 #include <string.h>
@@ -2630,6 +2631,37 @@ int
 archive_match_owner_excluded(archive, entry)
     struct archive *archive
     struct archive_entry *entry
+
+#endif
+
+=head2 archive_perl_codeset
+
+ my $string = archive_perl_codeset();
+
+Returns the name of the "codeset" (character encoding, example: "UTF-8" for
+UTF-8 or "ANSI_X3.4-1968" for ASCII) of the currently configured locale.
+
+=cut
+
+#ifdef HAS_archive_perl_codeset
+
+string_or_null
+archive_perl_codeset()
+
+#endif
+
+=head2 archive_perl_utf8_mode
+
+ my $bool = archive_perl_utf8_mode();
+
+Returns true if the internal "codeset" used by libarchive is UTF-8.
+
+=cut
+
+#ifdef HAS_archive_perl_utf8_mode
+
+int
+archive_perl_utf8_mode()
 
 #endif
 

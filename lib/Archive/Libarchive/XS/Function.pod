@@ -104,6 +104,10 @@ a function or constant is available, for example:
    # grzip filter is available.
  }
 
+Functions with the prefix C<archive_perl_> are not part of libarchive
+and are provided with this module for perl specific needs when operating
+with the library.
+
 =head1 FUNCTIONS
 
 =head2 archive_clear_error
@@ -438,6 +442,19 @@ Test if pathname is excluded.
  my $bool = archive_match_time_excluded($archive, $entry);
 
 Test if a file is excluded by its time stamp.
+
+=head2 archive_perl_codeset
+
+ my $string = archive_perl_codeset();
+
+Returns the name of the "codeset" (character encoding, example: "UTF-8" for
+UTF-8 or "ANSI_X3.4-1968" for ASCII) of the currently configured locale.
+
+=head2 archive_perl_utf8_mode
+
+ my $bool = archive_perl_utf8_mode();
+
+Returns true if the internal "codeset" used by libarchive is UTF-8.
 
 =head2 archive_read_close
 

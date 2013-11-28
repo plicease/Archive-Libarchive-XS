@@ -38,6 +38,7 @@ pod_spelling_system:
     - birthtime
     - hardlinks
     - ino
+    - codeset
 
 
 pod_coverage:

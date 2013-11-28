@@ -1,4 +1,5 @@
 Alien::Libarchive
+Exporter::Tidy
 Math::Int64
 Module::Build
 Test::More

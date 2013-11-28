@@ -104,6 +104,10 @@ a function or constant is available, for example:
    # grzip filter is available.
  }
 
+Functions with the prefix C<archive_perl_> are not part of libarchive
+and are provided with this module for perl specific needs when operating
+with the library.
+
 =head1 FUNCTIONS
 
 % foreach my $function (sort keys %$functions) {
