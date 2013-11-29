@@ -622,19 +622,9 @@ Returns a string value.
 
 =cut
 
-SV *
+string_or_null
 archive_entry_pathname(entry);
     struct archive_entry *entry;
-  CODE:
-    const char *name;
-    name = archive_entry_pathname(entry);
-    RETVAL = newSVpv(name, strlen(name));
-    if(archive_perl_utf8_mode())
-      SvUTF8_on(RETVAL); /* TODO: only mark as UTF-8 if has UTF-8 */
-    else
-      ;                  /* TODO: convert from current to UTF-8 */
-  OUTPUT:
-    RETVAL
 
 =head2 archive_read_data
 
