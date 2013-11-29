@@ -4,6 +4,9 @@ use utf8;
 use Test::More tests => 2;
 use Archive::Libarchive::XS qw( :all );
 
+my $builder = Test::More->builder;
+binmode $builder->output, ":encoding(utf8)";
+
 my $e = archive_entry_new();
 
 TODO: {
