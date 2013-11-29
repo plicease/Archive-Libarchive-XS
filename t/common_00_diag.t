@@ -31,8 +31,11 @@ foreach my $const (do { open my $fh, '<', $fn; <$fh> })
   }
 }
 
-diag '';
-diag '';
+if($not_first)
+{
+  diag '';
+  diag '';
+}
 
 $fn = File::Spec->catfile(
   dirname( __FILE__ ),
@@ -53,11 +56,14 @@ foreach my $func (do { open my $fh, '<', $fn; <$fh> })
   }
 }
 
+if($not_first)
+{
+  diag '';
+  diag '';
+}
+
 eval q{ use Archive::Libarchive::XS };
 diag $@ if $@;
-
-diag '';
-diag '';
 
 diag 'archive_perl_codeset:   ' . eval q{ Archive::Libarchive::XS::archive_perl_codeset() };
 diag $@ if $@;

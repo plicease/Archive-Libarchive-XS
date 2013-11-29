@@ -87,10 +87,10 @@ write archive
 
 # DESCRIPTION
 
-This module provides a functional interface to `libarchive`.  `libarchive` is a
+This module provides a functional interface to libarchive.  libarchive is a
 C library that can read and write archives in a variety of formats and with a 
 variety of compression filters, optimized in a stream oriented way.  A familiarity
-with the `libarchive` documentation would be helpful, but may not be necessary
+with the libarchive documentation would be helpful, but may not be necessary
 for simple tasks.  The documentation for this module is split into four separate
 documents:
 
@@ -544,9 +544,11 @@ not support the input characters).
 # CAVEATS
 
 Archive and entry objects are really pointers to opaque C structures
-and need to be freed using one of `archive_read_free`, `archive_write_free`
-or `archive_entry_free`, in order to free the resources associated
-with those objects.
+and need to be freed using one of 
+[archive_read_free](https://metacpan.org/pod/Archive::Libarchive::XS::Function#archive_read_free), 
+[archive_write_free](https://metacpan.org/pod/Archive::Libarchive::XS::Function#archive_write_free) or 
+[archive_entry_free](https://metacpan.org/pod/Archive::Libarchive::XS::Function#archive_entry_free), 
+in order to free the resources associated with those objects.
 
 Unicode pathnames in archives are only fully supported if you are using a
 UTF-8 locale.  If you aren't then the archive entry set pathname functions
@@ -556,8 +558,8 @@ in the codeset for the current locale.  If you are using a UTF-8 locale,
 this module will mark the Perl strings it returns as UTF-8, but if you aren't
 then you need to convert the strings to do anything useful.  Two Perl only
 functions 
-[Archive::Libarchive::XS::Function#archive_perl_utf8_mode](https://metacpan.org/pod/Archive::Libarchive::XS::Function#archive_perl_utf8_mode) and
-[Archive::Libarchive::XS::Function#archive_perl_codeset](https://metacpan.org/pod/Archive::Libarchive::XS::Function#archive_perl_codeset)
+[archive_perl_utf8_mode](https://metacpan.org/pod/Archive::Libarchive::XS::Function#archive_perl_utf8_mode) and
+[archive_perl_codeset](https://metacpan.org/pod/Archive::Libarchive::XS::Function#archive_perl_codeset)
 are provided to help, but there is probably a better way.  Patches to improve
 this situation would be happily considered.
 
