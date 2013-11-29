@@ -462,6 +462,7 @@ locale.
     use strict;
     use warnings;
     use utf8;
+    use Archive::Libarchive::XS qw( :all );
     use POSIX qw( setlocale LC_ALL );
     
     # substitute en_US.utf8 for the correct UTF-8 locale for your region.
@@ -490,6 +491,7 @@ which will return true if you are using a UTF-8 locale.
     use strict;
     use warnings;
     use utf8;
+    use Archive::Libarchive::XS qw( :all );
     
     my $entry = archive_entry_new();
     
@@ -505,6 +507,40 @@ which will return true if you are using a UTF-8 locale.
     
     archive_entry_free($entry);
 
+These Perl bindings for libarchive also provides a function
+[archive_perl_codeset](https://metacpan.org/pod/Archive::Libarchive::XS::Function#archive_perl_codeset)
+which can be used with [Text::Iconv](https://metacpan.org/pod/Text::Iconv) to convert strings (if possible; not all
+encodings have legal mappings).
+
+    use strict;
+    use warnings;
+    use utf8;
+    use Archive::Libarchive::XS qw( :all );
+    use Text::Iconv;
+    use Encoding qw( decode );
+    
+    my $entry = archive_entry_new();
+    
+    archive_entry_set_pathname($entry, "привет.txt");
+
+    my $string = archive_entry_pathname($entry); # value depends on locale
+    if(archive_perl_utf8_mode())
+    {
+      # $string = "привет.txt" (already)
+    }
+    else
+    {
+      my $iconv = Text::Iconv->new(archive_perl_codeset(), "UTF-8");
+      $iconv->raise_error(1);
+      $string = decode('UTF-8', $iconv->convert($string)); # $string = "привет.txt"
+    }
+    
+    archive_entry_free($entry);
+
+Note that the [Text::Iconv](https://metacpan.org/pod/Text::Iconv) method convert will throw an exception if the 
+conversion is not possible (if, for example, the destination encoding does
+not support the input characters).
+
 # CAVEATS
 
 Archive and entry objects are really pointers to opaque C structures
@@ -512,14 +548,18 @@ and need to be freed using one of `archive_read_free`, `archive_write_free`
 or `archive_entry_free`, in order to free the resources associated
 with those objects.
 
-If you need to process archives with non ASCII filenames then the situation
-is not great at the moment if you don't happen to be using (or more importantly
-if your users don't happen to be using) a UTF-8 locale.  The workaround for now
-is to use a UTF-8 locale, or to not retrieve pathnames from archive entry
-objects (the set methods should work correctly).  This situation could probably
-be at least partially remedied by having the path retrieval functions use iconv
-to convert the results to UTF-8, but that still presents problems if you
-are using a locale that doesn't support characters present in the archive.
+Unicode pathnames in archives are only fully supported if you are using a
+UTF-8 locale.  If you aren't then the archive entry set pathname functions
+will convert Perl's internal representation to the current locale codeset
+using libarchive itself.  The get methods, unfortunately only return strings
+in the codeset for the current locale.  If you are using a UTF-8 locale,
+this module will mark the Perl strings it returns as UTF-8, but if you aren't
+then you need to convert the strings to do anything useful.  Two Perl only
+functions 
+[Archive::Libarchive::XS::Function#archive_perl_utf8_mode](https://metacpan.org/pod/Archive::Libarchive::XS::Function#archive_perl_utf8_mode) and
+[Archive::Libarchive::XS::Function#archive_perl_codeset](https://metacpan.org/pod/Archive::Libarchive::XS::Function#archive_perl_codeset)
+are provided to help, but there is probably a better way.  Patches to improve
+this situation would be happily considered.
 
 The documentation that comes with libarchive is not that great (by its own
 admission), being somewhat incomplete, and containing a few subtle errors.

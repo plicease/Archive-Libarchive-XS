@@ -53,5 +53,16 @@ foreach my $func (do { open my $fh, '<', $fn; <$fh> })
   }
 }
 
+eval q{ use Archive::Libarchive::XS };
+diag $@ if $@;
+
+diag '';
+diag '';
+
+diag 'archive_perl_codeset:   ' . eval q{ Archive::Libarchive::XS::archive_perl_codeset() };
+diag $@ if $@;
+diag 'archive_perl_utf8_mode: ' . eval q{ Archive::Libarchive::XS::archive_perl_utf8_mode() };
+diag $@ if $@;
+
 diag '';
 diag '';
