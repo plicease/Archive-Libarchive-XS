@@ -187,7 +187,11 @@ do { # symbol list
   );
   
   delete $symbols{$_} for @typedefs;
-
+  
+  file(__FILE__)->parent->file('symbols.txt')->spew(join "\n", sort keys %symbols);
+  
+  delete $symbols{$_} for grep /_(w|utf8)$/, keys %symbols;
+  
   my @wontimplement = qw(
     archive_read_add_callback_data
     archive_read_append_callback_data
@@ -198,13 +202,14 @@ do { # symbol list
     archive_read_open_memory2
     archive_write_open_fd
     archive_write_open_FILE
+    archive_entry_copy_gname
+    archive_entry_copy_hardlink
+    archive_entry_copy_pathname
+    archive_entry_copy_symlink
+    archive_entry_copy_uname
   );
-  
-  delete $symbols{$_} for @wontimplement;
 
-  delete $symbols{$_} for grep /_(w|utf8)$/, keys %symbols;
-  
-  file(__FILE__)->parent->file('symbols.txt')->spew(join "\n", sort keys %symbols);
+  delete $symbols{$_} for @wontimplement;
 };
 
 do {
