@@ -2631,6 +2631,165 @@ archive_perl_utf8_mode()
 
 #endif
 
+=head2 archive_entry_acl
+
+ my $acl = archive_entry_acl($entry);
+
+Return an opaque ACL object.
+
+There's not yet anything you can actually do with this...
+
+=cut
+
+#ifdef HAS_archive_entry_acl
+
+struct archive_acl *
+archive_entry_acl(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_acl_clear
+
+ my $status = archive_entry_acl_clear($entry);
+
+removes all ACL entries and resets the enumeration pointer.
+
+=cut
+
+#ifdef HAS_archive_entry_acl_clear
+
+int
+archive_entry_acl_clear(entry)
+    struct archive_entry *entry
+  CODE:
+    archive_entry_acl_clear(entry);
+    RETVAL = ARCHIVE_OK;
+
+#endif
+
+=head2 archive_entry_acl_add_entry
+
+ my $status = archive_entry_acl_add_entry($entry, $type, $permset, $tag, $qual, $name);
+
+Adds a single ACL entry.  For the access ACL and non-extended principals, the classic
+UNIX permissions are updated.
+
+=cut
+
+#ifdef HAS_archive_entry_acl_add_entry
+
+int
+archive_entry_acl_add_entry(entry, type, permset, tag, qual, name)
+    struct archive_entry *entry
+    int type
+    int permset
+    int tag
+    int qual
+    const char *name
+
+#endif
+
+=head2 archive_entry_acl_reset
+
+ my $status = archive_entry_acl_reset($entry, $want_type);
+
+prepare reading the list of ACL entries with
+L<#archive_entry_acl_next> or L<#archive_entry_acl_next_w>.  The function returns
+either 0, if no non-extended ACLs are found.  In this case, the access permissions
+should be obtained by L<#archive_entry_mode> or set using L<chmod|perlfunc#chmod>.
+Otherwise, the function returns the same value as L<#archive_entry_acl_count>.
+
+=cut
+
+#ifdef HAS_archive_entry_acl_reset
+
+int
+archive_entry_acl_reset(entry, want_type)
+    struct archive_entry *entry
+    int want_type
+
+#endif
+
+=head2 archive_entry_acl_next
+
+ my $status = archive_entry_acl_next($entry, $want_type, $type, $permset, $tag, $qual, $name);
+
+return the next entry of the ACL list.  This functions may only be called after L<#archive_entry_acl_reset>
+has indicated the presence of extended ACL entries.
+
+=cut
+
+#ifdef HAS_archive_entry_acl_next
+
+int
+archive_entry_acl_next(entry, want_type, type, permset, tag, qual, name)
+    struct archive_entry *entry 
+    int want_type
+    SV *type
+    SV *permset
+    SV *tag
+    SV *qual
+    SV *name
+  CODE:
+    int a_type, a_permset, a_tag, a_qual;
+    const char *a_name;
+    RETVAL = archive_entry_acl_next(entry, want_type, &a_type, &a_permset, &a_tag, &a_qual, &a_name);
+    sv_setiv(type, a_type);
+    sv_setiv(permset, a_permset);
+    sv_setiv(tag, a_tag);
+    sv_setiv(qual, a_qual);
+    sv_setpv(name, a_name);
+  OUTPUT:
+    type
+    permset
+    tag
+    qual
+    name
+
+#endif
+
+=head2 archive_entry_acl_text
+
+ my $string = archive_entry_acl_text($entry, $flags);
+
+converts the ACL entries for the given type mask into a string.  In addition to the normal type flags,
+C<ARCHIVE_ENTRY_ACL_STYLE_EXTRA_ID> and C<ARCHIVE_ENTRY_ACL_STYLE_MARK_DEFAULT> can be specified
+to further customize the result.  The returned long string is valid until the next call to 
+L<#archive_entry_acl_clear>, L<#archive_entry_acl_add_entry>, L<#archive_entry_acl_text>.
+
+=cut
+
+#ifdef HAS_archive_entry_acl_text
+
+string_or_null
+archive_entry_acl_text(entry, flags)
+    struct archive_entry *entry
+    int flags
+
+#endif
+
+=head2 archive_entry_acl_count
+
+ my $count = archive_entry_acl_count($entry, $want_type);
+
+counts the ACL entries that have the given type mask.
+$type can be the bitwise-or of C<ARCHIVE_ENTRY_ACL_TYPE_ACCESS> and
+C<ARCHIVE_ENTRY_ACL_TYPE_DEFAULT>.  If C<ARCHIVE_ENTRY_ACL_TYPE_ACCESS>
+is included and at least one extended ACL entry is found, the three
+non-extended ACLs are added.
+
+=cut
+
+#ifdef HAS_archive_entry_acl_count
+
+int
+archive_entry_acl_count(entry, want_type)
+    struct archive_entry *entry
+    int want_type
+
+#endif
+
 int
 _constant(name)
         char *name

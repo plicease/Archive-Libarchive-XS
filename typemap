@@ -1,5 +1,6 @@
 struct archive *         T_PTR
 struct archive_entry *   T_PTR
+struct archive_acl *     T_PTR
 __LA_INT64_T             T_INT64
 string_or_null           T_PV_OR_NULL
 dev_t                    T_INT64
