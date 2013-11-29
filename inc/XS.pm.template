@@ -197,12 +197,74 @@ These examples are also included with the distribution.
 
 # EXAMPLE: example/complete_extractor.pl
 
+=head2 Unicode
+
+libarchive uses the character set and encoding defined by the currently
+selected locale for pathnames and other string data.  If you have non
+ASCII characters in your archives or filenames you need to use a UTF-8
+locale.
+
+ use strict;
+ use warnings;
+ use utf8;
+ use POSIX qw( setlocale LC_ALL );
+ 
+ # substitute en_US.utf8 for the correct UTF-8 locale for your region.
+ setlocale(LC_ALL, "en_US.utf8"); # or 'export LANG=en_US.utf8' from your shell.
+ 
+ my $entry = archive_entry_new();
+ 
+ archive_entry_set_pathname($entry, "привет.txt");
+ my $string = archive_entry_pathname($entry); # "привет.txt"
+ 
+ archive_entry_free($entry);
+
+Unfortunately locale names are not portable across systems, so you should
+probably not hard code the locale as shown here unless you know the correct
+locale name for all the platforms that your script will run.
+
+If you are not using a UTF-8 locale then the set method for pathname style
+entry fields should work, but the retrieval methods will return the raw
+encoded values from libarchive (this is almost certainly not what you want
+if you have non ASCII filenames in your archive).
+
+These Perl bindings for libarchive provide a function
+L<archive_perl_utf8_mode|Archive::Libarchive::XS::Function#archive_perl_utf8_mode>
+which will return true if you are using a UTF-8 locale.
+
+ use strict;
+ use warnings;
+ use utf8;
+ 
+ my $entry = archive_entry_new();
+ 
+ if(archive_perl_utf8_mode())
+ {
+   archive_entry_set_pathname($entry, "привет.txt");
+   my $string = archive_entry_pathname($entry); # "привет.txt"
+ }
+ else
+ {
+   die "not using a UTF-8 locale";
+ }
+ 
+ archive_entry_free($entry);
+
 =head1 CAVEATS
 
 Archive and entry objects are really pointers to opaque C structures
 and need to be freed using one of C<archive_read_free>, C<archive_write_free>
 or C<archive_entry_free>, in order to free the resources associated
 with those objects.
+
+If you need to process archives with non ASCII filenames then the situation
+is not great at the moment if you don't happen to be using (or more importantly
+if your users don't happen to be using) a UTF-8 locale.  The workaround for now
+is to use a UTF-8 locale, or to not retrieve pathnames from archive entry
+objects (the set methods should work correctly).  This situation could probably
+be at least partially remedied by having the path retrieval functions use iconv
+to convert the results to UTF-8, but that still presents problems if you
+are using a locale that doesn't support characters present in the archive.
 
 The documentation that comes with libarchive is not that great (by its own
 admission), being somewhat incomplete, and containing a few subtle errors.
