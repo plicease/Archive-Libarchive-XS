@@ -2790,6 +2790,120 @@ archive_entry_acl_count(entry, want_type)
 
 #endif
 
+=head2 archive_entry_rdev
+
+ my $device = archive_entry_rdev($entry);
+
+Returns the rdev property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_rdev
+
+dev_t
+archive_entry_rdev(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_rdevmajor
+
+ my $device_major = archive_entry_rdevmajor($entry);
+
+Returns the major component of the rdev property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_rdevmajor
+
+dev_t
+archive_entry_rdevmajor(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_rdevminor
+
+ my $device_minor = archive_entry_rdevminor($entry);
+
+Returns the minor component of the rdev property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_rdevminor
+
+dev_t
+archive_entry_rdevminor(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_set_rdev
+
+ my $status = archive_entry_set_rdev($entry, $device);
+
+Set the rdev property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_set_rdev
+
+int
+archive_entry_set_rdev(entry, device)
+    struct archive_entry *entry
+    dev_t device
+  CODE:
+    archive_entry_set_rdev(entry, device);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_set_rdevmajor
+
+ my $status = archive_entry_set_rdevmajor($entry, $major);
+
+Set the major component of the rdev property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_set_rdevmajor
+
+int
+archive_entry_set_rdevmajor(entry, major)
+    struct archive_entry *entry
+    dev_t major
+  CODE:
+    archive_entry_set_rdevmajor(entry, major);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_set_rdevminor
+
+ my $status = archive_entry_set_rdevminor($entry, $minor);
+
+Sets the minor component of the rdev property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_set_rdevminor
+
+int
+archive_entry_set_rdevminor(entry, minor)
+    struct archive_entry *entry
+    dev_t minor
+  CODE:
+    archive_entry_set_rdevminor(entry, minor);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name

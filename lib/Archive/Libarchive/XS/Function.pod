@@ -335,6 +335,24 @@ default character-set conversion.
 
 Retrieve the pathname for the archive entry object.
 
+=head2 archive_entry_rdev
+
+ my $device = archive_entry_rdev($entry);
+
+Returns the rdev property for the archive entry.
+
+=head2 archive_entry_rdevmajor
+
+ my $device_major = archive_entry_rdevmajor($entry);
+
+Returns the major component of the rdev property for the archive entry.
+
+=head2 archive_entry_rdevminor
+
+ my $device_minor = archive_entry_rdevminor($entry);
+
+Returns the minor component of the rdev property for the archive entry.
+
 =head2 archive_entry_set_filetype
 
  my $status = archive_entry_set_filetype($entry, $code);
@@ -392,6 +410,24 @@ Sets the pathname for the archive entry object.
  my $status = archive_entry_set_perm($entry, $perm);
 
 Set the permission bits for the entry.  This is the usual UNIX octal permission thing.
+
+=head2 archive_entry_set_rdev
+
+ my $status = archive_entry_set_rdev($entry, $device);
+
+Set the rdev property for the archive entry.
+
+=head2 archive_entry_set_rdevmajor
+
+ my $status = archive_entry_set_rdevmajor($entry, $major);
+
+Set the major component of the rdev property for the archive entry.
+
+=head2 archive_entry_set_rdevminor
+
+ my $status = archive_entry_set_rdevminor($entry, $minor);
+
+Sets the minor component of the rdev property for the archive entry.
 
 =head2 archive_entry_set_size
 

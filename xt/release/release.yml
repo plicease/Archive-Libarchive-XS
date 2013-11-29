@@ -42,6 +42,7 @@ pod_spelling_system:
     - gname
     - hardlink
     - ACL
+    - rdev
 
 pod_coverage:
   # format is "Class#method" or "Class", regex allowed

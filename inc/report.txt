@@ -26,9 +26,6 @@ unimplemented: archive_entry_mtime_nsec
 unimplemented: archive_entry_nlink
 unimplemented: archive_entry_partial_links
 unimplemented: archive_entry_perm
-unimplemented: archive_entry_rdev
-unimplemented: archive_entry_rdevmajor
-unimplemented: archive_entry_rdevminor
 unimplemented: archive_entry_set_atime
 unimplemented: archive_entry_set_birthtime
 unimplemented: archive_entry_set_ctime
@@ -42,9 +39,6 @@ unimplemented: archive_entry_set_ino64
 unimplemented: archive_entry_set_link
 unimplemented: archive_entry_set_mode
 unimplemented: archive_entry_set_nlink
-unimplemented: archive_entry_set_rdev
-unimplemented: archive_entry_set_rdevmajor
-unimplemented: archive_entry_set_rdevminor
 unimplemented: archive_entry_set_uid
 unimplemented: archive_entry_size_is_set
 unimplemented: archive_entry_sourcepath
@@ -105,4 +99,4 @@ unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_open_memory
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 101
+total unimplemented symbols: 95
