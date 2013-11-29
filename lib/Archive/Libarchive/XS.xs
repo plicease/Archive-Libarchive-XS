@@ -264,12 +264,11 @@ _archive_read_free(archive)
 Returns a textual error message suitable for display.  The error
 message here is usually more specific than that obtained from
 passing the result of C<archive_errno> to C<strerror>.
-
-Return type is a string.
+Returns C<undef> if there is not error.
 
 =cut
 
-const char *
+string_or_null
 archive_error_string(archive)
     struct archive *archive;
 
