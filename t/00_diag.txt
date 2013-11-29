@@ -4,4 +4,3 @@ Math::Int64
 Module::Build
 Test::More
 constant
-open

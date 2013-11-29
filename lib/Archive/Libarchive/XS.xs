@@ -622,9 +622,19 @@ Returns a string value.
 
 =cut
 
-const char *
-archive_entry_pathname(archive_entry);
-    struct archive_entry *archive_entry;
+SV *
+archive_entry_pathname(entry);
+    struct archive_entry *entry;
+  CODE:
+    const char *name;
+    name = archive_entry_pathname(entry);
+    RETVAL = newSVpv(name, strlen(name));
+    if(archive_perl_utf8_mode())
+      SvUTF8_on(RETVAL); /* TODO: only mark as UTF-8 if has UTF-8 */
+    else
+      ;                  /* TODO: convert from current to UTF-8 */
+  OUTPUT:
+    RETVAL
 
 =head2 archive_read_data
 
@@ -941,19 +951,26 @@ archive_entry_new2(archive)
 
  my $status = archive_entry_set_pathname($entry, $string);
 
-Sets the path in the archive as a string.
-
-Does not return anything.
+Sets the pathname for the entry object.
 
 =cut
 
 int
 archive_entry_set_pathname(entry, name)
     struct archive_entry *entry
-    const char *name
+    SV *name
   CODE:
-    archive_entry_copy_pathname(entry, name);
-    RETVAL = ARCHIVE_OK;
+    if(DO_UTF8(name))
+    {
+      RETVAL = archive_entry_update_pathname_utf8(entry, SvPV_nolen(name));
+      if(RETVAL > 0)
+        RETVAL = ARCHIVE_OK;
+    }
+    else
+    {
+      archive_entry_copy_pathname(entry, SvPV_nolen(name));
+      RETVAL = ARCHIVE_OK;
+    }
   OUTPUT:
     RETVAL
 

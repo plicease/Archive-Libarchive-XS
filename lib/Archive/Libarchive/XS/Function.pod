@@ -306,9 +306,7 @@ Does not return a value.
 
  my $status = archive_entry_set_pathname($entry, $string);
 
-Sets the path in the archive as a string.
-
-Does not return anything.
+Sets the pathname for the entry object.
 
 =head2 archive_entry_set_perm
 
