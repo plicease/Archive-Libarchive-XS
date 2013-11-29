@@ -612,20 +612,6 @@ Return the libarchive version as an integer.
 int
 archive_version_number();
 
-=head2 archive_entry_pathname
-
- my $string = archive_entry_pathname($entry)
-
-Retrieve the pathname of the entry.
-
-Returns a string value.
-
-=cut
-
-string_or_null
-archive_entry_pathname(entry);
-    struct archive_entry *entry;
-
 =head2 archive_read_data
 
  my $count_or_status = archive_read_data($archive, $buffer, $max_size);
@@ -936,33 +922,6 @@ archive_entry_new2(archive)
     struct archive *archive
 
 #endif
-
-=head2 archive_entry_set_pathname
-
- my $status = archive_entry_set_pathname($entry, $string);
-
-Sets the pathname for the entry object.
-
-=cut
-
-int
-archive_entry_set_pathname(entry, name)
-    struct archive_entry *entry
-    SV *name
-  CODE:
-    if(DO_UTF8(name))
-    {
-      RETVAL = archive_entry_update_pathname_utf8(entry, SvPV_nolen(name));
-      if(RETVAL > 0)
-        RETVAL = ARCHIVE_OK;
-    }
-    else
-    {
-      archive_entry_copy_pathname(entry, SvPV_nolen(name));
-      RETVAL = ARCHIVE_OK;
-    }
-  OUTPUT:
-    RETVAL
 
 =head2 archive_entry_size($entry)
 
@@ -4146,3 +4105,258 @@ archive_write_set_format_zip(archive)
 
 #endif
 
+
+=head2 archive_entry_set_gname
+
+ my $status = archive_entry_set_gname
+
+Sets the gname for the archive entry object.
+
+=cut
+
+#ifdef HAS_archive_entry_copy_gname
+
+int
+archive_entry_set_gname(entry, gname)
+    struct archive_entry *entry
+    SV *gname
+  CODE:
+#ifdef HAS_archive_entry_update_gname_utf8
+    if(DO_UTF8(gname))
+    {
+      RETVAL = archive_entry_update_gname_utf8(entry, SvPV_nolen(gname));
+      if(RETVAL > 0)
+        RETVAL = ARCHIVE_OK;
+    }
+    else
+    {
+#endif
+      archive_entry_copy_gname(entry, SvPV_nolen(gname));
+      RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_gname_utf8
+    }
+#endif
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_gname
+
+ my $string = archive_entry_gname($entry);
+
+Retrieve the gname for the archive entry object.
+
+=cut
+
+#ifdef HAS_archive_entry_gname
+
+string_or_null
+archive_entry_gname(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_set_hardlink
+
+ my $status = archive_entry_set_hardlink
+
+Sets the hardlink for the archive entry object.
+
+=cut
+
+#ifdef HAS_archive_entry_copy_hardlink
+
+int
+archive_entry_set_hardlink(entry, hardlink)
+    struct archive_entry *entry
+    SV *hardlink
+  CODE:
+#ifdef HAS_archive_entry_update_hardlink_utf8
+    if(DO_UTF8(hardlink))
+    {
+      RETVAL = archive_entry_update_hardlink_utf8(entry, SvPV_nolen(hardlink));
+      if(RETVAL > 0)
+        RETVAL = ARCHIVE_OK;
+    }
+    else
+    {
+#endif
+      archive_entry_copy_hardlink(entry, SvPV_nolen(hardlink));
+      RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_hardlink_utf8
+    }
+#endif
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_hardlink
+
+ my $string = archive_entry_hardlink($entry);
+
+Retrieve the hardlink for the archive entry object.
+
+=cut
+
+#ifdef HAS_archive_entry_hardlink
+
+string_or_null
+archive_entry_hardlink(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_set_pathname
+
+ my $status = archive_entry_set_pathname
+
+Sets the pathname for the archive entry object.
+
+=cut
+
+#ifdef HAS_archive_entry_copy_pathname
+
+int
+archive_entry_set_pathname(entry, pathname)
+    struct archive_entry *entry
+    SV *pathname
+  CODE:
+#ifdef HAS_archive_entry_update_pathname_utf8
+    if(DO_UTF8(pathname))
+    {
+      RETVAL = archive_entry_update_pathname_utf8(entry, SvPV_nolen(pathname));
+      if(RETVAL > 0)
+        RETVAL = ARCHIVE_OK;
+    }
+    else
+    {
+#endif
+      archive_entry_copy_pathname(entry, SvPV_nolen(pathname));
+      RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_pathname_utf8
+    }
+#endif
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_pathname
+
+ my $string = archive_entry_pathname($entry);
+
+Retrieve the pathname for the archive entry object.
+
+=cut
+
+#ifdef HAS_archive_entry_pathname
+
+string_or_null
+archive_entry_pathname(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_set_symlink
+
+ my $status = archive_entry_set_symlink
+
+Sets the symlink for the archive entry object.
+
+=cut
+
+#ifdef HAS_archive_entry_copy_symlink
+
+int
+archive_entry_set_symlink(entry, symlink)
+    struct archive_entry *entry
+    SV *symlink
+  CODE:
+#ifdef HAS_archive_entry_update_symlink_utf8
+    if(DO_UTF8(symlink))
+    {
+      RETVAL = archive_entry_update_symlink_utf8(entry, SvPV_nolen(symlink));
+      if(RETVAL > 0)
+        RETVAL = ARCHIVE_OK;
+    }
+    else
+    {
+#endif
+      archive_entry_copy_symlink(entry, SvPV_nolen(symlink));
+      RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_symlink_utf8
+    }
+#endif
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_symlink
+
+ my $string = archive_entry_symlink($entry);
+
+Retrieve the symlink for the archive entry object.
+
+=cut
+
+#ifdef HAS_archive_entry_symlink
+
+string_or_null
+archive_entry_symlink(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_set_uname
+
+ my $status = archive_entry_set_uname
+
+Sets the uname for the archive entry object.
+
+=cut
+
+#ifdef HAS_archive_entry_copy_uname
+
+int
+archive_entry_set_uname(entry, uname)
+    struct archive_entry *entry
+    SV *uname
+  CODE:
+#ifdef HAS_archive_entry_update_uname_utf8
+    if(DO_UTF8(uname))
+    {
+      RETVAL = archive_entry_update_uname_utf8(entry, SvPV_nolen(uname));
+      if(RETVAL > 0)
+        RETVAL = ARCHIVE_OK;
+    }
+    else
+    {
+#endif
+      archive_entry_copy_uname(entry, SvPV_nolen(uname));
+      RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_uname_utf8
+    }
+#endif
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_uname
+
+ my $string = archive_entry_uname($entry);
+
+Retrieve the uname for the archive entry object.
+
+=cut
+
+#ifdef HAS_archive_entry_uname
+
+string_or_null
+archive_entry_uname(entry)
+    struct archive_entry *entry
+
+#endif

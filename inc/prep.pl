@@ -95,6 +95,14 @@ do { # xs
     
   }
   
+  foreach my $name (qw( gname hardlink pathname symlink uname ))
+  {
+    use Mojo::Template;
+    my $mt = Mojo::Template->new;
+    $mt->prepend(qq{my \$name = '$name';\n});
+    $buffer .= $mt->render( scalar file(__FILE__)->parent->file(qw( path.xs.template ))->slurp );
+  }
+
   $file->spew($buffer);
 };
 

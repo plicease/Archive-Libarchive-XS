@@ -245,6 +245,18 @@ Releases the struct archive_entry object.
 
 Returns the group id property for the archive entry.
 
+=head2 archive_entry_gname
+
+ my $string = archive_entry_gname($entry);
+
+Retrieve the gname for the archive entry object.
+
+=head2 archive_entry_hardlink
+
+ my $string = archive_entry_hardlink($entry);
+
+Retrieve the hardlink for the archive entry object.
+
 =head2 archive_entry_new
 
  my $entry = archive_entry_new();
@@ -262,11 +274,9 @@ default character-set conversion.
 
 =head2 archive_entry_pathname
 
- my $string = archive_entry_pathname($entry)
+ my $string = archive_entry_pathname($entry);
 
-Retrieve the pathname of the entry.
-
-Returns a string value.
+Retrieve the pathname for the archive entry object.
 
 =head2 archive_entry_set_filetype
 
@@ -294,6 +304,18 @@ Sets the filetype in the archive.  Code should be one of
 
 =back
 
+=head2 archive_entry_set_gname
+
+ my $status = archive_entry_set_gname
+
+Sets the gname for the archive entry object.
+
+=head2 archive_entry_set_hardlink
+
+ my $status = archive_entry_set_hardlink
+
+Sets the hardlink for the archive entry object.
+
 =head2 archive_entry_set_mtime
 
  my $status = archive_entry_set_mtime($entry, $sec, $nanosec);
@@ -304,9 +326,9 @@ Does not return a value.
 
 =head2 archive_entry_set_pathname
 
- my $status = archive_entry_set_pathname($entry, $string);
+ my $status = archive_entry_set_pathname
 
-Sets the pathname for the entry object.
+Sets the pathname for the archive entry object.
 
 =head2 archive_entry_set_perm
 
@@ -322,11 +344,35 @@ Sets the size of the file in the archive.
 
 Does not return anything.
 
+=head2 archive_entry_set_symlink
+
+ my $status = archive_entry_set_symlink
+
+Sets the symlink for the archive entry object.
+
+=head2 archive_entry_set_uname
+
+ my $status = archive_entry_set_uname
+
+Sets the uname for the archive entry object.
+
 =head2 archive_entry_size($entry)
 
  my $size = archive_entry_size($entry);
 
 Returns the size of the entry in bytes.
+
+=head2 archive_entry_symlink
+
+ my $string = archive_entry_symlink($entry);
+
+Retrieve the symlink for the archive entry object.
+
+=head2 archive_entry_uname
+
+ my $string = archive_entry_uname($entry);
+
+Retrieve the uname for the archive entry object.
 
 =head2 archive_errno
 

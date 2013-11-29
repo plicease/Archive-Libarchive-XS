@@ -39,6 +39,8 @@ pod_spelling_system:
     - hardlinks
     - ino
     - codeset
+    - gname
+    - hardlink
 
 
 pod_coverage:
