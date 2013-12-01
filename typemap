@@ -11,10 +11,6 @@ T_ALWAYS_ARCHIVE_OK
 
 T_PV_OR_NULL
   $var != NULL ? sv_setpv((SV*)$arg, $var) : sv_setsv((SV*)$arg, &PL_sv_undef);
-  if(archive_perl_utf8_mode())
-    SvUTF8_on($arg); /* TODO: only mark as UTF-8 if necessary */
-  else
-    ;                /* TODO: convert from current locale to UTF-8 */
 
 INPUT
 T_PV_OR_NULL

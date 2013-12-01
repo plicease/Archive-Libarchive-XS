@@ -45,7 +45,11 @@ Retrieve the <%= $name %> for the archive entry object.
 #ifdef HAS_archive_entry_<%= $name %>
 
 string_or_null
-archive_entry_<%= $name %>(entry)
+_archive_entry_<%= $name %>(entry)
     struct archive_entry *entry
+  CODE:
+    RETVAL = archive_entry_<%= $name %>(entry);
+  OUTPUT:
+    RETVAL
 
 #endif

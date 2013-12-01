@@ -6,6 +6,7 @@ use Path::Class qw( file dir );
 
 my $alien = Alien::Libarchive->new;
 my $report = '';
+my @pathtypes = qw( gname hardlink pathname symlink uname );
 
 my @macros = do { # constants
 
@@ -95,7 +96,7 @@ do { # xs
     
   }
   
-  foreach my $name (qw( gname hardlink pathname symlink uname ))
+  foreach my $name (@pathtypes)
   {
     use Mojo::Template;
     my $mt = Mojo::Template->new;
@@ -252,6 +253,7 @@ do {
     use JSON qw( from_json );
     my \$functions = from_json(q[} . to_json(\%functions) . qq{]);
     my \$constants = from_json(q[} . to_json(\@macros) . qq{] );
+    my \$pathtypes = from_json(q[} . to_json(\@pathtypes) . qq{]);
   });
   
   do {

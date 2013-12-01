@@ -269,8 +269,12 @@ Returns C<undef> if there is not error.
 =cut
 
 string_or_null
-archive_error_string(archive)
+_archive_error_string(archive)
     struct archive *archive;
+  CODE:
+    RETVAL = archive_error_string(archive);
+  OUTPUT:
+    RETVAL
 
 =head2 archive_errno
 
@@ -380,9 +384,13 @@ details of the numbering.
 #ifdef HAS_archive_filter_name
 
 const char * 
-archive_filter_name(archive, level); 
+_archive_filter_name(archive, level)
     struct archive *archive;
     int level;
+  CODE:
+    RETVAL = archive_filter_name(archive, level);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -413,8 +421,12 @@ A textual description of the format of the current entry.
 =cut
 
 const char *
-archive_format_name(archive)
-    struct archive *archive;
+_archive_format_name(archive)
+    struct archive *archive
+  CODE:
+    RETVAL = archive_format_name(archive);
+  OUTPUT:
+    RETVAL
 
 =head2 archive_read_support_filter_all
 
@@ -456,9 +468,13 @@ conjunction with any other decompression option.
 #ifdef HAS_archive_read_support_filter_program
 
 int
-archive_read_support_filter_program(archive, command)
+_archive_read_support_filter_program(archive, command)
     struct archive *archive;
     const char *command;
+  CODE:
+    RETVAL = archive_read_support_filter_program(archive, command);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -505,10 +521,14 @@ standard in as the input archive.
 =cut
 
 int
-archive_read_open_filename(archive, filename, block_size)
+_archive_read_open_filename(archive, filename, block_size)
     struct archive *archive;
     string_or_null filename;
     size_t block_size;
+  CODE:
+    RETVAL = archive_read_open_filename(archive, filename, block_size);
+  OUTPUT:
+    RETVAL
 
 =head2 archive_read_open_memory
 
@@ -598,7 +618,11 @@ Returns a string value.
 =cut
 
 const char *
-archive_version_string();
+_archive_version_string()
+  CODE:
+    RETVAL = archive_version_string();
+  OUTPUT:
+    RETVAL
 
 =head2 archive_version_number
 
@@ -771,9 +795,13 @@ A convenience function to set the filter based on the name.
 #ifdef HAS_archive_write_add_filter_by_name
 
 int
-archive_write_add_filter_by_name(archive, name)
+_archive_write_add_filter_by_name(archive, name)
     struct archive *archive
     const char *name
+  CODE:
+    RETVAL = archive_write_add_filter_by_name(archive, name);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -790,9 +818,13 @@ write callbacks.
 #ifdef HAS_archive_write_add_filter_program
 
 int
-archive_write_add_filter_program(archive, cmd)
+_archive_write_add_filter_program(archive, cmd)
     struct archive *archive
     const char *cmd
+  CODE:
+    RETVAL = archive_write_add_filter_program(archive, cmd);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -818,9 +850,13 @@ A convenience function to set the format based on the name.
 =cut
 
 int
-archive_write_set_format_by_name(archive, name)
+_archive_write_set_format_by_name(archive, name)
     struct archive *archive
     const char *name
+  CODE:
+    RETVAL = archive_write_set_format_by_name(archive, name);
+  OUTPUT:
+    RETVAL
 
 =head2 archive_write_open_filename
 
@@ -841,9 +877,13 @@ archive to standard out.
 =cut
 
 int
-archive_write_open_filename(archive, filename)
+_archive_write_open_filename(archive, filename)
     struct archive *archive
     string_or_null filename;
+  CODE:
+    RETVAL = archive_write_open_filename(archive, filename);
+  OUTPUT:
+    RETVAL
 
 =head2 archive_entry_clear
 
@@ -1238,11 +1278,15 @@ in all other cases.
 #ifdef HAS_archive_write_set_format_option
 
 int
-archive_write_set_format_option(archive, module, option, value)
+_archive_write_set_format_option(archive, module, option, value)
     struct archive *archive
     string_or_null module
     string_or_null option
     string_or_null value
+  CODE:
+    RETVAL = archive_write_set_format_option(archive, module, option, value);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -1274,11 +1318,15 @@ in all other cases.
 #ifdef HAS_archive_write_set_filter_option
 
 int
-archive_write_set_filter_option(archive, module, option, value)
+_archive_write_set_filter_option(archive, module, option, value)
     struct archive *archive
     string_or_null module
     string_or_null option
     string_or_null value
+  CODE:
+    RETVAL = archive_write_set_filter_option(archive, module, option, value);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -1296,11 +1344,15 @@ Otherwise, greater of the two values will be returned.
 #ifdef HAS_archive_write_set_option
 
 int
-archive_write_set_option(archive, module, option, value)
+_archive_write_set_option(archive, module, option, value)
     struct archive *archive
     string_or_null module
     string_or_null option
     string_or_null value
+  CODE:
+    RETVAL = archive_write_set_option(archive, module, option, value);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -1340,9 +1392,13 @@ to modules whose name matches module.
 #ifdef HAS_archive_write_set_options
 
 int
-archive_write_set_options(archive, options)
+_archive_write_set_options(archive, options)
     struct archive *archive
     string_or_null options
+  CODE:
+    RETVAL = archive_write_set_options(archive, options);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -1458,10 +1514,14 @@ Undocumented libarchive function.
 #ifdef HAS_archive_write_disk_uid
 
 __LA_INT64_T
-archive_write_disk_uid(archive, a2, a3)
+_archive_write_disk_uid(archive, a2, a3)
     struct archive *archive
     const char *a2
     __LA_INT64_T a3
+  CODE:
+    RETVAL = archive_write_disk_uid(archive, a2, a3);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -1476,10 +1536,14 @@ Undocumented libarchive function.
 #ifdef HAS_archive_write_disk_gid
 
 __LA_INT64_T
-archive_write_disk_gid(archive, a2, a3)
+_archive_write_disk_gid(archive, a2, a3)
     struct archive *archive
     const char *a2
     __LA_INT64_T a3
+  CODE:
+    RETVAL = archive_write_disk_gid(archive, a2, a3);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -1549,11 +1613,15 @@ module accepts the option, and C<ARCHIVE_FAILED> in all other cases.
 #ifdef HAS_archive_read_set_format_option
 
 int
-archive_read_set_format_option(archive, module, options, value)
+_archive_read_set_format_option(archive, module, options, value)
     struct archive *archive
     string_or_null module
     string_or_null options
     string_or_null value
+  CODE:
+    RETVAL = archive_read_set_format_option(archive, module, options, value);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -1583,11 +1651,15 @@ module accepts the option, and C<ARCHIVE_FAILED> in all other cases.
 #ifdef HAS_archive_read_set_filter_option
 
 int
-archive_read_set_filter_option(archive, module, option, value)
+_archive_read_set_filter_option(archive, module, option, value)
     struct archive *archive
     string_or_null module
     string_or_null option
     string_or_null value
+  CODE:
+    RETVAL = archive_read_set_filter_option(archive, module, option, value);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -1605,11 +1677,15 @@ Otherwise, greater of the two values will be returned.
 #ifdef HAS_archive_read_set_option
 
 int
-archive_read_set_option(archive, module, option, value)
+_archive_read_set_option(archive, module, option, value)
     struct archive *archive
     string_or_null module
     string_or_null option
     string_or_null value
+  CODE:
+    RETVAL = archive_read_set_option(archive, module, option, value);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -1651,9 +1727,13 @@ to modules whose name matches module.
 #ifdef HAS_archive_read_set_options
 
 int
-archive_read_set_options(archive, options)
+_archive_read_set_options(archive, options)
     struct archive *archive
     string_or_null options
+  CODE:
+    RETVAL = archive_read_set_options(archive, options);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -1668,9 +1748,13 @@ Undocumented libarchive function.
 #ifdef HAS_archive_read_set_format
 
 int
-archive_read_set_format(archive, format)
+_archive_read_set_format(archive, format)
     struct archive *archive
     int format
+  CODE:
+    RETVAL = archive_read_set_format(archive, format);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -2221,8 +2305,12 @@ Returns the file flags property as a string.
 #ifdef HAS_archive_entry_fflags_text
 
 const char *
-archive_entry_fflags_text(entry)
+_archive_entry_fflags_text(entry)
     struct archive_entry *entry
+  CODE:
+    RETVAL = archive_entry_fflags_text(entry);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -2353,9 +2441,13 @@ Allocates and initializes an archive object suitable for reading objects from di
 #ifdef HAS_archive_read_disk_open
 
 int
-archive_read_disk_open(archive, name)
+_archive_read_disk_open(archive, name)
     struct archive *archive
     const char *name
+  CODE:
+    RETVAL = archive_read_disk_open(archive, name);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -2371,9 +2463,13 @@ returns C<undef>.
 #ifdef HAS_archive_read_disk_gname
 
 string_or_null
-archive_read_disk_gname(archive, gid)
+_archive_read_disk_gname(archive, gid)
     struct archive *archive
     __LA_INT64_T gid
+  CODE:
+    RETVAL = archive_read_disk_gname(archive, gid);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -2389,9 +2485,13 @@ returns C<undef>.
 #ifdef HAS_archive_read_disk_uname
 
 string_or_null
-archive_read_disk_uname(archive, gid)
+_archive_read_disk_uname(archive, gid)
     struct archive *archive
     __LA_INT64_T gid
+  CODE:
+    RETVAL = archive_read_disk_uname(archive, gid);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -2679,13 +2779,17 @@ UNIX permissions are updated.
 #ifdef HAS_archive_entry_acl_add_entry
 
 int
-archive_entry_acl_add_entry(entry, type, permset, tag, qual, name)
+_archive_entry_acl_add_entry(entry, type, permset, tag, qual, name)
     struct archive_entry *entry
     int type
     int permset
     int tag
     int qual
     const char *name
+  CODE:
+    RETVAL = archive_entry_acl_add_entry(entry, type, permset, tag, qual, name);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -2762,9 +2866,13 @@ L<#archive_entry_acl_clear>, L<#archive_entry_acl_add_entry>, L<#archive_entry_a
 #ifdef HAS_archive_entry_acl_text
 
 string_or_null
-archive_entry_acl_text(entry, flags)
+_archive_entry_acl_text(entry, flags)
     struct archive_entry *entry
     int flags
+  CODE:
+    RETVAL = archive_entry_acl_text(entry, flags);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -4424,8 +4532,12 @@ Retrieve the gname for the archive entry object.
 #ifdef HAS_archive_entry_gname
 
 string_or_null
-archive_entry_gname(entry)
+_archive_entry_gname(entry)
     struct archive_entry *entry
+  CODE:
+    RETVAL = archive_entry_gname(entry);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -4475,8 +4587,12 @@ Retrieve the hardlink for the archive entry object.
 #ifdef HAS_archive_entry_hardlink
 
 string_or_null
-archive_entry_hardlink(entry)
+_archive_entry_hardlink(entry)
     struct archive_entry *entry
+  CODE:
+    RETVAL = archive_entry_hardlink(entry);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -4526,8 +4642,12 @@ Retrieve the pathname for the archive entry object.
 #ifdef HAS_archive_entry_pathname
 
 string_or_null
-archive_entry_pathname(entry)
+_archive_entry_pathname(entry)
     struct archive_entry *entry
+  CODE:
+    RETVAL = archive_entry_pathname(entry);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -4577,8 +4697,12 @@ Retrieve the symlink for the archive entry object.
 #ifdef HAS_archive_entry_symlink
 
 string_or_null
-archive_entry_symlink(entry)
+_archive_entry_symlink(entry)
     struct archive_entry *entry
+  CODE:
+    RETVAL = archive_entry_symlink(entry);
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -4628,7 +4752,11 @@ Retrieve the uname for the archive entry object.
 #ifdef HAS_archive_entry_uname
 
 string_or_null
-archive_entry_uname(entry)
+_archive_entry_uname(entry)
     struct archive_entry *entry
+  CODE:
+    RETVAL = archive_entry_uname(entry);
+  OUTPUT:
+    RETVAL
 
 #endif
