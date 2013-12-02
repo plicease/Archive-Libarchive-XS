@@ -3011,6 +3011,71 @@ archive_entry_set_rdevminor(entry, minor)
 
 #endif
 
+=head2 archive_entry_set_mac_metadata
+
+ my $status = archive_entry_set_mac_metadata($entry, $buffer);
+
+The mac_metadata property is Storage for Mac OS-specific 
+AppleDouble metadata information.  Apple-format tar files 
+store a separate binary blob containing encoded metadata 
+with ACL, extended attributes, etc. This provides a place 
+to store that blob.
+
+This method sets the blob.  The C name for this function is
+C<archive_entry_copy_mac_metadata>.
+
+=head2 archive_entry_copy_mac_metadata
+
+An Alias for L<#archive_entry_set_mac_metadata>.
+
+=cut
+
+#ifdef HAS_archive_entry_copy_mac_metadata
+
+int
+archive_entry_set_mac_metadata(entry, buffer)
+    struct archive_entry *entry
+    SV *buffer
+  CODE:
+    STRLEN len;
+    void *ptr = SvPV(buffer, len);
+    archive_entry_copy_mac_metadata(entry, ptr, len);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_mac_metadata
+
+ my $buffer = archive_entry_mac_metadata($entry);
+
+The mac_metadata property is Storage for Mac OS-specific
+AppleDouble metadata information.  Apple-format tar files
+store a separate binary blob containing encoded metadata
+with ACL, extended attributes, etc. This provides a place
+to store that blob.
+
+This method gets the blob.  The C name for this function is
+C<archive_entry_copy_mac_metadata>.
+
+=cut
+
+#ifdef HAS_archive_entry_mac_metadata
+
+SV *
+archive_entry_mac_metadata(entry)
+    struct archive_entry *entry
+  CODE:
+    size_t size;
+    void *ptr = archive_entry_mac_metadata(entry, &size);
+    RETVAL = newSVpv(ptr, size);
+  OUTPUT:
+    RETVAL
+
+#endif
+
+
 int
 _constant(name)
         char *name

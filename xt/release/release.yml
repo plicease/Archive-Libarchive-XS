@@ -43,6 +43,7 @@ pod_spelling_system:
     - hardlink
     - ACL
     - rdev
+    - AppleDouble
 
 pod_coverage:
   # format is "Class#method" or "Class", regex allowed

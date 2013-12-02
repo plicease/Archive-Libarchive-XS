@@ -182,6 +182,8 @@ sub archive_entry_uname
   decode(archive_perl_codeset(),_archive_entry_uname(@_));
 }
 
+*archive_entry_copy_mac_metadata = \&archive_entry_set_mac_metadata;
+
 eval q{
   use Exporter::Tidy
     func  => [grep /^archive_/,       keys %Archive::Libarchive::XS::],

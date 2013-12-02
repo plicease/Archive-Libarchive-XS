@@ -229,6 +229,10 @@ to allow you to quickly recycle objects without thrashing the heap.
 
 A deep copy operation; all text fields are duplicated.
 
+=head2 archive_entry_copy_mac_metadata
+
+An Alias for L<#archive_entry_set_mac_metadata>.
+
 =head2 archive_entry_ctime
 
  my $ctime = archive_entry_ctime($entry);
@@ -314,6 +318,19 @@ Retrieve the gname for the archive entry object.
 
 Retrieve the hardlink for the archive entry object.
 
+=head2 archive_entry_mac_metadata
+
+ my $buffer = archive_entry_mac_metadata($entry);
+
+The mac_metadata property is Storage for Mac OS-specific
+AppleDouble metadata information.  Apple-format tar files
+store a separate binary blob containing encoded metadata
+with ACL, extended attributes, etc. This provides a place
+to store that blob.
+
+This method gets the blob.  The C name for this function is
+C<archive_entry_copy_mac_metadata>.
+
 =head2 archive_entry_new
 
  my $entry = archive_entry_new();
@@ -390,6 +407,19 @@ Sets the gname for the archive entry object.
  my $status = archive_entry_set_hardlink
 
 Sets the hardlink for the archive entry object.
+
+=head2 archive_entry_set_mac_metadata
+
+ my $status = archive_entry_set_mac_metadata($entry, $buffer);
+
+The mac_metadata property is Storage for Mac OS-specific 
+AppleDouble metadata information.  Apple-format tar files 
+store a separate binary blob containing encoded metadata 
+with ACL, extended attributes, etc. This provides a place 
+to store that blob.
+
+This method sets the blob.  The C name for this function is
+C<archive_entry_copy_mac_metadata>.
 
 =head2 archive_entry_set_mtime
 
