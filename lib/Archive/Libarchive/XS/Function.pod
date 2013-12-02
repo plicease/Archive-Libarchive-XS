@@ -863,6 +863,12 @@ or other blocked devices.
 If you pass in C<undef> as the C<$filename>, libarchive will use
 standard in as the input archive.
 
+=head2 archive_read_open_filenames
+
+ my $status = archive_read_open_filenames($archive, \@filenames, $block_size);
+
+Use this for reading multivolume files by filenames.
+
 =head2 archive_read_open_memory
 
  my $status = archive_read_open_memory($archive, $buffer);

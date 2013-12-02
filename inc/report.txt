@@ -87,7 +87,6 @@ unimplemented: archive_read_extract
 unimplemented: archive_read_extract2
 unimplemented: archive_read_extract_set_progress_callback
 unimplemented: archive_read_extract_set_skip_file
-unimplemented: archive_read_open_filenames
 unimplemented: archive_read_set_switch_callback
 unimplemented: archive_read_support_filter_program_signature
 unimplemented: archive_set_error
@@ -96,4 +95,4 @@ unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_open_memory
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 91
+total unimplemented symbols: 90

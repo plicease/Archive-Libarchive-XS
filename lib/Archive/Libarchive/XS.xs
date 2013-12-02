@@ -3038,7 +3038,7 @@ archive_entry_set_mac_metadata(entry, buffer)
     SV *buffer
   CODE:
     STRLEN len;
-    void *ptr = SvPV(buffer, len);
+    const void *ptr = SvPV(buffer, len);
     archive_entry_copy_mac_metadata(entry, ptr, len);
     RETVAL = ARCHIVE_OK;
   OUTPUT:
@@ -3068,7 +3068,7 @@ archive_entry_mac_metadata(entry)
     struct archive_entry *entry
   CODE:
     size_t size;
-    void *ptr = archive_entry_mac_metadata(entry, &size);
+    const void *ptr = archive_entry_mac_metadata(entry, &size);
     RETVAL = newSVpv(ptr, size);
   OUTPUT:
     RETVAL
@@ -3114,6 +3114,49 @@ archive_entry_set_mode(entry, mode)
   CODE:
     archive_entry_set_mode(entry, mode);
     RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_read_open_filenames
+
+ my $status = archive_read_open_filenames($archive, \\@filenames, $block_size);
+
+Use this for reading multivolume files by filenames.
+
+=cut
+
+#ifdef HAS_archive_read_open_filenames
+
+int
+archive_read_open_filenames(archive, filenames, block_size)
+    struct archive *archive
+    SV *filenames
+    size_t block_size
+  CODE:
+    const char **c_filenames;
+    int num, i;
+    if(!SvROK(filenames) || SvTYPE(SvRV(filenames)) != SVt_PVAV)
+    {
+      Perl_croak(aTHX_ "archive_read_open_filename: second argument must be an array reference");
+    }
+    else
+    {
+      num = av_top_index((SV*)SvRV(filenames))+1;
+      Newx(c_filenames, num+1, const char *);
+      for(i=0; i<num; i++)
+      {
+        AV *av = (AV*) SvRV(filenames);
+        SV *filename = *av_fetch(av, i, 0);
+        c_filenames[i] = SvPV_nolen(filename);
+        /* printf(" i = %d s = %s\n", i, c_filenames[i]); */
+      }
+      c_filenames[num] = NULL;
+      /* printf(" i = %d s = NULL\n", num); */
+      RETVAL = archive_read_open_filenames(archive, c_filenames, block_size);
+      Safefree(c_filenames);
+    }
   OUTPUT:
     RETVAL
 
