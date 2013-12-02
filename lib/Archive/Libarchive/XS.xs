@@ -3075,6 +3075,49 @@ archive_entry_mac_metadata(entry)
 
 #endif
 
+=head2 archive_entry_mode
+
+ my $mode = archive_entry_mode($entry);
+
+Get a combination of file type and permission and provide the equivalent of st_mode.
+use of L<#archive_entry_filetype> and L<#archive_entry_perm> for getting and
+L<#archive_entry_set_filetype> and L<#archive_entry_set_perm> for setting is
+recommended.
+
+=cut
+
+#ifdef HAS_archive_entry_mode
+
+int
+archive_entry_mode(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_set_mode
+
+ my $status = archive_entry_set_mode($entry, $mode);
+
+Set a combination of file type and permission and provide the equivalent of st_mode.
+use of L<#archive_entry_filetype> and L<#archive_entry_perm> for getting and
+L<#archive_entry_set_filetype> and L<#archive_entry_set_perm> for setting is
+recommended.
+
+=cut
+
+#ifdef HAS_archive_entry_set_mode
+
+int
+archive_entry_set_mode(entry, mode)
+    struct archive_entry *entry
+    int mode
+  CODE:
+    archive_entry_set_mode(entry, mode);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
 
 int
 _constant(name)

@@ -331,6 +331,15 @@ to store that blob.
 This method gets the blob.  The C name for this function is
 C<archive_entry_copy_mac_metadata>.
 
+=head2 archive_entry_mode
+
+ my $mode = archive_entry_mode($entry);
+
+Get a combination of file type and permission and provide the equivalent of st_mode.
+use of L<#archive_entry_filetype> and L<#archive_entry_perm> for getting and
+L<#archive_entry_set_filetype> and L<#archive_entry_set_perm> for setting is
+recommended.
+
 =head2 archive_entry_new
 
  my $entry = archive_entry_new();
@@ -420,6 +429,15 @@ to store that blob.
 
 This method sets the blob.  The C name for this function is
 C<archive_entry_copy_mac_metadata>.
+
+=head2 archive_entry_set_mode
+
+ my $status = archive_entry_set_mode($entry, $mode);
+
+Set a combination of file type and permission and provide the equivalent of st_mode.
+use of L<#archive_entry_filetype> and L<#archive_entry_perm> for getting and
+L<#archive_entry_set_filetype> and L<#archive_entry_set_perm> for setting is
+recommended.
 
 =head2 archive_entry_set_mtime
 
