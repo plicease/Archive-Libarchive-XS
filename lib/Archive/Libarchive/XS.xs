@@ -2764,6 +2764,8 @@ archive_entry_acl_clear(entry)
   CODE:
     archive_entry_acl_clear(entry);
     RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 #endif
 
@@ -3157,6 +3159,139 @@ archive_read_open_filenames(archive, filenames, block_size)
       RETVAL = archive_read_open_filenames(archive, c_filenames, block_size);
       Safefree(c_filenames);
     }
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_linkresolver_new
+
+ my $linkresolver = archive_entry_linkresolver_new();
+
+Allocate a new link resolver.  
+
+=cut
+
+#ifdef HAS_archive_entry_linkresolver_new
+
+struct archive_entry_linkresolver *
+archive_entry_linkresolver_new()
+
+#endif
+
+=head2 archive_entry_linkresolver_free
+
+ my $status = archive_entry_linkresolver_free($linkresolver);
+
+Deallocates a link resolver instance.
+All deferred entries are flushed and the internal storage is freed.
+
+=cut
+
+#ifdef HAS_archive_entry_linkresolver_free
+
+int
+archive_entry_linkresolver_free(linkresolver)
+    struct archive_entry_linkresolver* linkresolver
+  CODE:
+    archive_entry_linkresolver_free(linkresolver);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_linkresolver_set_strategy
+
+ my $status = archive_entry_linkresolver_set_strategy($linkresolver, $format);
+
+Set the link resolver strategy.  $format should be an archive format constant
+(a constant with ARCHIVE_FORMAT_ prefix see L<Archive::Libarchive::XS::Constant>.
+
+=cut
+
+#ifdef HAS_archive_entry_linkresolver_set_strategy
+
+int
+archive_entry_linkresolver_set_strategy(linkresolver, format)
+    struct archive_entry_linkresolver* linkresolver
+    int format
+  CODE:
+    archive_entry_linkresolver_set_strategy(linkresolver, format);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_set_ino
+
+ my $status = archive_entry_set_ino($entry, $ino);
+
+Set the inode property for the entry.
+
+The inode property is an integer identifying the file within a filesystem
+and is used by C<archive_entry_linkify> (along with the dev property) to
+find hardlinks.
+
+=cut
+
+#ifdef HAS_archive_entry_set_ino
+
+int
+archive_entry_set_ino(entry, ino)
+    struct archive_entry *entry
+    __LA_INT64_T ino
+  CODE:
+    archive_entry_set_ino(entry, ino);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_set_dev
+
+ my $status = archive_entry_set_dev($entry, $device);
+
+Sets the device property for the archive entry.
+
+The device property is an integer identifying the device, and is used by
+C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
+
+=cut
+
+#ifdef HAS_archive_entry_set_dev
+
+int
+archive_entry_set_dev(entry, device)
+    struct archive_entry *entry
+    dev_t device
+  CODE:
+    archive_entry_set_dev(entry, device);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_set_nlink
+
+ my $status = archive_entry_set_nlink($entry, $nlink);
+
+Sets the number of hardlinks for the entry.
+
+=cut
+
+#ifdef HAS_archive_entry_set_nlink
+
+int
+archive_entry_set_nlink(entry, nlink)
+    struct archive_entry *entry
+    unsigned int nlink
+  CODE:
+    archive_entry_set_nlink(entry, nlink);
+    RETVAL = ARCHIVE_OK;
   OUTPUT:
     RETVAL
 

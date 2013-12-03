@@ -318,6 +318,26 @@ Retrieve the gname for the archive entry object.
 
 Retrieve the hardlink for the archive entry object.
 
+=head2 archive_entry_linkresolver_free
+
+ my $status = archive_entry_linkresolver_free($linkresolver);
+
+Deallocates a link resolver instance.
+All deferred entries are flushed and the internal storage is freed.
+
+=head2 archive_entry_linkresolver_new
+
+ my $linkresolver = archive_entry_linkresolver_new();
+
+Allocate a new link resolver.
+
+=head2 archive_entry_linkresolver_set_strategy
+
+ my $status = archive_entry_linkresolver_set_strategy($linkresolver, $format);
+
+Set the link resolver strategy.  $format should be an archive format constant
+(a constant with ARCHIVE_FORMAT_ prefix see L<Archive::Libarchive::XS::Constant>.
+
 =head2 archive_entry_mac_metadata
 
  my $buffer = archive_entry_mac_metadata($entry);
@@ -379,6 +399,15 @@ Returns the major component of the rdev property for the archive entry.
 
 Returns the minor component of the rdev property for the archive entry.
 
+=head2 archive_entry_set_dev
+
+ my $status = archive_entry_set_dev($entry, $device);
+
+Sets the device property for the archive entry.
+
+The device property is an integer identifying the device, and is used by
+C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
+
 =head2 archive_entry_set_filetype
 
  my $status = archive_entry_set_filetype($entry, $code);
@@ -417,6 +446,16 @@ Sets the gname for the archive entry object.
 
 Sets the hardlink for the archive entry object.
 
+=head2 archive_entry_set_ino
+
+ my $status = archive_entry_set_ino($entry, $ino);
+
+Set the inode property for the entry.
+
+The inode property is an integer identifying the file within a filesystem
+and is used by C<archive_entry_linkify> (along with the dev property) to
+find hardlinks.
+
 =head2 archive_entry_set_mac_metadata
 
  my $status = archive_entry_set_mac_metadata($entry, $buffer);
@@ -446,6 +485,12 @@ recommended.
 Set the mtime for the entry object.
 
 Does not return a value.
+
+=head2 archive_entry_set_nlink
+
+ my $status = archive_entry_set_nlink($entry, $nlink);
+
+Sets the number of hardlinks for the entry.
 
 =head2 archive_entry_set_pathname
 
