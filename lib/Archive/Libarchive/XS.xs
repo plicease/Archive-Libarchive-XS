@@ -3347,6 +3347,44 @@ archive_entry_linkify(linkresolver, entry1, entry2)
 
 #endif
 
+=head2 archive_entry_uid
+
+ my $uid = archive_entry_uid($entry);
+
+Get the UID (user id) property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_uid
+
+__LA_INT64_T
+archive_entry_uid(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_set_uid
+
+ my $status = archive_entry_set_uid($entry, $uid);
+
+Set the UID (user id) property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_set_uid
+
+int
+archive_entry_set_uid(entry, uid)
+    struct archive_entry *entry
+    __LA_INT64_T uid
+  CODE:
+    archive_entry_set_uid(entry, uid);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name

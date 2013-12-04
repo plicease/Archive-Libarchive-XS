@@ -547,6 +547,12 @@ Does not return anything.
 
 Sets the symlink for the archive entry object.
 
+=head2 archive_entry_set_uid
+
+ my $status = archive_entry_set_uid($entry, $uid);
+
+Set the UID (user id) property for the archive entry.
+
 =head2 archive_entry_set_uname
 
  my $status = archive_entry_set_uname
@@ -564,6 +570,12 @@ Returns the size of the entry in bytes.
  my $string = archive_entry_symlink($entry);
 
 Retrieve the symlink for the archive entry object.
+
+=head2 archive_entry_uid
+
+ my $uid = archive_entry_uid($entry);
+
+Get the UID (user id) property for the archive entry.
 
 =head2 archive_entry_uname
 
