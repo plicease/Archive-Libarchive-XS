@@ -171,6 +171,7 @@ do { # symbol list
     archive_read_open_XXX
     archive_platform
     archive_read_disk
+    archive_entry_linkresolver
   );
   
   delete $symbols{$_} for @not_real;
