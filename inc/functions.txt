@@ -29,6 +29,7 @@ archive_entry_free
 archive_entry_gid
 archive_entry_gname
 archive_entry_hardlink
+archive_entry_linkify
 archive_entry_linkresolver_free
 archive_entry_linkresolver_new
 archive_entry_linkresolver_set_strategy

@@ -13,7 +13,6 @@ unimplemented: archive_entry_filetype
 unimplemented: archive_entry_ino
 unimplemented: archive_entry_ino64
 unimplemented: archive_entry_ino_is_set
-unimplemented: archive_entry_linkify
 unimplemented: archive_entry_linkresolver
 unimplemented: archive_entry_mtime
 unimplemented: archive_entry_mtime_is_set
@@ -89,4 +88,4 @@ unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_open_memory
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 84
+total unimplemented symbols: 83

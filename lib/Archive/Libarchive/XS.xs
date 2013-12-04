@@ -3297,6 +3297,56 @@ archive_entry_set_nlink(entry, nlink)
 
 #endif
 
+=head2 archive_entry_linkify
+
+ my $status = archive_entry_linkify($linkresolver, $entry1, $entry2)
+
+Behavior depends on the link resolver strategy 
+(L<#archive_entry_linkresolver_set_strategy>).  See libarchive documentation
+(C<archive_entry_linkify(3)>) for details.
+
+Note that $entry1 and $entry2 are passed by value and may be changed or
+set to undef after this function is called.
+
+=cut
+
+#ifdef HAS_archive_entry_linkify
+
+int
+archive_entry_linkify(linkresolver, entry1, entry2)
+    struct archive_entry_linkresolver *linkresolver
+    SV *entry1
+    SV *entry2
+  CODE:
+    struct archive_entry *e1=NULL,*e2=NULL;
+    
+    /* INPUT */
+    if(SvOK(entry1))
+      e1 = INT2PTR(struct archive_entry *, SvIV(entry1));
+    if(SvOK(entry2))
+      e2 = INT2PTR(struct archive_entry *, SvIV(entry2));
+
+    /* CALL */
+    archive_entry_linkify(linkresolver, &e1, &e2);
+
+    /* OUTPUT */
+    if(e1 == NULL)
+      sv_setsv(entry1, &PL_sv_undef);
+    else
+      sv_setiv(entry1, PTR2IV(e1));
+    if(e2 == NULL)
+      sv_setsv(entry2, &PL_sv_undef);
+    else
+      sv_setiv(entry2, PTR2IV(e2));
+    RETVAL = ARCHIVE_OK;
+    
+  OUTPUT:
+    RETVAL
+    entry1
+    entry2
+
+#endif
+
 int
 _constant(name)
         char *name

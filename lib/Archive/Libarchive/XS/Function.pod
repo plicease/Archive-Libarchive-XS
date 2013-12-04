@@ -318,6 +318,17 @@ Retrieve the gname for the archive entry object.
 
 Retrieve the hardlink for the archive entry object.
 
+=head2 archive_entry_linkify
+
+ my $status = archive_entry_linkify($linkresolver, $entry1, $entry2)
+
+Behavior depends on the link resolver strategy 
+(L<#archive_entry_linkresolver_set_strategy>).  See libarchive documentation
+(C<archive_entry_linkify(3)>) for details.
+
+Note that $entry1 and $entry2 are passed by value and may be changed or
+set to undef after this function is called.
+
 =head2 archive_entry_linkresolver_free
 
  my $status = archive_entry_linkresolver_free($linkresolver);
