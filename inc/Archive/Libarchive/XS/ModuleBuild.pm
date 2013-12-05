@@ -28,38 +28,52 @@ sub ACTION_build
 {
   my($self) = shift;
   
-  $alien ||= Alien::Libarchive->new;
-
-  open(my $fh, '<', File::Spec->catfile('inc', 'symbols.txt'));
-  my @symbols = <$fh>;
-  close $fh;
-  chomp @symbols;
-  
-  open($fh, '>', File::Spec->catfile('xs', 'func.h'));
-  print $fh "#ifndef FUNC_H\n";
-  print $fh "#define FUNC_H\n\n";
-
-  if($alien->install_type eq 'system')
+  unless(-e File::Spec->catfile('xs', 'func.h'))
   {
-    foreach my $symbol (@symbols)
-    {
-      print $fh "#define HAS_$symbol 1\n"
-        if $self->_test_compile_symbol($symbol);
-    }
-  }
-  else
-  {
-    foreach my $symbol (@symbols)
-    {
-      print $fh "#define HAS_$symbol 1\n"
-        if DynaLoader::dl_find_symbol_anywhere($symbol);
-    }
-  }
   
-  print $fh "\n#endif\n";
-  close $fh;
+    $alien ||= Alien::Libarchive->new;
+  
+    open(my $fh, '<', File::Spec->catfile('inc', 'symbols.txt'));
+    my @symbols = <$fh>;
+    close $fh;
+    chomp @symbols;
+  
+    open($fh, '>', File::Spec->catfile('xs', 'func.h.tmp'));
+    print $fh "#ifndef FUNC_H\n";
+    print $fh "#define FUNC_H\n\n";
+
+    # TODO: can probably scan the dll on Windows 
+    # for the symbols, which will save time
+    if($alien->install_type eq 'system' || $^O eq 'MSWin32')
+    {
+      foreach my $symbol (@symbols)
+      {
+        print $fh "#define HAS_$symbol 1\n"
+          if $self->_test_compile_symbol($symbol);
+      }
+    }
+    else
+    {
+      foreach my $symbol (@symbols)
+      {
+        print $fh "#define HAS_$symbol 1\n"
+          if DynaLoader::dl_find_symbol_anywhere($symbol);
+      }
+    }
+  
+    print $fh "\n#endif\n";
+    close $fh;
+    rename(File::Spec->catfile('xs', 'func.h.tmp'), File::Spec->catfile('xs', 'func.h'));
+  }
   
   $self->SUPER::ACTION_build(@_);
+}
+
+sub ACTION_clean
+{
+  my $self = shift;
+  unlink(File::Spec->catfile('xs', 'func.h.tmp'), File::Spec->catfile('xs', 'func.h'));
+  $self->SUPER::ACTION_clean(@_);
 }
 
 my $dir;
