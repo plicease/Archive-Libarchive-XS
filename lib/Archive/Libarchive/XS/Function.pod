@@ -457,6 +457,12 @@ Sets the filetype in the archive.  Code should be one of
 
 =back
 
+=head2 archive_entry_set_gid
+
+ my $status = archive_entry_set_gid($gid).
+
+Sets the group id property for the archive entry.
+
 =head2 archive_entry_set_gname
 
  my $status = archive_entry_set_gname

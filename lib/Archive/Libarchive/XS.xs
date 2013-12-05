@@ -2395,6 +2395,28 @@ archive_entry_gid(entry)
 
 #endif
 
+=head2 archive_entry_set_gid
+
+ my $status = archive_entry_set_gid($gid).
+
+Sets the group id property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_set_gid
+
+int
+archive_entry_set_gid(entry, gid)
+    struct archive_entry *entry
+    __LA_INT64_T gid
+  CODE:
+    archive_entry_set_gid(entry, gid);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 =head2 archive_read_disk_descend
 
  my $status = archive_read_disk_descend($archive);

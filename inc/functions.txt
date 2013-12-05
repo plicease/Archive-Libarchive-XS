@@ -45,6 +45,7 @@ archive_entry_rdevmajor
 archive_entry_rdevminor
 archive_entry_set_dev
 archive_entry_set_filetype
+archive_entry_set_gid
 archive_entry_set_gname
 archive_entry_set_hardlink
 archive_entry_set_ino

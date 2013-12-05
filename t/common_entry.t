@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 11;
+use Test::More tests => 14;
 use Archive::Libarchive::XS qw( :all );
 
 my $r;
@@ -29,6 +29,14 @@ is archive_entry_uid($e), 0, 'archive_entry_uid = 0';
 $r = archive_entry_set_uid($e, 101);
 is $r, ARCHIVE_OK, 'archive_entry_set_uid';
 is archive_entry_uid($e), 101, 'archive_entry_uid = 101';
+
+is eval { archive_entry_gid($e) }, 0, 'archive_entry_gid = 0';
+diag $@ if $@;
+$r = eval { archive_entry_set_gid($e, 201) };
+diag $@ if $@;
+is $r, ARCHIVE_OK, 'archive_entry_set_gid';
+is eval { archive_entry_gid($e) }, 201, 'archive_entry_gid = 201';
+diag $@ if $@;
 
 $r = archive_entry_free($e);
 is $r, ARCHIVE_OK, 'archive_entry_free';
