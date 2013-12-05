@@ -3,6 +3,10 @@
 #include "XSUB.h"
 #include "ppport.h"
 
+#ifdef __MINGW32__
+#include <stdint.h>
+#endif
+
 #define MATH_INT64_NATIVE_IF_AVAILABLE
 #include "perl_math_int64.h"
 #include "perl_archive.h"
