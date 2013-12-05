@@ -2061,6 +2061,22 @@ archive_entry_atime_is_set(entry)
 
 #endif
 
+=head2 archive_entry_mtime_is_set
+
+ my $bool = archive_entry_mtime_is_set($entry);
+
+Returns true if the mtime (modify time) property has been set on the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_mtime_is_set
+
+int
+archive_entry_mtime_is_set(entry)
+    struct archive_entry *entry
+
+#endif
+
 =head2 archive_entry_atime
 
  my $atime = archive_entry_atime($entry);

@@ -377,6 +377,12 @@ recommended.
 
 Gets the mtime (modify time) property for the archive entry.
 
+=head2 archive_entry_mtime_is_set
+
+ my $bool = archive_entry_mtime_is_set($entry);
+
+Returns true if the mtime (modify time) property has been set on the archive entry.
+
 =head2 archive_entry_new
 
  my $entry = archive_entry_new();

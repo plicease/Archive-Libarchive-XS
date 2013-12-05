@@ -36,6 +36,7 @@ archive_entry_linkresolver_set_strategy
 archive_entry_mac_metadata
 archive_entry_mode
 archive_entry_mtime
+archive_entry_mtime_is_set
 archive_entry_new
 archive_entry_new2
 archive_entry_pathname
