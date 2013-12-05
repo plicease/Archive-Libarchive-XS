@@ -62,6 +62,7 @@ archive_entry_set_symlink
 archive_entry_set_uid
 archive_entry_set_uname
 archive_entry_size
+archive_entry_size_is_set
 archive_entry_symlink
 archive_entry_uid
 archive_entry_uname

@@ -26,7 +26,6 @@ unimplemented: archive_entry_set_fflags
 unimplemented: archive_entry_set_gid
 unimplemented: archive_entry_set_ino64
 unimplemented: archive_entry_set_link
-unimplemented: archive_entry_size_is_set
 unimplemented: archive_entry_sourcepath
 unimplemented: archive_entry_sparse_add_entry
 unimplemented: archive_entry_sparse_clear
@@ -83,4 +82,4 @@ unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_open_memory
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 78
+total unimplemented symbols: 77

@@ -547,9 +547,7 @@ Sets the minor component of the rdev property for the archive entry.
 
  my $status = archive_entry_set_size($entry, $size);
 
-Sets the size of the file in the archive.
-
-Does not return anything.
+Sets the size property for the archive entry.
 
 =head2 archive_entry_set_symlink
 
@@ -574,6 +572,12 @@ Sets the uname for the archive entry object.
  my $size = archive_entry_size($entry);
 
 Returns the size of the entry in bytes.
+
+=head2 archive_entry_size_is_set
+
+ my $bool = archive_entry_size_is_set($entry)
+
+Returns true if the size property for the archive entry has been set.
 
 =head2 archive_entry_symlink
 

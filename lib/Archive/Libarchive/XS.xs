@@ -978,9 +978,7 @@ archive_entry_size(entry)
 
  my $status = archive_entry_set_size($entry, $size);
 
-Sets the size of the file in the archive.
-
-Does not return anything.
+Sets the size property for the archive entry.
 
 =cut
 
@@ -993,6 +991,22 @@ archive_entry_set_size(entry, size)
     RETVAL = ARCHIVE_OK;
   OUTPUT:
     RETVAL
+
+=head2 archive_entry_size_is_set
+
+ my $bool = archive_entry_size_is_set($entry)
+
+Returns true if the size property for the archive entry has been set.
+
+=cut
+
+#ifdef HAS_archive_entry_size_is_set
+
+int
+archive_entry_size_is_set(entry)
+    struct archive_entry *entry
+
+#endif
 
 =head2 archive_entry_set_filetype
 
