@@ -2091,6 +2091,27 @@ archive_entry_mtime_is_set(entry)
 
 #endif
 
+=head2 archive_entry_unset_atime
+
+ my $status = archive_entry_unset_atime($entry);
+
+Removes the value for the atime property on the archive.
+
+=cut
+
+#ifdef HAS_archive_entry_unset_atime
+
+int
+archive_entry_unset_atime(entry)
+    struct archive_entry *entry
+  CODE:
+    archive_entry_unset_atime(entry);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 =head2 archive_entry_atime
 
  my $atime = archive_entry_atime($entry);

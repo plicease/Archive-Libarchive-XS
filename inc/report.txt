@@ -36,7 +36,6 @@ unimplemented: archive_entry_stat
 unimplemented: archive_entry_stat32
 unimplemented: archive_entry_stat64
 unimplemented: archive_entry_strmode
-unimplemented: archive_entry_unset_atime
 unimplemented: archive_entry_unset_birthtime
 unimplemented: archive_entry_unset_ctime
 unimplemented: archive_entry_unset_mtime
@@ -82,4 +81,4 @@ unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_open_memory
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 77
+total unimplemented symbols: 76

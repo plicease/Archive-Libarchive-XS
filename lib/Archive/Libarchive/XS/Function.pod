@@ -597,6 +597,12 @@ Get the UID (user id) property for the archive entry.
 
 Retrieve the uname for the archive entry object.
 
+=head2 archive_entry_unset_atime
+
+ my $status = archive_entry_unset_atime($entry);
+
+Removes the value for the atime property on the archive.
+
 =head2 archive_errno
 
  my $errno = archive_errno($archive);
