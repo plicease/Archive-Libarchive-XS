@@ -44,7 +44,7 @@ subtest 'First header.' => sub {
   diag $@ if $@;
   ok eval { archive_entry_ctime($ae) }, 'archive_entry_ctime';
   diag $@ if $@;
-  ok eval { archive_entry_archive_entry_atime($ae) }, 'archive_entry_atime';
+  ok eval { archive_entry_atime($ae) }, 'archive_entry_atime';
   diag $@ if $@;
   is archive_entry_size($ae), 20, 'archive_entry_size = 20';
   is archive_entry_mode($ae), 33188, 'archive_entry_mode = 33188';
@@ -62,7 +62,7 @@ subtest 'Second header.' => sub {
   diag $@ if $@;
   ok eval { archive_entry_ctime($ae) }, 'archive_entry_ctime';
   diag $@ if $@;
-  ok eval { archive_entry_archive_entry_atime($ae) }, 'archive_entry_atime';
+  ok eval { archive_entry_atime($ae) }, 'archive_entry_atime';
   diag $@ if $@;
   is archive_entry_size($ae), 0, 'archive_entry_size = 0';
   is archive_entry_mode($ae), 41471, 'archive_entry_mode = 41471';
@@ -78,7 +78,7 @@ subtest 'Third header.' => sub {
   diag $@ if $@;
   ok eval { archive_entry_ctime($ae) }, 'archive_entry_ctime';
   diag $@ if $@;
-  ok eval { archive_entry_archive_entry_atime($ae) }, 'archive_entry_atime';
+  ok eval { archive_entry_atime($ae) }, 'archive_entry_atime';
   diag $@ if $@;
   is archive_entry_size($ae), 20, 'archive_entry_size = 20';
   is archive_entry_mode($ae), 33188, 'archive_entry_mode = 33188';
@@ -96,7 +96,7 @@ subtest 'Fourth header.' => sub {
   diag $@ if $@;
   ok eval { archive_entry_ctime($ae) }, 'archive_entry_ctime';
   diag $@ if $@;
-  ok eval { archive_entry_archive_entry_atime($ae) }, 'archive_entry_atime';
+  ok eval { archive_entry_atime($ae) }, 'archive_entry_atime';
   diag $@ if $@;
   is archive_entry_size($ae), 0, 'archive_entry_size = 0';
   is archive_entry_mode($ae), 16877, 'archive_entry_mode = 16877';  
@@ -111,7 +111,7 @@ subtest 'Fifth header.' => sub {
   diag $@ if $@;
   ok eval { archive_entry_ctime($ae) }, 'archive_entry_ctime';
   diag $@ if $@;
-  ok eval { archive_entry_archive_entry_atime($ae) }, 'archive_entry_atime';
+  ok eval { archive_entry_atime($ae) }, 'archive_entry_atime';
   diag $@ if $@;
   is archive_entry_size($ae), 0, 'archive_entry_size = 0';
   is archive_entry_mode($ae), 16877, 'archive_entry_mode = 16877';

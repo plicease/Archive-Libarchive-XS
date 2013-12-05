@@ -371,6 +371,12 @@ use of L<#archive_entry_filetype> and L<#archive_entry_perm> for getting and
 L<#archive_entry_set_filetype> and L<#archive_entry_set_perm> for setting is
 recommended.
 
+=head2 archive_entry_mtime
+
+ my $mtime = archive_entry_mtime($entry);
+
+Gets the mtime (modify time) property for the archive entry.
+
 =head2 archive_entry_new
 
  my $entry = archive_entry_new();
@@ -493,9 +499,7 @@ recommended.
 
  my $status = archive_entry_set_mtime($entry, $sec, $nanosec);
 
-Set the mtime for the entry object.
-
-Does not return a value.
+Set the mtime (modify time) for the entry object.
 
 =head2 archive_entry_set_nlink
 

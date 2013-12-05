@@ -1143,9 +1143,7 @@ archive_write_disk_set_options(archive, flags)
 
  my $status = archive_entry_set_mtime($entry, $sec, $nanosec);
 
-Set the mtime for the entry object.
-
-Does not return a value.
+Set the mtime (modify time) for the entry object.
 
 =cut
 
@@ -2172,6 +2170,22 @@ Returns the ctime (last time an inode property was changed) property for the arc
 
 time_t
 archive_entry_ctime(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_mtime
+
+ my $mtime = archive_entry_mtime($entry);
+
+Gets the mtime (modify time) property for the archive entry.
+
+=cut
+
+#ifdef HAS_archive_entry_mtime
+
+time_t
+archive_entry_mtime(entry)
     struct archive_entry *entry
 
 #endif
