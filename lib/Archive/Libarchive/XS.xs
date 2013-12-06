@@ -3428,6 +3428,22 @@ archive_entry_set_nlink(entry, nlink)
 
 #endif
 
+=head2 archive_entry_nlink
+
+ my $nlink = archive_entry_nlink($entry);
+
+Gets the number of hardlinks for the entry.
+
+=cut
+
+#ifdef HAS_archive_entry_nlink
+
+unsigned int
+archive_entry_nlink(entry)
+    struct archive_entry *entry
+
+#endif
+
 =head2 archive_entry_linkify
 
  my $status = archive_entry_linkify($linkresolver, $entry1, $entry2)

@@ -40,6 +40,7 @@ archive_entry_mtime
 archive_entry_mtime_is_set
 archive_entry_new
 archive_entry_new2
+archive_entry_nlink
 archive_entry_pathname
 archive_entry_rdev
 archive_entry_rdevmajor

@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 17;
+use Test::More tests => 19;
 use Archive::Libarchive::XS qw( :all );
 
 my $r;
@@ -45,6 +45,12 @@ $r = eval { archive_entry_set_gid($e, 201) };
 diag $@ if $@;
 is $r, ARCHIVE_OK, 'archive_entry_set_gid';
 is eval { archive_entry_gid($e) }, 201, 'archive_entry_gid = 201';
+diag $@ if $@;
+
+$r = archive_entry_set_nlink($e, 5);
+is $r, ARCHIVE_OK, 'archive_entry_set_nlink';
+
+is eval { archive_entry_nlink($e) }, 5, 'archive_entry_nlink';
 diag $@ if $@;
 
 $r = archive_entry_free($e);

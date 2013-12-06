@@ -424,6 +424,12 @@ conversion information from the specified archive handle.  The
 older C<archive_entry_new> form will result in the use of an internal
 default character-set conversion.
 
+=head2 archive_entry_nlink
+
+ my $nlink = archive_entry_nlink($entry);
+
+Gets the number of hardlinks for the entry.
+
 =head2 archive_entry_pathname
 
  my $string = archive_entry_pathname($entry);
