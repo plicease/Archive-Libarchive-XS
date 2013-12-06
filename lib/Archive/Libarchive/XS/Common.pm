@@ -11,7 +11,18 @@ package
 
 use Encode qw( encode decode );
 
-#
+sub archive_write_open_memory ($$)
+{
+  my($archive, $memory) = @_;
+  archive_write_open($archive, $memory, undef, \&_archive_write_open_memory_write, undef);
+}
+
+sub _archive_write_open_memory_write
+{
+  my($archive, $data, $buffer) = @_;
+  $$data .= $buffer;
+  return length $buffer;
+}
 
 sub archive_read_open_fh ($$;$)
 {
@@ -46,7 +57,6 @@ sub archive_write_open_fh ($$)
 sub _archive_write_open_fh_write
 {
   my($archive, $data, $buffer) = @_;
-  $DB::single = 1;
   my $bw = syswrite $data->{fh}, $buffer;
   if(defined $bw)
   {

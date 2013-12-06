@@ -218,6 +218,12 @@ There is no corresponding archive_read_write_fh in the C version of libarchive.
 This is provided in the place of C<archive_write_open_FILE> and C<archive_write_open_fd>,
 which are not in the Perl bindings for libarchive.
 
+=head2 archive_write_open_memory
+
+ my $status = archive_write_open_memory($archive, \\$scalar);
+
+A convenience form of L<#archive_write_open> that accepts a reference to a scalar that will receive the archive.
+
 =head2 archive_read_new
 
  my $archive = archive_read_new();
