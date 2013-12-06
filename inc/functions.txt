@@ -157,6 +157,7 @@ archive_read_support_format_tar
 archive_read_support_format_xar
 archive_read_support_format_zip
 archive_seek_data
+archive_set_error
 archive_version_number
 archive_version_string
 archive_write_add_filter

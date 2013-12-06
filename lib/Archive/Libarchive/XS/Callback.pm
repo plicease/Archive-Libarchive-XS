@@ -290,6 +290,13 @@ sub archive_write_free ($)
   $ret;
 }
 
+sub archive_set_error
+{
+  my($archive, $errno, $format, @args) = @_;
+  my $string = sprintf $format, @args;
+  _archive_set_error($archive, $errno, $string);
+}
+
 1;
 
 =head1 SEE ALSO

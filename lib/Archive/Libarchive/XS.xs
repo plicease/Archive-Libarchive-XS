@@ -3472,6 +3472,33 @@ archive_entry_set_uid(entry, uid)
 
 #endif
 
+=head2 archive_set_error
+
+ my $status = archive_set_error($archive, $errno, $format, @args);
+
+Sets the numeric error code and error description that will be returned by
+L<#archive_errno> and L<#archive_error_string>.  This function should be
+used within I/O callbacks to set system-specific error codes and error
+descriptions.  This function accepts a printf-like format string and
+arguments (via perl's L<sprintf|perlfunc#sprintf>.
+
+=cut
+
+#ifdef HAS_archive_set_error
+
+int
+_archive_set_error(archive, status, string)
+    struct archive *archive
+    int status
+    const char *string
+  CODE:
+    archive_set_error(archive, status, "%s", string);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name
