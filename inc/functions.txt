@@ -25,6 +25,7 @@ archive_entry_devmajor
 archive_entry_devminor
 archive_entry_fflags
 archive_entry_fflags_text
+archive_entry_filetype
 archive_entry_free
 archive_entry_gid
 archive_entry_gname
@@ -39,6 +40,7 @@ archive_entry_mtime
 archive_entry_mtime_is_set
 archive_entry_new
 archive_entry_new2
+archive_entry_nlink
 archive_entry_pathname
 archive_entry_rdev
 archive_entry_rdevmajor
@@ -64,6 +66,7 @@ archive_entry_set_uid
 archive_entry_set_uname
 archive_entry_size
 archive_entry_size_is_set
+archive_entry_strmode
 archive_entry_symlink
 archive_entry_uid
 archive_entry_uname
@@ -157,6 +160,7 @@ archive_read_support_format_tar
 archive_read_support_format_xar
 archive_read_support_format_zip
 archive_seek_data
+archive_set_error
 archive_version_number
 archive_version_string
 archive_write_add_filter

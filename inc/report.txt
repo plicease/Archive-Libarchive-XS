@@ -9,12 +9,10 @@ unimplemented: archive_entry_copy_fflags_text
 unimplemented: archive_entry_copy_link
 unimplemented: archive_entry_copy_sourcepath
 unimplemented: archive_entry_copy_stat
-unimplemented: archive_entry_filetype
 unimplemented: archive_entry_ino
 unimplemented: archive_entry_ino64
 unimplemented: archive_entry_ino_is_set
 unimplemented: archive_entry_mtime_nsec
-unimplemented: archive_entry_nlink
 unimplemented: archive_entry_partial_links
 unimplemented: archive_entry_perm
 unimplemented: archive_entry_set_atime
@@ -34,7 +32,6 @@ unimplemented: archive_entry_sparse_reset
 unimplemented: archive_entry_stat
 unimplemented: archive_entry_stat32
 unimplemented: archive_entry_stat64
-unimplemented: archive_entry_strmode
 unimplemented: archive_entry_unset_birthtime
 unimplemented: archive_entry_unset_ctime
 unimplemented: archive_entry_unset_mtime
@@ -74,9 +71,8 @@ unimplemented: archive_read_extract_set_progress_callback
 unimplemented: archive_read_extract_set_skip_file
 unimplemented: archive_read_set_switch_callback
 unimplemented: archive_read_support_filter_program_signature
-unimplemented: archive_set_error
 unimplemented: archive_write_disk_set_group_lookup
 unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 74
+total unimplemented symbols: 70

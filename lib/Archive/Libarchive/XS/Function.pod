@@ -294,6 +294,32 @@ Returns the file flags property for the archive entry.
 
 Returns the file flags property as a string.
 
+=head2 archive_entry_filetype
+
+ my $code = archive_entry_filetype($entry);
+
+Gets the filetype of the archive entry.  Code should be one of
+
+=over 4
+
+=item AE_IFMT
+
+=item AE_IFREG
+
+=item AE_IFLNK
+
+=item AE_IFSOCK
+
+=item AE_IFCHR
+
+=item AE_IFBLK
+
+=item AE_IFDIR
+
+=item AE_IFIFO
+
+=back
+
 =head2 archive_entry_free
 
  my $status = archive_entry_free($entry);
@@ -398,6 +424,12 @@ conversion information from the specified archive handle.  The
 older C<archive_entry_new> form will result in the use of an internal
 default character-set conversion.
 
+=head2 archive_entry_nlink
+
+ my $nlink = archive_entry_nlink($entry);
+
+Gets the number of hardlinks for the entry.
+
 =head2 archive_entry_pathname
 
  my $string = archive_entry_pathname($entry);
@@ -435,7 +467,7 @@ C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
 
  my $status = archive_entry_set_filetype($entry, $code);
 
-Sets the filetype in the archive.  Code should be one of
+Sets the filetype of the archive entry.  Code should be one of
 
 =over 4
 
@@ -584,6 +616,14 @@ Returns the size of the entry in bytes.
  my $bool = archive_entry_size_is_set($entry)
 
 Returns true if the size property for the archive entry has been set.
+
+=head2 archive_entry_strmode
+
+ my $strmode = archive_entry_strmode($entry);
+
+Returns a string representation of the archive entry's permission mode,
+a la the Unix C<ls> command (example: a mode of C<0644> should come back
+as C<-rw-r--r-->.
 
 =head2 archive_entry_symlink
 
@@ -1290,6 +1330,16 @@ Enable zip archive format.
  my $count_or_status = archive_seek_data($archive, $offset, $whence);
 
 Seek within the body of an entry.  Similar to C<lseek>.
+
+=head2 archive_set_error
+
+ my $status = archive_set_error($archive, $errno, $format, @args);
+
+Sets the numeric error code and error description that will be returned by
+L<#archive_errno> and L<#archive_error_string>.  This function should be
+used within I/O callbacks to set system-specific error codes and error
+descriptions.  This function accepts a printf-like format string and
+arguments (via perl's L<sprintf|perlfunc#sprintf>.
 
 =head2 archive_version_number
 
