@@ -25,6 +25,7 @@ archive_entry_devmajor
 archive_entry_devminor
 archive_entry_fflags
 archive_entry_fflags_text
+archive_entry_filetype
 archive_entry_free
 archive_entry_gid
 archive_entry_gname

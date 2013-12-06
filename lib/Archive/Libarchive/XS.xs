@@ -1016,7 +1016,7 @@ archive_entry_size_is_set(entry)
 
  my $status = archive_entry_set_filetype($entry, $code);
 
-Sets the filetype in the archive.  Code should be one of
+Sets the filetype of the archive entry.  Code should be one of
 
 =over 4
 
@@ -1050,6 +1050,42 @@ archive_entry_set_filetype(entry, code)
   OUTPUT:
     RETVAL
 
+=head2 archive_entry_filetype
+
+ my $code = archive_entry_filetype($entry);
+
+Gets the filetype of the archive entry.  Code should be one of
+
+=over 4
+
+=item AE_IFMT
+
+=item AE_IFREG
+
+=item AE_IFLNK
+
+=item AE_IFSOCK
+
+=item AE_IFCHR
+
+=item AE_IFBLK
+
+=item AE_IFDIR
+
+=item AE_IFIFO
+
+=back
+
+=cut
+
+#ifdef HAS_archive_entry_filetype
+
+unsigned int
+archive_entry_filetype(entry)
+    struct archive_entry *entry
+
+#endif
+
 =head2 archive_entry_set_perm
 
  my $status = archive_entry_set_perm($entry, $perm);
@@ -1057,6 +1093,8 @@ archive_entry_set_filetype(entry, code)
 Set the permission bits for the entry.  This is the usual UNIX octal permission thing.
 
 =cut
+
+#ifdef HAS_archive_entry_set_perm
 
 int
 archive_entry_set_perm(entry, perm)
@@ -1067,6 +1105,8 @@ archive_entry_set_perm(entry, perm)
     RETVAL = ARCHIVE_OK;
   OUTPUT:
     RETVAL
+
+#endif
 
 =head2 archive_write_header
 

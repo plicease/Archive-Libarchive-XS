@@ -294,6 +294,32 @@ Returns the file flags property for the archive entry.
 
 Returns the file flags property as a string.
 
+=head2 archive_entry_filetype
+
+ my $code = archive_entry_filetype($entry);
+
+Gets the filetype of the archive entry.  Code should be one of
+
+=over 4
+
+=item AE_IFMT
+
+=item AE_IFREG
+
+=item AE_IFLNK
+
+=item AE_IFSOCK
+
+=item AE_IFCHR
+
+=item AE_IFBLK
+
+=item AE_IFDIR
+
+=item AE_IFIFO
+
+=back
+
 =head2 archive_entry_free
 
  my $status = archive_entry_free($entry);
@@ -435,7 +461,7 @@ C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
 
  my $status = archive_entry_set_filetype($entry, $code);
 
-Sets the filetype in the archive.  Code should be one of
+Sets the filetype of the archive entry.  Code should be one of
 
 =over 4
 
