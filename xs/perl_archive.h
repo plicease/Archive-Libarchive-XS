@@ -7,4 +7,10 @@
 const char *archive_perl_codeset(void);
 int archive_perl_utf8_mode(void);
 
+#if ARCHIVE_VERSION_NUMBER < 3000000
+
+#define archive_read_support_filter_all(a) archive_read_support_compression_all(a)
+
+#endif
+
 #endif

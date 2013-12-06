@@ -440,23 +440,9 @@ Enable all available decompression filters.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_all
-
 int
 archive_read_support_filter_all(archive)
     struct archive *archive;
-
-#else
-
-int
-archive_read_support_filter_all(archive)
-    struct archive *archive
-  CODE:
-    RETVAL = archive_read_support_compression_all(archive);
-  OUTPUT:
-    RETVAL
-
-#endif
 
 =head2 archive_read_support_filter_program
 
