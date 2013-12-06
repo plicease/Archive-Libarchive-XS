@@ -193,6 +193,7 @@ archive_write_new
 archive_write_open
 archive_write_open_fh
 archive_write_open_filename
+archive_write_open_memory
 archive_write_set_bytes_in_last_block
 archive_write_set_bytes_per_block
 archive_write_set_filter_option
