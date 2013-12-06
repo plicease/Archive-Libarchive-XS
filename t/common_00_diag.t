@@ -72,3 +72,94 @@ diag $@ if $@;
 
 diag '';
 diag '';
+diag 'read filters:';
+
+foreach my $filter (sort grep { s/^archive_read_support_filter_// } keys %Archive::Libarchive::XS::)
+{
+  next if $filter =~ /^(all|program)$/;
+  my $ok = 'no';
+  eval {
+    my $archive = Archive::Libarchive::XS::archive_read_new();
+    eval qq{
+      \$ok = 'yes' if Archive::Libarchive::XS::archive_read_support_filter_$filter(\$archive) >= Archive::Libarchive::XS::ARCHIVE_WARN();
+      if(Archive::Libarchive::XS::archive_error_string(\$archive))
+      { \$ok = Archive::Libarchive::XS::archive_error_string(\$archive) }
+      \$ok = 'external' if \$ok =~ /^Using external/;
+    };
+    diag $@ if $@;
+    Archive::Libarchive::XS::archive_read_free($archive);
+  };
+  diag $@ if $@;
+  diag sprintf "%-15s %s", $filter, $ok;
+}
+
+diag '';
+diag '';
+diag 'read formats:';
+
+foreach my $format (sort grep { s/^archive_read_support_format_// } keys %Archive::Libarchive::XS::)
+{
+  next if $format =~ /^(all|by_code)$/;
+  my $ok = 'no';
+  eval {
+    my $archive = Archive::Libarchive::XS::archive_read_new();
+    eval qq{
+      \$ok = 'yes' if Archive::Libarchive::XS::archive_read_support_format_$format(\$archive) >= Archive::Libarchive::XS::ARCHIVE_WARN();
+      if(Archive::Libarchive::XS::archive_error_string(\$archive))
+      { \$ok = Archive::Libarchive::XS::archive_error_string(\$archive) }
+    };
+    diag $@ if $@;
+    Archive::Libarchive::XS::archive_read_free($archive);
+  };
+  diag $@ if $@;
+  diag sprintf "%-15s %s", $format, $ok;
+}
+
+diag '';
+diag '';
+diag 'write filters:';
+
+foreach my $filter (sort grep { s/^archive_write_add_filter_// } keys %Archive::Libarchive::XS::)
+{
+  next if $filter =~ /^(program|by_name)$/;
+  my $ok = 'no';
+  my $error;
+  eval {
+    my $archive = Archive::Libarchive::XS::archive_write_new();
+    eval qq{
+      \$ok = 'yes' if Archive::Libarchive::XS::archive_write_add_filter_$filter(\$archive) >= Archive::Libarchive::XS::ARCHIVE_WARN();
+      if(Archive::Libarchive::XS::archive_error_string(\$archive))
+      { \$ok = Archive::Libarchive::XS::archive_error_string(\$archive) }
+      \$ok = 'external' if \$ok =~ /^Using external/;
+    };
+    diag $@ if $@;
+    Archive::Libarchive::XS::archive_write_free($archive);
+  };
+  diag $@ if $@;
+  diag sprintf "%-15s %s", $filter, $ok;
+  diag $error if defined $error;
+}
+
+diag '';
+diag '';
+diag 'write formats:';
+
+foreach my $format (sort grep { s/^archive_write_set_format_// } keys %Archive::Libarchive::XS::)
+{
+  next if $format =~ /^(program|by_name)$/;
+  my $ok = 'no';
+  my $error;
+  eval {
+    my $archive = Archive::Libarchive::XS::archive_write_new();
+    eval qq{
+      \$ok = 'yes' if Archive::Libarchive::XS::archive_write_set_format_$format(\$archive) >= Archive::Libarchive::XS::ARCHIVE_WARN();
+      if(Archive::Libarchive::XS::archive_error_string(\$archive))
+      { \$ok = Archive::Libarchive::XS::archive_error_string(\$archive) }
+    };
+    diag $@ if $@;
+    Archive::Libarchive::XS::archive_write_free($archive);
+  };
+  diag $@ if $@;
+  diag sprintf "%-15s %s", $format, $ok;
+  diag $error if defined $error;
+}
