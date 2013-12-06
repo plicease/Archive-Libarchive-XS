@@ -585,6 +585,14 @@ Returns the size of the entry in bytes.
 
 Returns true if the size property for the archive entry has been set.
 
+=head2 archive_entry_strmode
+
+ my $strmode = archive_entry_strmode($entry);
+
+Returns a string representation of the archive entry's permission mode,
+a la the Unix C<ls> command (example: a mode of C<0644> should come back
+as C<-rw-r--r-->.
+
 =head2 archive_entry_symlink
 
  my $string = archive_entry_symlink($entry);

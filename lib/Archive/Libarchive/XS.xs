@@ -3503,6 +3503,24 @@ _archive_set_error(archive, status, string)
 
 #endif
 
+=head2 archive_entry_strmode
+
+ my $strmode = archive_entry_strmode($entry);
+
+Returns a string representation of the archive entry's permission mode,
+a la the Unix C<ls> command (example: a mode of C<0644> should come back
+as C<-rw-r--r-->.
+
+=cut
+
+#ifdef HAS_archive_entry_strmode
+
+string_or_null
+archive_entry_strmode(entry)
+    struct archive_entry *entry
+
+#endif
+
 int
 _constant(name)
         char *name
