@@ -37,6 +37,9 @@ sub ACTION_build
     my @symbols = <$fh>;
     close $fh;
     chomp @symbols;
+    
+    push @symbols, map { "archive_read_support_compression_$_" } qw( all bzip2 compress gzip lzip lzma none program program_signature rpm uu xz );
+    push @symbols, map { "archive_write_set_compression_$_" } qw( bzip2 compress gzip lzip lzma none program xz );
   
     open($fh, '>', File::Spec->catfile('xs', 'func.h.tmp'));
     print $fh "#ifndef FUNC_H\n";
@@ -96,12 +99,23 @@ sub _test_compile_symbol
   
   my $cflags = $alien->cflags;
   my $libs   = $alien->libs;
-  
-  #system "gcc $cflags $fn $libs";
-  #return ! $?;
-  
-  eval { $self->compile_c($fn) };
-  return $@ eq '';
+
+  if(eval q{ use Capture::Tiny; 1 })
+  {
+    my $error;
+    Capture::Tiny::capture_merged(sub {
+      eval { $self->compile_c($fn) };
+      $error = $@;
+    });
+    my $status = $error eq '';
+    printf "%-50s %s\n", $symbol, ($status ? 'yes' : 'no');
+    return $status;
+  }
+  else
+  {
+    eval { $self->compile_c($fn) };
+    return $@ eq '';
+  }
 }
 
 1;

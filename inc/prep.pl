@@ -49,7 +49,7 @@ do { # xs
     $buffer .= " my \$status = archive_read_support_filter_$filter(\$archive);\n\n";
     $buffer .= "Enable $filter decompression filter.\n\n";
     $buffer .= "=cut\n\n";
-    $buffer .= "#ifdef HAS_archive_read_support_filter_$filter\n\n";
+    $buffer .= "#if HAS_archive_read_support_filter_$filter\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_read_support_filter_$filter(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
@@ -62,7 +62,7 @@ do { # xs
     $buffer .= " my \$status = archive_read_support_format_$format(\$archive);\n\n";
     $buffer .= "Enable $format archive format.\n\n";
     $buffer .= "=cut\n\n";
-    $buffer .= "#ifdef HAS_archive_read_support_format_$format\n\n";
+    $buffer .= "#if HAS_archive_read_support_format_$format\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_read_support_format_$format(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
@@ -75,7 +75,7 @@ do { # xs
     $buffer .= " my \$status = archive_write_add_filter_$filter(\$archive);\n\n";
     $buffer .= "Add $filter filter\n\n";
     $buffer .= "=cut\n\n";
-    $buffer .= "#ifdef HAS_archive_write_add_filter_$filter\n\n";
+    $buffer .= "#if HAS_archive_write_add_filter_$filter\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_write_add_filter_$filter(archive)\n";
     $buffer .= "    struct archive *archive\n\n";
@@ -88,7 +88,7 @@ do { # xs
     $buffer .= " my \$status = archive_write_set_format_$format(\$archive);\n\n";
     $buffer .= "Set the archive format to $format\n\n";
     $buffer .= "=cut\n\n";
-    $buffer .= "#ifdef HAS_archive_write_set_format_$format\n\n";
+    $buffer .= "#if HAS_archive_write_set_format_$format\n\n";
     $buffer .= "int\n";
     $buffer .= "archive_write_set_format_$format(archive)\n";
     $buffer .= "    struct archive *archive\n\n";

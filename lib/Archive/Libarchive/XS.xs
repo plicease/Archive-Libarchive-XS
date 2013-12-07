@@ -9,12 +9,13 @@
 
 #define MATH_INT64_NATIVE_IF_AVAILABLE
 #include "perl_math_int64.h"
-#include "perl_archive.h"
 #include "func.h"
 
 #include <string.h>
 #include <archive.h>
 #include <archive_entry.h>
+
+#include "perl_archive.h"
 
 typedef const char *string_or_null;
 
@@ -282,7 +283,15 @@ string_or_null
 _archive_error_string(archive)
     struct archive *archive;
   CODE:
+#if ARCHIVE_VERSION_NUMBER < 3000000
+    const char *str = archive_error_string(archive);
+    if(strcmp(str, "(Empty error message)"))
+      RETVAL = str;
+    else
+      RETVAL = NULL;
+#else
     RETVAL = archive_error_string(archive);
+#endif
   OUTPUT:
     RETVAL
 
@@ -346,7 +355,7 @@ for details of the level numbering.
 
 =cut
 
-#ifdef HAS_archive_filter_code
+#if HAS_archive_filter_code
 
 int 
 archive_filter_code(archive, level);
@@ -374,7 +383,7 @@ uudecoding, and C<archive_position(a,(0))> would return the number of bytes afte
 
 =cut
 
-#ifdef HAS_archive_filter_count
+#if HAS_archive_filter_count
 
 int 
 archive_filter_count(archive);
@@ -391,7 +400,7 @@ details of the numbering.
 
 =cut
 
-#ifdef HAS_archive_filter_name
+#if HAS_archive_filter_name
 
 const char * 
 _archive_filter_name(archive, level)
@@ -461,7 +470,7 @@ conjunction with any other decompression option.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_program
+#if HAS_archive_read_support_filter_program
 
 int
 _archive_read_support_filter_program(archive, command)
@@ -494,7 +503,7 @@ Enables a single format specified by the format code.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_by_code
+#if HAS_archive_read_support_format_by_code
 
 int
 archive_read_support_format_by_code(archive, code)
@@ -771,7 +780,7 @@ A convenience function to set the filter based on the code.
 
 =cut
 
-#ifdef HAS_archive_write_add_filter
+#if HAS_archive_write_add_filter
 
 int
 archive_write_add_filter(archive, code)
@@ -788,7 +797,7 @@ A convenience function to set the filter based on the name.
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_by_name
+#if HAS_archive_write_add_filter_by_name
 
 int
 _archive_write_add_filter_by_name(archive, name)
@@ -811,7 +820,7 @@ write callbacks.
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_program
+#if HAS_archive_write_add_filter_program
 
 int
 _archive_write_add_filter_program(archive, cmd)
@@ -950,7 +959,7 @@ default character-set conversion.
 
 =cut
 
-#ifdef HAS_archive_entry_new2
+#if HAS_archive_entry_new2
 
 struct archive_entry *
 archive_entry_new2(archive)
@@ -996,7 +1005,7 @@ Returns true if the size property for the archive entry has been set.
 
 =cut
 
-#ifdef HAS_archive_entry_size_is_set
+#if HAS_archive_entry_size_is_set
 
 int
 archive_entry_size_is_set(entry)
@@ -1070,7 +1079,7 @@ Gets the filetype of the archive entry.  Code should be one of
 
 =cut
 
-#ifdef HAS_archive_entry_filetype
+#if HAS_archive_entry_filetype
 
 unsigned int
 archive_entry_filetype(entry)
@@ -1086,7 +1095,7 @@ Set the permission bits for the entry.  This is the usual UNIX octal permission 
 
 =cut
 
-#ifdef HAS_archive_entry_set_perm
+#if HAS_archive_entry_set_perm
 
 int
 archive_entry_set_perm(entry, perm)
@@ -1239,7 +1248,7 @@ C<getpwnam> and C<getgrnam>.
 
 =cut
 
-#ifdef HAS_archive_write_disk_set_standard_lookup
+#if HAS_archive_write_disk_set_standard_lookup
 
 int
 archive_write_disk_set_standard_lookup(archive)
@@ -1255,7 +1264,7 @@ Set the compression method for the zip archive to store.
 
 =cut
 
-#ifdef HAS_archive_write_zip_set_compression_store
+#if HAS_archive_write_zip_set_compression_store
 
 int
 archive_write_zip_set_compression_store(archive)
@@ -1271,7 +1280,7 @@ Set the compression method for the zip archive to deflate.
 
 =cut
 
-#ifdef HAS_archive_write_zip_set_compression_deflate
+#if HAS_archive_write_zip_set_compression_deflate
 
 int
 archive_write_zip_set_compression_deflate(archive)
@@ -1288,7 +1297,7 @@ to avoid recursively adding an archive to itself.
 
 =cut
 
-#ifdef HAS_archive_write_set_skip_file
+#if HAS_archive_write_set_skip_file
 
 int
 archive_write_set_skip_file(archive, dev, ino)
@@ -1323,7 +1332,7 @@ in all other cases.
 
 =cut
 
-#ifdef HAS_archive_write_set_format_option
+#if HAS_archive_write_set_format_option
 
 int
 _archive_write_set_format_option(archive, module, option, value)
@@ -1363,7 +1372,7 @@ in all other cases.
 
 =cut
 
-#ifdef HAS_archive_write_set_filter_option
+#if HAS_archive_write_set_filter_option
 
 int
 _archive_write_set_filter_option(archive, module, option, value)
@@ -1389,7 +1398,7 @@ Otherwise, greater of the two values will be returned.
 
 =cut
 
-#ifdef HAS_archive_write_set_option
+#if HAS_archive_write_set_option
 
 int
 _archive_write_set_option(archive, module, option, value)
@@ -1437,7 +1446,7 @@ to modules whose name matches module.
 
 =cut
 
-#ifdef HAS_archive_write_set_options
+#if HAS_archive_write_set_options
 
 int
 _archive_write_set_options(archive, options)
@@ -1463,7 +1472,7 @@ occur.
 
 =cut
 
-#ifdef HAS_archive_write_set_bytes_per_block
+#if HAS_archive_write_set_bytes_per_block
 
 int
 archive_write_set_bytes_per_block(archive, bpb)
@@ -1489,7 +1498,7 @@ after the archive is opened.
 
 =cut
 
-#ifdef HAS_archive_write_set_bytes_in_last_block
+#if HAS_archive_write_set_bytes_in_last_block
 
 int
 archive_write_set_bytes_in_last_block(archive, bpb)
@@ -1508,7 +1517,7 @@ indicates that internal blocking is suppressed.
 
 =cut
 
-#ifdef HAS_archive_write_get_bytes_per_block
+#if HAS_archive_write_get_bytes_per_block
 
 int
 archive_write_get_bytes_per_block(archive)
@@ -1525,7 +1534,7 @@ here indicates that the library should use default values.
 
 =cut
 
-#ifdef HAS_archive_write_get_bytes_in_last_block
+#if HAS_archive_write_get_bytes_in_last_block
 
 int
 archive_write_get_bytes_in_last_block(archive)
@@ -1543,7 +1552,7 @@ when the client discovers that things have gone wrong.
 
 =cut
 
-#ifdef HAS_archive_write_fail
+#if HAS_archive_write_fail
 
 int
 archive_write_fail(archive)
@@ -1559,7 +1568,7 @@ Undocumented libarchive function.
 
 =cut
 
-#ifdef HAS_archive_write_disk_uid
+#if HAS_archive_write_disk_uid
 
 __LA_INT64_T
 _archive_write_disk_uid(archive, a2, a3)
@@ -1581,7 +1590,7 @@ Undocumented libarchive function.
 
 =cut
 
-#ifdef HAS_archive_write_disk_gid
+#if HAS_archive_write_disk_gid
 
 __LA_INT64_T
 _archive_write_disk_gid(archive, a2, a3)
@@ -1607,7 +1616,7 @@ significant performance optimization in practice.
 
 =cut
 
-#ifdef HAS_archive_write_disk_set_skip_file
+#if HAS_archive_write_disk_set_skip_file
 
 int
 archive_write_disk_set_skip_file(archive, device, inode)
@@ -1625,7 +1634,7 @@ Seek within the body of an entry.  Similar to C<lseek>.
 
 =cut
 
-#ifdef HAS_archive_seek_data
+#if HAS_archive_seek_data
 
 __LA_INT64_T
 archive_seek_data(archive, offset, whence)
@@ -1658,7 +1667,7 @@ module accepts the option, and C<ARCHIVE_FAILED> in all other cases.
 
 =cut
 
-#ifdef HAS_archive_read_set_format_option
+#if HAS_archive_read_set_format_option
 
 int
 _archive_read_set_format_option(archive, module, options, value)
@@ -1696,7 +1705,7 @@ module accepts the option, and C<ARCHIVE_FAILED> in all other cases.
 
 =cut
 
-#ifdef HAS_archive_read_set_filter_option
+#if HAS_archive_read_set_filter_option
 
 int
 _archive_read_set_filter_option(archive, module, option, value)
@@ -1722,7 +1731,7 @@ Otherwise, greater of the two values will be returned.
 
 =cut
 
-#ifdef HAS_archive_read_set_option
+#if HAS_archive_read_set_option
 
 int
 _archive_read_set_option(archive, module, option, value)
@@ -1772,7 +1781,7 @@ to modules whose name matches module.
 
 =cut
 
-#ifdef HAS_archive_read_set_options
+#if HAS_archive_read_set_options
 
 int
 _archive_read_set_options(archive, options)
@@ -1793,7 +1802,7 @@ Undocumented libarchive function.
 
 =cut
 
-#ifdef HAS_archive_read_set_format
+#if HAS_archive_read_set_format
 
 int
 _archive_read_set_format(archive, format)
@@ -1815,7 +1824,7 @@ header started.
 
 =cut
 
-#ifdef HAS_archive_read_header_position
+#if HAS_archive_read_header_position
 
 __LA_INT64_T
 archive_read_header_position(archive)
@@ -1831,7 +1840,7 @@ The same as C<archive_read_open2>, except that the skip callback is assumed to b
 
 =cut
 
-#ifdef HAS_archive_read_open
+#if HAS_archive_read_open
 
 int
 _archive_read_open(archive, data, open_cb, read_cb, close_cb)
@@ -1863,7 +1872,7 @@ be invoked by the compression layer to write the constructed archive.
 
 =cut
 
-#ifdef HAS_archive_write_open
+#if HAS_archive_write_open
 
 int
 _archive_write_open(archive, data, open_cb, write_cb, close_cb)
@@ -1897,7 +1906,7 @@ obtain raw bytes from the archive.
 
 =cut
 
-#ifdef HAS_archive_read_open2
+#if HAS_archive_read_open2
 
 int
 _archive_read_open2(archive, data, open_cb, read_cb, skip_cb, close_cb)
@@ -1929,7 +1938,7 @@ Set the open callback for the archive object.
 
 =cut
 
-#ifdef HAS_archive_read_set_open_callback
+#if HAS_archive_read_set_open_callback
 
 int
 _archive_read_set_open_callback(archive, callback)
@@ -1953,7 +1962,7 @@ Set the read callback for the archive object.
 
 =cut
 
-#ifdef HAS_archive_read_set_read_callback
+#if HAS_archive_read_set_read_callback
 
 int
 _archive_read_set_read_callback(archive, callback)
@@ -1977,7 +1986,7 @@ Set the skip callback for the archive object.
 
 =cut
 
-#ifdef HAS_archive_read_set_skip_callback
+#if HAS_archive_read_set_skip_callback
 
 int
 _archive_read_set_skip_callback(archive, callback)
@@ -2001,7 +2010,7 @@ Set the close callback for the archive object.
 
 =cut
 
-#ifdef HAS_archive_read_set_close_callback
+#if HAS_archive_read_set_close_callback
 
 int
 _archive_read_set_close_callback(archive, callback)
@@ -2025,7 +2034,7 @@ Set the seek callback for the archive object.
 
 =cut
 
-#ifdef HAS_archive_read_set_seek_callback
+#if HAS_archive_read_set_seek_callback
 
 int
 _archive_read_set_seek_callback(archive, callback)
@@ -2049,6 +2058,8 @@ Set the client data for callbacks.
 
 =cut
 
+#if HAS_archive_read_set_callback_data
+
 int
 _archive_read_set_callback_data(archive, data)
     struct archive *archive
@@ -2062,6 +2073,8 @@ _archive_read_set_callback_data(archive, data)
   OUTPUT:
     RETVAL
 
+#endif
+
 =head2 archive_read_open1
 
  my $status = archive_read_open1($archive);
@@ -2070,7 +2083,7 @@ Opening freezes the callbacks.
 
 =cut
 
-#ifdef HAS_archive_read_open1
+#if HAS_archive_read_open1
 
 int
 archive_read_open1(archive)
@@ -2086,7 +2099,7 @@ Read the header for the next entry and populate the provided entry object.
 
 =cut
 
-#ifdef HAS_archive_read_next_header2
+#if HAS_archive_read_next_header2
 
 int
 archive_read_next_header2(archive, entry)
@@ -2103,7 +2116,7 @@ Returns true if the access time property has been set on the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_atime_is_set
+#if HAS_archive_entry_atime_is_set
 
 int
 archive_entry_atime_is_set(entry)
@@ -2119,7 +2132,7 @@ Returns true if the mtime (modify time) property has been set on the archive ent
 
 =cut
 
-#ifdef HAS_archive_entry_mtime_is_set
+#if HAS_archive_entry_mtime_is_set
 
 int
 archive_entry_mtime_is_set(entry)
@@ -2135,7 +2148,7 @@ Removes the value for the atime property on the archive.
 
 =cut
 
-#ifdef HAS_archive_entry_unset_atime
+#if HAS_archive_entry_unset_atime
 
 int
 archive_entry_unset_atime(entry)
@@ -2156,7 +2169,7 @@ Returns the access time for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_atime
+#if HAS_archive_entry_atime
 
 time_t
 archive_entry_atime(entry)
@@ -2172,7 +2185,7 @@ Returns the access time (nanoseconds).
 
 =cut
 
-#ifdef HAS_archive_entry_atime_nsec
+#if HAS_archive_entry_atime_nsec
 
 long
 archive_entry_atime_nsec(entry)
@@ -2188,7 +2201,7 @@ Returns true if the birthtime (creation time) property has been set on the archi
 
 =cut
 
-#ifdef HAS_archive_entry_birthtime_is_set
+#if HAS_archive_entry_birthtime_is_set
 
 int
 archive_entry_birthtime_is_set(entry)
@@ -2204,7 +2217,7 @@ Returns the birthtime (creation time) for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_birthtime
+#if HAS_archive_entry_birthtime
 
 time_t
 archive_entry_birthtime(entry)
@@ -2220,7 +2233,7 @@ Returns the birthtime (creation time) for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_birthtime_nsec
+#if HAS_archive_entry_birthtime_nsec
 
 long
 archive_entry_birthtime_nsec(entry)
@@ -2237,7 +2250,7 @@ on the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_ctime_is_set
+#if HAS_archive_entry_ctime_is_set
 
 int
 archive_entry_ctime_is_set(entry)
@@ -2253,7 +2266,7 @@ Returns the ctime (last time an inode property was changed) property for the arc
 
 =cut
 
-#ifdef HAS_archive_entry_ctime
+#if HAS_archive_entry_ctime
 
 time_t
 archive_entry_ctime(entry)
@@ -2269,7 +2282,7 @@ Gets the mtime (modify time) property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_mtime
+#if HAS_archive_entry_mtime
 
 time_t
 archive_entry_mtime(entry)
@@ -2285,7 +2298,7 @@ Returns the ctime (last time an inode property was changed) property (nanosecond
 
 =cut
 
-#ifdef HAS_archive_entry_ctime_nsec
+#if HAS_archive_entry_ctime_nsec
 
 long
 archive_entry_ctime_nsec(entry)
@@ -2304,7 +2317,7 @@ C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
 
 =cut
 
-#ifdef HAS_archive_entry_dev_is_set
+#if HAS_archive_entry_dev_is_set
 
 int
 archive_entry_dev_is_set(entry)
@@ -2320,7 +2333,7 @@ Returns the file flags property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_fflags
+#if HAS_archive_entry_fflags
 
 int
 archive_entry_fflags(entry, sv_set, sv_clear)
@@ -2355,7 +2368,7 @@ C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
 
 =cut
 
-#ifdef HAS_archive_entry_dev
+#if HAS_archive_entry_dev
 
 dev_t
 archive_entry_dev(entry)
@@ -2371,7 +2384,7 @@ Returns the device major property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_devmajor
+#if HAS_archive_entry_devmajor
 
 dev_t
 archive_entry_devmajor(entry)
@@ -2387,7 +2400,7 @@ Returns the device minor property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_devminor
+#if HAS_archive_entry_devminor
 
 dev_t
 archive_entry_devminor(entry)
@@ -2403,7 +2416,7 @@ Returns the file flags property as a string.
 
 =cut
 
-#ifdef HAS_archive_entry_fflags_text
+#if HAS_archive_entry_fflags_text
 
 const char *
 _archive_entry_fflags_text(entry)
@@ -2423,7 +2436,7 @@ Returns the group id property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_gid
+#if HAS_archive_entry_gid
 
 __LA_INT64_T
 archive_entry_gid(entry)
@@ -2439,7 +2452,7 @@ Sets the group id property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_set_gid
+#if HAS_archive_entry_set_gid
 
 int
 archive_entry_set_gid(entry, gid)
@@ -2465,7 +2478,7 @@ traversal.
 
 =cut
 
-#ifdef HAS_archive_read_disk_descend
+#if HAS_archive_read_disk_descend
 
 int
 archive_read_disk_descend(archive)
@@ -2481,7 +2494,7 @@ Undocumented libarchive function.
 
 =cut
 
-#ifdef HAS_archive_read_disk_can_descend
+#if HAS_archive_read_disk_can_descend
 
 int
 archive_read_disk_can_descend(archive)
@@ -2497,7 +2510,7 @@ Undocumented libarchive function.
 
 =cut
 
-#ifdef HAS_archive_read_disk_current_filesystem
+#if HAS_archive_read_disk_current_filesystem
 
 int
 archive_read_disk_current_filesystem(archive)
@@ -2513,7 +2526,7 @@ Undocumented libarchive function.
 
 =cut
 
-#ifdef HAS_archive_read_disk_current_filesystem_is_synthetic
+#if HAS_archive_read_disk_current_filesystem_is_synthetic
 
 int
 archive_read_disk_current_filesystem_is_synthetic(archive)
@@ -2529,7 +2542,7 @@ Undocumented libarchive function.
 
 =cut
 
-#ifdef HAS_archive_read_disk_current_filesystem_is_remote
+#if HAS_archive_read_disk_current_filesystem_is_remote
 
 int
 archive_read_disk_current_filesystem_is_remote(archive)
@@ -2545,7 +2558,7 @@ Request that the access time of the entry visited by traversal be restored.
 
 =cut
 
-#ifdef HAS_archive_read_disk_set_atime_restored
+#if HAS_archive_read_disk_set_atime_restored
 
 int
 archive_read_disk_set_atime_restored(archive)
@@ -2561,7 +2574,7 @@ Allocates and initializes an archive object suitable for reading objects from di
 
 =cut
 
-#ifdef HAS_archive_read_disk_open
+#if HAS_archive_read_disk_open
 
 int
 _archive_read_disk_open(archive, name)
@@ -2583,7 +2596,7 @@ returns C<undef>.
 
 =cut
 
-#ifdef HAS_archive_read_disk_gname
+#if HAS_archive_read_disk_gname
 
 string_or_null
 _archive_read_disk_gname(archive, gid)
@@ -2605,7 +2618,7 @@ returns C<undef>.
 
 =cut
 
-#ifdef HAS_archive_read_disk_uname
+#if HAS_archive_read_disk_uname
 
 string_or_null
 _archive_read_disk_uname(archive, gid)
@@ -2627,7 +2640,7 @@ from disk.
 
 =cut
 
-#ifdef HAS_archive_read_disk_new
+#if HAS_archive_read_disk_new
 
 struct archive *
 archive_read_disk_new()
@@ -2642,7 +2655,7 @@ Undocumented libarchive function.
 
 =cut
 
-#ifdef HAS_archive_read_disk_set_behavior
+#if HAS_archive_read_disk_set_behavior
 
 int
 archive_read_disk_set_behavior(archive, flags)
@@ -2662,7 +2675,7 @@ reduce the number of calls to C<getpwuid> and C<getgrgid>.
 
 =cut
 
-#ifdef HAS_archive_read_disk_set_standard_lookup
+#if HAS_archive_read_disk_set_standard_lookup
 
 int
 archive_read_disk_set_standard_lookup(archive)
@@ -2679,7 +2692,7 @@ behaves identically to the "logical" mode.
 
 =cut
 
-#ifdef HAS_archive_read_disk_set_symlink_hybrid
+#if HAS_archive_read_disk_set_symlink_hybrid
 
 int
 archive_read_disk_set_symlink_hybrid(archive)
@@ -2696,7 +2709,7 @@ all symbolic links.
 
 =cut
 
-#ifdef HAS_archive_read_disk_set_symlink_logical
+#if HAS_archive_read_disk_set_symlink_logical
 
 int
 archive_read_disk_set_symlink_logical(archive)
@@ -2713,7 +2726,7 @@ follow any symbolic links.
 
 =cut
 
-#ifdef HAS_archive_read_disk_set_symlink_physical
+#if HAS_archive_read_disk_set_symlink_physical
 
 int
 archive_read_disk_set_symlink_physical(archive)
@@ -2729,7 +2742,7 @@ Allocates and initializes a archive object suitable for reading and matching wit
 
 =cut
 
-#ifdef HAS_archive_match_new
+#if HAS_archive_match_new
 
 struct archive *
 archive_match_new()
@@ -2744,7 +2757,7 @@ Free the resources previously allocated with L<#archive_match_new>.
 
 =cut
 
-#ifdef HAS_archive_match_free
+#if HAS_archive_match_free
 
 int
 archive_match_free(archive)
@@ -2762,7 +2775,7 @@ and L<#archive_match_owner_excluded>.
 
 =cut
 
-#ifdef HAS_archive_match_excluded
+#if HAS_archive_match_excluded
 
 int
 archive_match_excluded(archive, entry)
@@ -2779,7 +2792,7 @@ Test if pathname is excluded.
 
 =cut
 
-#ifdef HAS_archive_match_path_excluded
+#if HAS_archive_match_path_excluded
 
 int
 archive_match_path_excluded(archive, entry)
@@ -2796,7 +2809,7 @@ Test if a file is excluded by its time stamp.
 
 =cut
 
-#ifdef HAS_archive_match_time_excluded
+#if HAS_archive_match_time_excluded
 
 int
 archive_match_time_excluded(archive, entry)
@@ -2813,7 +2826,7 @@ Test if a file is excluded by its uid, gid, user name or group name.
 
 =cut
 
-#ifdef HAS_archive_match_owner_excluded
+#if HAS_archive_match_owner_excluded
 
 int
 archive_match_owner_excluded(archive, entry)
@@ -2831,7 +2844,7 @@ UTF-8 or "ANSI_X3.4-1968" for ASCII) of the currently configured locale.
 
 =cut
 
-#ifdef HAS_archive_perl_codeset
+#if HAS_archive_perl_codeset
 
 string_or_null
 archive_perl_codeset()
@@ -2846,7 +2859,7 @@ Returns true if the internal "codeset" used by libarchive is UTF-8.
 
 =cut
 
-#ifdef HAS_archive_perl_utf8_mode
+#if HAS_archive_perl_utf8_mode
 
 int
 archive_perl_utf8_mode()
@@ -2863,7 +2876,7 @@ There's not yet anything you can actually do with this...
 
 =cut
 
-#ifdef HAS_archive_entry_acl
+#if HAS_archive_entry_acl
 
 struct archive_acl *
 archive_entry_acl(entry)
@@ -2879,7 +2892,7 @@ removes all ACL entries and resets the enumeration pointer.
 
 =cut
 
-#ifdef HAS_archive_entry_acl_clear
+#if HAS_archive_entry_acl_clear
 
 int
 archive_entry_acl_clear(entry)
@@ -2901,7 +2914,7 @@ UNIX permissions are updated.
 
 =cut
 
-#ifdef HAS_archive_entry_acl_add_entry
+#if HAS_archive_entry_acl_add_entry
 
 int
 _archive_entry_acl_add_entry(entry, type, permset, tag, qual, name)
@@ -2930,7 +2943,7 @@ Otherwise, the function returns the same value as L<#archive_entry_acl_count>.
 
 =cut
 
-#ifdef HAS_archive_entry_acl_reset
+#if HAS_archive_entry_acl_reset
 
 int
 archive_entry_acl_reset(entry, want_type)
@@ -2948,7 +2961,7 @@ has indicated the presence of extended ACL entries.
 
 =cut
 
-#ifdef HAS_archive_entry_acl_next
+#if HAS_archive_entry_acl_next
 
 int
 archive_entry_acl_next(entry, want_type, type, permset, tag, qual, name)
@@ -2988,7 +3001,7 @@ L<#archive_entry_acl_clear>, L<#archive_entry_acl_add_entry>, L<#archive_entry_a
 
 =cut
 
-#ifdef HAS_archive_entry_acl_text
+#if HAS_archive_entry_acl_text
 
 string_or_null
 _archive_entry_acl_text(entry, flags)
@@ -3013,7 +3026,7 @@ non-extended ACLs are added.
 
 =cut
 
-#ifdef HAS_archive_entry_acl_count
+#if HAS_archive_entry_acl_count
 
 int
 archive_entry_acl_count(entry, want_type)
@@ -3030,7 +3043,7 @@ Returns the rdev property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_rdev
+#if HAS_archive_entry_rdev
 
 dev_t
 archive_entry_rdev(entry)
@@ -3046,7 +3059,7 @@ Returns the major component of the rdev property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_rdevmajor
+#if HAS_archive_entry_rdevmajor
 
 dev_t
 archive_entry_rdevmajor(entry)
@@ -3062,7 +3075,7 @@ Returns the minor component of the rdev property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_rdevminor
+#if HAS_archive_entry_rdevminor
 
 dev_t
 archive_entry_rdevminor(entry)
@@ -3078,7 +3091,7 @@ Set the rdev property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_set_rdev
+#if HAS_archive_entry_set_rdev
 
 int
 archive_entry_set_rdev(entry, device)
@@ -3100,7 +3113,7 @@ Set the major component of the rdev property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_set_rdevmajor
+#if HAS_archive_entry_set_rdevmajor
 
 int
 archive_entry_set_rdevmajor(entry, major)
@@ -3122,7 +3135,7 @@ Sets the minor component of the rdev property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_set_rdevminor
+#if HAS_archive_entry_set_rdevminor
 
 int
 archive_entry_set_rdevminor(entry, minor)
@@ -3155,7 +3168,7 @@ An Alias for L<#archive_entry_set_mac_metadata>.
 
 =cut
 
-#ifdef HAS_archive_entry_copy_mac_metadata
+#if HAS_archive_entry_copy_mac_metadata
 
 int
 archive_entry_set_mac_metadata(entry, buffer)
@@ -3186,7 +3199,7 @@ C<archive_entry_copy_mac_metadata>.
 
 =cut
 
-#ifdef HAS_archive_entry_mac_metadata
+#if HAS_archive_entry_mac_metadata
 
 SV *
 archive_entry_mac_metadata(entry)
@@ -3211,7 +3224,7 @@ recommended.
 
 =cut
 
-#ifdef HAS_archive_entry_mode
+#if HAS_archive_entry_mode
 
 int
 archive_entry_mode(entry)
@@ -3230,7 +3243,7 @@ recommended.
 
 =cut
 
-#ifdef HAS_archive_entry_set_mode
+#if HAS_archive_entry_set_mode
 
 int
 archive_entry_set_mode(entry, mode)
@@ -3252,7 +3265,7 @@ Use this for reading multivolume files by filenames.
 
 =cut
 
-#ifdef HAS_archive_read_open_filenames
+#if HAS_archive_read_open_filenames
 
 int
 archive_read_open_filenames(archive, filenames, block_size)
@@ -3295,7 +3308,7 @@ Allocate a new link resolver.
 
 =cut
 
-#ifdef HAS_archive_entry_linkresolver_new
+#if HAS_archive_entry_linkresolver_new
 
 struct archive_entry_linkresolver *
 archive_entry_linkresolver_new()
@@ -3311,7 +3324,7 @@ All deferred entries are flushed and the internal storage is freed.
 
 =cut
 
-#ifdef HAS_archive_entry_linkresolver_free
+#if HAS_archive_entry_linkresolver_free
 
 int
 archive_entry_linkresolver_free(linkresolver)
@@ -3333,7 +3346,7 @@ Set the link resolver strategy.  $format should be an archive format constant
 
 =cut
 
-#ifdef HAS_archive_entry_linkresolver_set_strategy
+#if HAS_archive_entry_linkresolver_set_strategy
 
 int
 archive_entry_linkresolver_set_strategy(linkresolver, format)
@@ -3359,7 +3372,7 @@ find hardlinks.
 
 =cut
 
-#ifdef HAS_archive_entry_set_ino
+#if HAS_archive_entry_set_ino
 
 int
 archive_entry_set_ino(entry, ino)
@@ -3384,7 +3397,7 @@ C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
 
 =cut
 
-#ifdef HAS_archive_entry_set_dev
+#if HAS_archive_entry_set_dev
 
 int
 archive_entry_set_dev(entry, device)
@@ -3406,7 +3419,7 @@ Sets the number of hardlinks for the entry.
 
 =cut
 
-#ifdef HAS_archive_entry_set_nlink
+#if HAS_archive_entry_set_nlink
 
 int
 archive_entry_set_nlink(entry, nlink)
@@ -3428,7 +3441,7 @@ Gets the number of hardlinks for the entry.
 
 =cut
 
-#ifdef HAS_archive_entry_nlink
+#if HAS_archive_entry_nlink
 
 unsigned int
 archive_entry_nlink(entry)
@@ -3449,7 +3462,7 @@ set to undef after this function is called.
 
 =cut
 
-#ifdef HAS_archive_entry_linkify
+#if HAS_archive_entry_linkify
 
 int
 archive_entry_linkify(linkresolver, entry1, entry2)
@@ -3494,7 +3507,7 @@ Get the UID (user id) property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_uid
+#if HAS_archive_entry_uid
 
 __LA_INT64_T
 archive_entry_uid(entry)
@@ -3510,7 +3523,7 @@ Set the UID (user id) property for the archive entry.
 
 =cut
 
-#ifdef HAS_archive_entry_set_uid
+#if HAS_archive_entry_set_uid
 
 int
 archive_entry_set_uid(entry, uid)
@@ -3536,7 +3549,7 @@ arguments (via perl's L<sprintf|perlfunc#sprintf>.
 
 =cut
 
-#ifdef HAS_archive_set_error
+#if HAS_archive_set_error
 
 int
 _archive_set_error(archive, status, string)
@@ -3561,7 +3574,7 @@ as C<-rw-r--r-->.
 
 =cut
 
-#ifdef HAS_archive_entry_strmode
+#if HAS_archive_entry_strmode
 
 string_or_null
 archive_entry_strmode(entry)
@@ -4171,7 +4184,7 @@ Enable bzip2 decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_bzip2
+#if HAS_archive_read_support_filter_bzip2
 
 int
 archive_read_support_filter_bzip2(archive)
@@ -4187,7 +4200,7 @@ Enable compress decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_compress
+#if HAS_archive_read_support_filter_compress
 
 int
 archive_read_support_filter_compress(archive)
@@ -4203,7 +4216,7 @@ Enable grzip decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_grzip
+#if HAS_archive_read_support_filter_grzip
 
 int
 archive_read_support_filter_grzip(archive)
@@ -4219,7 +4232,7 @@ Enable gzip decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_gzip
+#if HAS_archive_read_support_filter_gzip
 
 int
 archive_read_support_filter_gzip(archive)
@@ -4235,7 +4248,7 @@ Enable lrzip decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_lrzip
+#if HAS_archive_read_support_filter_lrzip
 
 int
 archive_read_support_filter_lrzip(archive)
@@ -4251,7 +4264,7 @@ Enable lzip decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_lzip
+#if HAS_archive_read_support_filter_lzip
 
 int
 archive_read_support_filter_lzip(archive)
@@ -4267,7 +4280,7 @@ Enable lzma decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_lzma
+#if HAS_archive_read_support_filter_lzma
 
 int
 archive_read_support_filter_lzma(archive)
@@ -4283,7 +4296,7 @@ Enable lzop decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_lzop
+#if HAS_archive_read_support_filter_lzop
 
 int
 archive_read_support_filter_lzop(archive)
@@ -4299,7 +4312,7 @@ Enable none decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_none
+#if HAS_archive_read_support_filter_none
 
 int
 archive_read_support_filter_none(archive)
@@ -4315,7 +4328,7 @@ Enable rpm decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_rpm
+#if HAS_archive_read_support_filter_rpm
 
 int
 archive_read_support_filter_rpm(archive)
@@ -4331,7 +4344,7 @@ Enable uu decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_uu
+#if HAS_archive_read_support_filter_uu
 
 int
 archive_read_support_filter_uu(archive)
@@ -4347,7 +4360,7 @@ Enable xz decompression filter.
 
 =cut
 
-#ifdef HAS_archive_read_support_filter_xz
+#if HAS_archive_read_support_filter_xz
 
 int
 archive_read_support_filter_xz(archive)
@@ -4363,7 +4376,7 @@ Enable 7zip archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_7zip
+#if HAS_archive_read_support_format_7zip
 
 int
 archive_read_support_format_7zip(archive)
@@ -4379,7 +4392,7 @@ Enable ar archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_ar
+#if HAS_archive_read_support_format_ar
 
 int
 archive_read_support_format_ar(archive)
@@ -4395,7 +4408,7 @@ Enable cab archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_cab
+#if HAS_archive_read_support_format_cab
 
 int
 archive_read_support_format_cab(archive)
@@ -4411,7 +4424,7 @@ Enable cpio archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_cpio
+#if HAS_archive_read_support_format_cpio
 
 int
 archive_read_support_format_cpio(archive)
@@ -4427,7 +4440,7 @@ Enable empty archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_empty
+#if HAS_archive_read_support_format_empty
 
 int
 archive_read_support_format_empty(archive)
@@ -4443,7 +4456,7 @@ Enable gnutar archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_gnutar
+#if HAS_archive_read_support_format_gnutar
 
 int
 archive_read_support_format_gnutar(archive)
@@ -4459,7 +4472,7 @@ Enable iso9660 archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_iso9660
+#if HAS_archive_read_support_format_iso9660
 
 int
 archive_read_support_format_iso9660(archive)
@@ -4475,7 +4488,7 @@ Enable lha archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_lha
+#if HAS_archive_read_support_format_lha
 
 int
 archive_read_support_format_lha(archive)
@@ -4491,7 +4504,7 @@ Enable mtree archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_mtree
+#if HAS_archive_read_support_format_mtree
 
 int
 archive_read_support_format_mtree(archive)
@@ -4507,7 +4520,7 @@ Enable rar archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_rar
+#if HAS_archive_read_support_format_rar
 
 int
 archive_read_support_format_rar(archive)
@@ -4523,7 +4536,7 @@ Enable raw archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_raw
+#if HAS_archive_read_support_format_raw
 
 int
 archive_read_support_format_raw(archive)
@@ -4539,7 +4552,7 @@ Enable tar archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_tar
+#if HAS_archive_read_support_format_tar
 
 int
 archive_read_support_format_tar(archive)
@@ -4555,7 +4568,7 @@ Enable xar archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_xar
+#if HAS_archive_read_support_format_xar
 
 int
 archive_read_support_format_xar(archive)
@@ -4571,7 +4584,7 @@ Enable zip archive format.
 
 =cut
 
-#ifdef HAS_archive_read_support_format_zip
+#if HAS_archive_read_support_format_zip
 
 int
 archive_read_support_format_zip(archive)
@@ -4587,7 +4600,7 @@ Add b64encode filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_b64encode
+#if HAS_archive_write_add_filter_b64encode
 
 int
 archive_write_add_filter_b64encode(archive)
@@ -4603,7 +4616,7 @@ Add bzip2 filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_bzip2
+#if HAS_archive_write_add_filter_bzip2
 
 int
 archive_write_add_filter_bzip2(archive)
@@ -4619,7 +4632,7 @@ Add compress filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_compress
+#if HAS_archive_write_add_filter_compress
 
 int
 archive_write_add_filter_compress(archive)
@@ -4635,7 +4648,7 @@ Add grzip filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_grzip
+#if HAS_archive_write_add_filter_grzip
 
 int
 archive_write_add_filter_grzip(archive)
@@ -4651,7 +4664,7 @@ Add gzip filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_gzip
+#if HAS_archive_write_add_filter_gzip
 
 int
 archive_write_add_filter_gzip(archive)
@@ -4667,7 +4680,7 @@ Add lrzip filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_lrzip
+#if HAS_archive_write_add_filter_lrzip
 
 int
 archive_write_add_filter_lrzip(archive)
@@ -4683,7 +4696,7 @@ Add lzip filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_lzip
+#if HAS_archive_write_add_filter_lzip
 
 int
 archive_write_add_filter_lzip(archive)
@@ -4699,7 +4712,7 @@ Add lzma filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_lzma
+#if HAS_archive_write_add_filter_lzma
 
 int
 archive_write_add_filter_lzma(archive)
@@ -4715,7 +4728,7 @@ Add lzop filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_lzop
+#if HAS_archive_write_add_filter_lzop
 
 int
 archive_write_add_filter_lzop(archive)
@@ -4731,7 +4744,7 @@ Add none filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_none
+#if HAS_archive_write_add_filter_none
 
 int
 archive_write_add_filter_none(archive)
@@ -4747,7 +4760,7 @@ Add uuencode filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_uuencode
+#if HAS_archive_write_add_filter_uuencode
 
 int
 archive_write_add_filter_uuencode(archive)
@@ -4763,7 +4776,7 @@ Add xz filter
 
 =cut
 
-#ifdef HAS_archive_write_add_filter_xz
+#if HAS_archive_write_add_filter_xz
 
 int
 archive_write_add_filter_xz(archive)
@@ -4779,7 +4792,7 @@ Set the archive format to 7zip
 
 =cut
 
-#ifdef HAS_archive_write_set_format_7zip
+#if HAS_archive_write_set_format_7zip
 
 int
 archive_write_set_format_7zip(archive)
@@ -4795,7 +4808,7 @@ Set the archive format to ar_bsd
 
 =cut
 
-#ifdef HAS_archive_write_set_format_ar_bsd
+#if HAS_archive_write_set_format_ar_bsd
 
 int
 archive_write_set_format_ar_bsd(archive)
@@ -4811,7 +4824,7 @@ Set the archive format to ar_svr4
 
 =cut
 
-#ifdef HAS_archive_write_set_format_ar_svr4
+#if HAS_archive_write_set_format_ar_svr4
 
 int
 archive_write_set_format_ar_svr4(archive)
@@ -4827,7 +4840,7 @@ Set the archive format to cpio
 
 =cut
 
-#ifdef HAS_archive_write_set_format_cpio
+#if HAS_archive_write_set_format_cpio
 
 int
 archive_write_set_format_cpio(archive)
@@ -4843,7 +4856,7 @@ Set the archive format to cpio_newc
 
 =cut
 
-#ifdef HAS_archive_write_set_format_cpio_newc
+#if HAS_archive_write_set_format_cpio_newc
 
 int
 archive_write_set_format_cpio_newc(archive)
@@ -4859,7 +4872,7 @@ Set the archive format to gnutar
 
 =cut
 
-#ifdef HAS_archive_write_set_format_gnutar
+#if HAS_archive_write_set_format_gnutar
 
 int
 archive_write_set_format_gnutar(archive)
@@ -4875,7 +4888,7 @@ Set the archive format to iso9660
 
 =cut
 
-#ifdef HAS_archive_write_set_format_iso9660
+#if HAS_archive_write_set_format_iso9660
 
 int
 archive_write_set_format_iso9660(archive)
@@ -4891,7 +4904,7 @@ Set the archive format to mtree
 
 =cut
 
-#ifdef HAS_archive_write_set_format_mtree
+#if HAS_archive_write_set_format_mtree
 
 int
 archive_write_set_format_mtree(archive)
@@ -4907,7 +4920,7 @@ Set the archive format to mtree_classic
 
 =cut
 
-#ifdef HAS_archive_write_set_format_mtree_classic
+#if HAS_archive_write_set_format_mtree_classic
 
 int
 archive_write_set_format_mtree_classic(archive)
@@ -4923,7 +4936,7 @@ Set the archive format to pax
 
 =cut
 
-#ifdef HAS_archive_write_set_format_pax
+#if HAS_archive_write_set_format_pax
 
 int
 archive_write_set_format_pax(archive)
@@ -4939,7 +4952,7 @@ Set the archive format to pax_restricted
 
 =cut
 
-#ifdef HAS_archive_write_set_format_pax_restricted
+#if HAS_archive_write_set_format_pax_restricted
 
 int
 archive_write_set_format_pax_restricted(archive)
@@ -4955,7 +4968,7 @@ Set the archive format to shar
 
 =cut
 
-#ifdef HAS_archive_write_set_format_shar
+#if HAS_archive_write_set_format_shar
 
 int
 archive_write_set_format_shar(archive)
@@ -4971,7 +4984,7 @@ Set the archive format to shar_dump
 
 =cut
 
-#ifdef HAS_archive_write_set_format_shar_dump
+#if HAS_archive_write_set_format_shar_dump
 
 int
 archive_write_set_format_shar_dump(archive)
@@ -4987,7 +5000,7 @@ Set the archive format to ustar
 
 =cut
 
-#ifdef HAS_archive_write_set_format_ustar
+#if HAS_archive_write_set_format_ustar
 
 int
 archive_write_set_format_ustar(archive)
@@ -5003,7 +5016,7 @@ Set the archive format to v7tar
 
 =cut
 
-#ifdef HAS_archive_write_set_format_v7tar
+#if HAS_archive_write_set_format_v7tar
 
 int
 archive_write_set_format_v7tar(archive)
@@ -5019,7 +5032,7 @@ Set the archive format to xar
 
 =cut
 
-#ifdef HAS_archive_write_set_format_xar
+#if HAS_archive_write_set_format_xar
 
 int
 archive_write_set_format_xar(archive)
@@ -5035,7 +5048,7 @@ Set the archive format to zip
 
 =cut
 
-#ifdef HAS_archive_write_set_format_zip
+#if HAS_archive_write_set_format_zip
 
 int
 archive_write_set_format_zip(archive)
