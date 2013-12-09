@@ -11,7 +11,6 @@ unimplemented: archive_entry_copy_sourcepath
 unimplemented: archive_entry_copy_stat
 unimplemented: archive_entry_ino64
 unimplemented: archive_entry_ino_is_set
-unimplemented: archive_entry_mtime_nsec
 unimplemented: archive_entry_partial_links
 unimplemented: archive_entry_perm
 unimplemented: archive_entry_set_birthtime
@@ -71,4 +70,4 @@ unimplemented: archive_write_disk_set_group_lookup
 unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 66
+total unimplemented symbols: 65

@@ -422,6 +422,12 @@ Gets the mtime (modify time) property for the archive entry.
 
 Returns true if the mtime (modify time) property has been set on the archive entry.
 
+=head2 archive_entry_mtime_nsec
+
+ my $mtime = archive_entry_mtime_nsec($entry);
+
+Gets the mtime property (modify time) property for the archive entry (nanoseconds).
+
 =head2 archive_entry_new
 
  my $entry = archive_entry_new();

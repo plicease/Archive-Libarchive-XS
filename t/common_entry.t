@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 40;
+use Test::More tests => 43;
 use Archive::Libarchive::XS qw( :all );
 
 my $r;
@@ -89,6 +89,14 @@ is $r, ARCHIVE_OK, 'archive_entry_set_atime';
 is eval { archive_entry_atime($e) }, 123456789, 'archive_entry_atime';
 diag $@ if $@;
 is eval { archive_entry_atime_nsec($e) }, 123456789, 'archive_entry_atime_nsec';
+diag $@ if $@;
+
+$r = eval { archive_entry_set_mtime($e, 123456798, 123456798) };
+diag $@ if $@;
+is $r, ARCHIVE_OK, 'archive_entry_set_mtime';
+is eval { archive_entry_mtime($e) }, 123456798, 'archive_entry_mtime';
+diag $@ if $@;
+is eval { archive_entry_mtime_nsec($e) }, 123456798, 'archive_entry_mtime_nsec';
 diag $@ if $@;
 
 $r = archive_entry_free($e);

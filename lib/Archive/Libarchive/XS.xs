@@ -2313,6 +2313,22 @@ archive_entry_mtime(entry)
 
 #endif
 
+=head2 archive_entry_mtime_nsec
+
+ my $mtime = archive_entry_mtime_nsec($entry);
+
+Gets the mtime property (modify time) property for the archive entry (nanoseconds).
+
+=cut
+
+#if HAS_archive_entry_mtime_nsec
+
+long
+archive_entry_mtime_nsec(entry)
+    struct archive_entry *entry
+
+#endif
+
 =head2 archive_entry_ctime_nsec
 
  my $ctime = archive_entry_ctime_nsec($entry);

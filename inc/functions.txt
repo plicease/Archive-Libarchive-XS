@@ -39,6 +39,7 @@ archive_entry_mac_metadata
 archive_entry_mode
 archive_entry_mtime
 archive_entry_mtime_is_set
+archive_entry_mtime_nsec
 archive_entry_new
 archive_entry_new2
 archive_entry_nlink
