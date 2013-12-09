@@ -18,8 +18,6 @@ unimplemented: archive_entry_perm
 unimplemented: archive_entry_set_atime
 unimplemented: archive_entry_set_birthtime
 unimplemented: archive_entry_set_ctime
-unimplemented: archive_entry_set_devmajor
-unimplemented: archive_entry_set_devminor
 unimplemented: archive_entry_set_fflags
 unimplemented: archive_entry_set_ino64
 unimplemented: archive_entry_set_link
@@ -75,4 +73,4 @@ unimplemented: archive_write_disk_set_group_lookup
 unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 70
+total unimplemented symbols: 68

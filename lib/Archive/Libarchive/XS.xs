@@ -3412,6 +3412,56 @@ archive_entry_set_dev(entry, device)
 
 #endif
 
+=head2 archive_entry_set_devmajor
+
+ my $status = archive_entry_set_devmajor($entry, $devmajor);
+
+Sets the device major property for the archive entry.
+
+The device property is an integer identifying the device, and is used by
+C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
+
+=cut
+
+#ifdef HAS_archive_entry_set_devmajor
+
+int
+archive_entry_set_devmajor(entry, device)
+    struct archive_entry *entry
+    dev_t device
+  CODE:
+    archive_entry_set_devmajor(entry, device);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_set_devminor
+
+ my $status = archive_entry_set_devminor($entry, $devminor);
+
+Sets the device minor property for the archive entry.
+
+The device property is an integer identifying the device, and is used by
+C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
+
+=cut
+
+#ifdef HAS_archive_entry_set_devminor
+
+int
+archive_entry_set_devminor(entry, device)
+    struct archive_entry *entry
+    dev_t device
+  CODE:
+    archive_entry_set_devminor(entry, device);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 =head2 archive_entry_set_nlink
 
  my $status = archive_entry_set_nlink($entry, $nlink);
