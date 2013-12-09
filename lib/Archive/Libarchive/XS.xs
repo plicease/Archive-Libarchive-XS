@@ -2165,7 +2165,7 @@ archive_entry_unset_atime(entry)
 
  my $atime = archive_entry_atime($entry);
 
-Returns the access time for the archive entry.
+Returns the access time property for the archive entry.
 
 =cut
 
@@ -2174,6 +2174,29 @@ Returns the access time for the archive entry.
 time_t
 archive_entry_atime(entry)
     struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_set_atime
+
+ my $status = archive_entry_set_atime($entry, $atime, $nsec);
+
+Sets the access time property for the archive entry.
+
+=cut
+
+#if HAS_archive_entry_set_atime
+
+int
+archive_entry_set_atime(entry, atime, nsec)
+    struct archive_entry *entry
+    time_t atime
+    long nsec
+  CODE:
+    archive_entry_set_atime(entry, atime, nsec);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
 
 #endif
 

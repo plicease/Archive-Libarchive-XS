@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 37;
+use Test::More tests => 40;
 use Archive::Libarchive::XS qw( :all );
 
 my $r;
@@ -83,6 +83,13 @@ $r = archive_entry_set_rdev($e, 0x1234);
 is $r, ARCHIVE_OK, 'archive_entry_set_rdev';
 is archive_entry_rdev($e), 0x1234, 'archive_entry_rdev';
 
+$r = eval { archive_entry_set_atime($e, 123456789, 123456789) };
+diag $@ if $@;
+is $r, ARCHIVE_OK, 'archive_entry_set_atime';
+is eval { archive_entry_atime($e) }, 123456789, 'archive_entry_atime';
+diag $@ if $@;
+is eval { archive_entry_atime_nsec($e) }, 123456789, 'archive_entry_atime_nsec';
+diag $@ if $@;
 
 $r = archive_entry_free($e);
 is $r, ARCHIVE_OK, 'archive_entry_free';
