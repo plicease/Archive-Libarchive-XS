@@ -159,3 +159,6 @@ foreach my $format (sort grep { s/^archive_write_set_format_// } keys %Archive::
   diag sprintf "%-15s %s", $format, $ok;
   diag $error if defined $error;
 }
+
+diag '';
+diag '';
