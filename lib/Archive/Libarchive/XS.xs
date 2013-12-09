@@ -2232,6 +2232,27 @@ archive_entry_birthtime_is_set(entry)
 
 #endif
 
+=head2 archive_entry_unset_birthtime
+
+ my $status = archive_entry_unset_birthtime($entry);
+
+Unset the birthtime (creation time) property for the archive entry.
+
+=cut
+
+#if HAS_archive_entry_unset_birthtime
+
+int
+archive_entry_unset_birthtime(entry)
+    struct archive_entry *entry
+  CODE:
+    archive_entry_unset_birthtime(entry);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 =head2 archive_entry_birthtime
 
  my $birthtime = archive_entry_birthtime($entry);

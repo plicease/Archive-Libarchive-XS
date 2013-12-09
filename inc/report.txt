@@ -23,7 +23,6 @@ unimplemented: archive_entry_sparse_count
 unimplemented: archive_entry_sparse_next
 unimplemented: archive_entry_sparse_reset
 unimplemented: archive_entry_stat
-unimplemented: archive_entry_unset_birthtime
 unimplemented: archive_entry_unset_ctime
 unimplemented: archive_entry_unset_mtime
 unimplemented: archive_entry_unset_size
@@ -66,4 +65,4 @@ unimplemented: archive_write_disk_set_group_lookup
 unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 61
+total unimplemented symbols: 60

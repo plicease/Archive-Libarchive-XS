@@ -695,6 +695,12 @@ Retrieve the uname for the archive entry object.
 
 Removes the value for the atime property on the archive.
 
+=head2 archive_entry_unset_birthtime
+
+ my $status = archive_entry_unset_birthtime($entry);
+
+Unset the birthtime (creation time) property for the archive entry.
+
 =head2 archive_errno
 
  my $errno = archive_errno($archive);
