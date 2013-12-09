@@ -3370,6 +3370,9 @@ The inode property is an integer identifying the file within a filesystem
 and is used by C<archive_entry_linkify> (along with the dev property) to
 find hardlinks.
 
+This actually uses the libarchive C<archive_entry_set_ino64> function
+(in libarchive C<archive_entry_set_ino> is a legacy interface).
+
 =cut
 
 #if HAS_archive_entry_set_ino
@@ -3379,7 +3382,7 @@ archive_entry_set_ino(entry, ino)
     struct archive_entry *entry
     __LA_INT64_T ino
   CODE:
-    archive_entry_set_ino(entry, ino);
+    archive_entry_set_ino64(entry, ino);
     RETVAL = ARCHIVE_OK;
   OUTPUT:
     RETVAL
@@ -3396,6 +3399,9 @@ The inode property is an integer identifying the file within a filesystem
 and is used by C<archive_entry_linkify> (along with the dev property) to
 find hardlinks.
 
+This actually uses the libarchive C<archive_entry_set_ino64> function
+(in libarchive C<archive_entry_set_ino> is a legacy interface).
+
 =cut
 
 #if HAS_archive_entry_ino
@@ -3403,6 +3409,10 @@ find hardlinks.
 __LA_INT64_T
 archive_entry_ino(entry)
     struct archive_entry *entry
+  CODE:
+    RETVAL = archive_entry_ino64(entry);
+  OUTPUT:
+    RETVAL
 
 #endif
 

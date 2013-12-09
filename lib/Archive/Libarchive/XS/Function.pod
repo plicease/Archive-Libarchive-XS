@@ -354,6 +354,9 @@ The inode property is an integer identifying the file within a filesystem
 and is used by C<archive_entry_linkify> (along with the dev property) to
 find hardlinks.
 
+This actually uses the libarchive C<archive_entry_set_ino64> function
+(in libarchive C<archive_entry_set_ino> is a legacy interface).
+
 =head2 archive_entry_linkify
 
  my $status = archive_entry_linkify($linkresolver, $entry1, $entry2)
@@ -544,6 +547,9 @@ Set the inode property for the entry.
 The inode property is an integer identifying the file within a filesystem
 and is used by C<archive_entry_linkify> (along with the dev property) to
 find hardlinks.
+
+This actually uses the libarchive C<archive_entry_set_ino64> function
+(in libarchive C<archive_entry_set_ino> is a legacy interface).
 
 =head2 archive_entry_set_mac_metadata
 
