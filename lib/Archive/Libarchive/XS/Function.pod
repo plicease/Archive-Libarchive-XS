@@ -344,6 +344,16 @@ Retrieve the gname for the archive entry object.
 
 Retrieve the hardlink for the archive entry object.
 
+=head2 archive_entry_ino
+
+ my $ino = archive_entry_ino($entry);
+
+Get the inode property for the entry.
+
+The inode property is an integer identifying the file within a filesystem
+and is used by C<archive_entry_linkify> (along with the dev property) to
+find hardlinks.
+
 =head2 archive_entry_linkify
 
  my $status = archive_entry_linkify($linkresolver, $entry1, $entry2)

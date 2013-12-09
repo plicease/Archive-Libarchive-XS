@@ -3386,6 +3386,26 @@ archive_entry_set_ino(entry, ino)
 
 #endif
 
+=head2 archive_entry_ino
+
+ my $ino = archive_entry_ino($entry);
+
+Get the inode property for the entry.
+
+The inode property is an integer identifying the file within a filesystem
+and is used by C<archive_entry_linkify> (along with the dev property) to
+find hardlinks.
+
+=cut
+
+#if HAS_archive_entry_ino
+
+__LA_INT64_T
+archive_entry_ino(entry)
+    struct archive_entry *entry
+
+#endif
+
 =head2 archive_entry_set_dev
 
  my $status = archive_entry_set_dev($entry, $device);
