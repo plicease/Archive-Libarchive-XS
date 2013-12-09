@@ -16,6 +16,7 @@ archive_entry_birthtime_nsec
 archive_entry_clear
 archive_entry_clone
 archive_entry_copy_mac_metadata
+archive_entry_copy_stat
 archive_entry_ctime
 archive_entry_ctime_is_set
 archive_entry_ctime_nsec

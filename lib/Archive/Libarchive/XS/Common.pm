@@ -97,6 +97,9 @@ sub archive_entry_set_stat
   $status;
 }
 
+*archive_entry_copy_stat = \&archive_entry_set_stat;
+
+
 sub archive_version_string {
   decode(archive_perl_codeset(), _archive_version_string());
 }

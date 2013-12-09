@@ -210,6 +210,16 @@ Converts the various fields in the format used by L<stat|perlfunc#stat> to the f
 
 The fields C<$blksize>, C<$blocks> supported by L<stat|perlfunc#stat>, are not supported by this function.
 
+=head2 archive_entry_copy_stat
+
+ my $status = archive_entry_stat($entry, $dev, $ino, $mode, $nlink, $uid, $gid, $rdev, $atime, $mtime, $ctime);
+
+Converts the various fields in the format used by L<stat|perlfunc#stat> to the fields store in the archive entry.
+
+The fields C<$blksize>, C<$blocks> supported by L<stat|perlfunc#stat>, are not supported by this function.
+
+This is an alias for L<#archive_entry_set_stat>.
+
 =head2 archive_read_open_fh
 
  my $status = archive_read_open_fh($archive, $fh, $block_size);

@@ -233,6 +233,16 @@ A deep copy operation; all text fields are duplicated.
 
 An Alias for L<#archive_entry_set_mac_metadata>.
 
+=head2 archive_entry_copy_stat
+
+ my $status = archive_entry_stat($entry, $dev, $ino, $mode, $nlink, $uid, $gid, $rdev, $atime, $mtime, $ctime);
+
+Converts the various fields in the format used by L<stat|perlfunc#stat> to the fields store in the archive entry.
+
+The fields C<$blksize>, C<$blocks> supported by L<stat|perlfunc#stat>, are not supported by this function.
+
+This is an alias for L<#archive_entry_set_stat>.
+
 =head2 archive_entry_ctime
 
  my $ctime = archive_entry_ctime($entry);
