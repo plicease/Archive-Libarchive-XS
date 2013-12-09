@@ -479,6 +479,12 @@ Returns the minor component of the rdev property for the archive entry.
 
 Sets the access time property for the archive entry.
 
+=head2 archive_entry_set_ctime
+
+ my $status = archive_entry_set_ctime($entry, $ctime, $nsec);
+
+Sets the ctime (last time an inode property was changed) property for the archive entry.
+
 =head2 archive_entry_set_dev
 
  my $status = archive_entry_set_dev($entry, $device);

@@ -2318,6 +2318,29 @@ archive_entry_ctime(entry)
 
 #endif
 
+=head2 archive_entry_set_ctime
+
+ my $status = archive_entry_set_ctime($entry, $ctime, $nsec);
+
+Sets the ctime (last time an inode property was changed) property for the archive entry.
+
+=cut
+
+#if HAS_archive_entry_set_ctime
+
+int
+archive_entry_set_ctime(entry, ctime, nsec)
+    struct archive_entry *entry
+    time_t ctime
+    long nsec
+  CODE:
+    archive_entry_set_ctime(entry, ctime, nsec);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 =head2 archive_entry_mtime
 
  my $mtime = archive_entry_mtime($entry);
