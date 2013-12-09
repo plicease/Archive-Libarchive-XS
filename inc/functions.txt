@@ -82,6 +82,7 @@ archive_entry_uid
 archive_entry_uname
 archive_entry_unset_atime
 archive_entry_unset_birthtime
+archive_entry_unset_size
 archive_errno
 archive_error_string
 archive_file_count

@@ -1023,6 +1023,27 @@ archive_entry_set_size(entry, size)
   OUTPUT:
     RETVAL
 
+=head2 archive_entry_unset_size
+
+ my $status = archive_entry_unset_size($entry);
+
+Unsets the size property for the archive entry.
+
+=cut
+
+#if HAS_archive_entry_unset_size
+
+int
+archive_entry_unset_size(entry)
+    struct archive_entry *entry
+  CODE:
+    archive_entry_unset_size(entry);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 =head2 archive_entry_size_is_set
 
  my $bool = archive_entry_size_is_set($entry)

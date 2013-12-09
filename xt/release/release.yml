@@ -46,6 +46,7 @@ pod_spelling_system:
     - AppleDouble
     - multivolume
     - dev
+    - unsets
 
 pod_coverage:
   # format is "Class#method" or "Class", regex allowed

@@ -739,6 +739,12 @@ Removes the value for the atime property on the archive.
 
 Unset the birthtime (creation time) property for the archive entry.
 
+=head2 archive_entry_unset_size
+
+ my $status = archive_entry_unset_size($entry);
+
+Unsets the size property for the archive entry.
+
 =head2 archive_errno
 
  my $errno = archive_errno($archive);
