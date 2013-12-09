@@ -69,6 +69,34 @@ sub _archive_write_open_fh_write
   }
 }
 
+# TODO: for XS version, implement this in XS
+sub archive_entry_stat ($)
+{
+  my($entry) = @_;
+  no strict 'refs';
+  map { &{"archive_entry_$_"}($entry) } qw ( dev ino mode nlink uid gid rdev atime mtime ctime );
+}
+
+# TODO: for XS version, implement this in XS
+sub archive_entry_set_stat
+{
+  my $entry = shift;
+  my $status = ARCHIVE_OK();
+  no strict 'refs';
+  foreach my $prop (qw( dev ino mode nlink uid gid rdev ))
+  {
+    my $status2 = &{"archive_entry_set_$prop"}($entry, shift);
+    $status = $status2 if $status2 < $status;
+  }
+  foreach my $prop (qw( atime mtime ctime ))
+  {
+    my $value = shift;
+    my $status2 = &{"archive_entry_set_$prop"}($entry, $value, $value);
+    $status = $status2 if $status2 < $status;
+  }
+  $status;
+}
+
 sub archive_version_string {
   decode(archive_perl_codeset(), _archive_version_string());
 }

@@ -1,3 +1,4 @@
+extra: archive_entry_set_stat
 extra: archive_read_open_fh
 extra: archive_write_open_fh
 extra: archive_perl_codeset
@@ -21,7 +22,6 @@ unimplemented: archive_entry_sparse_clear
 unimplemented: archive_entry_sparse_count
 unimplemented: archive_entry_sparse_next
 unimplemented: archive_entry_sparse_reset
-unimplemented: archive_entry_stat
 unimplemented: archive_entry_unset_ctime
 unimplemented: archive_entry_unset_mtime
 unimplemented: archive_entry_unset_size
@@ -64,4 +64,4 @@ unimplemented: archive_write_disk_set_group_lookup
 unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 59
+total unimplemented symbols: 58

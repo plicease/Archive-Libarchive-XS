@@ -67,11 +67,13 @@ archive_entry_set_rdev
 archive_entry_set_rdevmajor
 archive_entry_set_rdevminor
 archive_entry_set_size
+archive_entry_set_stat
 archive_entry_set_symlink
 archive_entry_set_uid
 archive_entry_set_uname
 archive_entry_size
 archive_entry_size_is_set
+archive_entry_stat
 archive_entry_strmode
 archive_entry_symlink
 archive_entry_uid

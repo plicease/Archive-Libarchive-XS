@@ -639,6 +639,14 @@ Sets the minor component of the rdev property for the archive entry.
 
 Sets the size property for the archive entry.
 
+=head2 archive_entry_set_stat
+
+ my $status = archive_entry_stat($entry, $dev, $ino, $mode, $nlink, $uid, $gid, $rdev, $atime, $mtime, $ctime);
+
+Converts the various fields in the format used by L<stat|perlfunc#stat> to the fields store in the archive entry.
+
+The fields C<$blksize>, C<$blocks> supported by L<stat|perlfunc#stat>, are not supported by this function.
+
 =head2 archive_entry_set_symlink
 
  my $status = archive_entry_set_symlink
@@ -668,6 +676,14 @@ Returns the size of the entry in bytes.
  my $bool = archive_entry_size_is_set($entry)
 
 Returns true if the size property for the archive entry has been set.
+
+=head2 archive_entry_stat
+
+ my($dev, $ino, $mode, $nlink, $uid, $gid, $rdev, $atime, $mtime, $ctime) = archive_entry_stat($entry);
+
+Converts the various fields stored in the archive entry to the format used by L<stat|perlfunc#stat>.
+
+The fields C<$blksize>, C<$blocks> supported by L<stat|perlfunc#stat>, are not supported by this function.
 
 =head2 archive_entry_strmode
 
