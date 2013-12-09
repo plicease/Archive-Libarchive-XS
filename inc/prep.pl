@@ -159,6 +159,11 @@ do { # symbol list
     archive_position_uncompressed
     archive_compression_name
     archive_compression
+    
+    archive_entry_set_ino64
+    archive_entry_ino64
+    archive_entry_stat32
+    archive_entry_stat64
   );
   
   delete $symbols{$_} for @deprecated;

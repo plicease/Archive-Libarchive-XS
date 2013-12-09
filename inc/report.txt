@@ -9,14 +9,12 @@ unimplemented: archive_entry_copy_fflags_text
 unimplemented: archive_entry_copy_link
 unimplemented: archive_entry_copy_sourcepath
 unimplemented: archive_entry_copy_stat
-unimplemented: archive_entry_ino64
 unimplemented: archive_entry_ino_is_set
 unimplemented: archive_entry_partial_links
 unimplemented: archive_entry_perm
 unimplemented: archive_entry_set_birthtime
 unimplemented: archive_entry_set_ctime
 unimplemented: archive_entry_set_fflags
-unimplemented: archive_entry_set_ino64
 unimplemented: archive_entry_set_link
 unimplemented: archive_entry_sourcepath
 unimplemented: archive_entry_sparse_add_entry
@@ -25,8 +23,6 @@ unimplemented: archive_entry_sparse_count
 unimplemented: archive_entry_sparse_next
 unimplemented: archive_entry_sparse_reset
 unimplemented: archive_entry_stat
-unimplemented: archive_entry_stat32
-unimplemented: archive_entry_stat64
 unimplemented: archive_entry_unset_birthtime
 unimplemented: archive_entry_unset_ctime
 unimplemented: archive_entry_unset_mtime
@@ -70,4 +66,4 @@ unimplemented: archive_write_disk_set_group_lookup
 unimplemented: archive_write_disk_set_user_lookup
 unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 65
+total unimplemented symbols: 61

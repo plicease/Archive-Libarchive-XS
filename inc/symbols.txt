@@ -54,7 +54,6 @@ archive_entry_gname_w
 archive_entry_hardlink
 archive_entry_hardlink_w
 archive_entry_ino
-archive_entry_ino64
 archive_entry_ino_is_set
 archive_entry_linkify
 archive_entry_linkresolver_free
@@ -87,7 +86,6 @@ archive_entry_set_gid
 archive_entry_set_gname
 archive_entry_set_hardlink
 archive_entry_set_ino
-archive_entry_set_ino64
 archive_entry_set_link
 archive_entry_set_mode
 archive_entry_set_mtime
@@ -111,8 +109,6 @@ archive_entry_sparse_count
 archive_entry_sparse_next
 archive_entry_sparse_reset
 archive_entry_stat
-archive_entry_stat32
-archive_entry_stat64
 archive_entry_strmode
 archive_entry_symlink
 archive_entry_symlink_w
