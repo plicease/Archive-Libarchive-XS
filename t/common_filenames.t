@@ -1,9 +1,12 @@
 use strict;
 use warnings;
-use Test::More tests => 8;
+use Test::More;
 use Archive::Libarchive::XS qw( :all );
 use File::Temp qw( tempdir );
 use File::Spec;
+
+plan skip_all => 'requires archive_read_open_filenames' unless Archive::Libarchive::XS->can('archive_read_open_filenames');
+plan tests => 8;
 
 # ported test_splitted_file from test_archive_read_multiple_data_objects.c
 
