@@ -367,6 +367,12 @@ find hardlinks.
 This actually uses the libarchive C<archive_entry_set_ino64> function
 (in libarchive C<archive_entry_set_ino> is a legacy interface).
 
+=head2 archive_entry_ino_is_set
+
+ my $bool = archive_entry_ino_is_set($entry);
+
+Returns true if the inode property for the entry has been set.
+
 =head2 archive_entry_linkify
 
  my $status = archive_entry_linkify($linkresolver, $entry1, $entry2)

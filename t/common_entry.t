@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 46;
+use Test::More tests => 48;
 use Archive::Libarchive::XS qw( :all );
 
 my $r;
@@ -67,9 +67,13 @@ $r = archive_entry_set_dev($e, 0x1234);
 is $r, ARCHIVE_OK, 'archive_entry_set_dev';
 is archive_entry_dev($e), 0x1234, 'archive_entry_dev';
 
+ok !eval { archive_entry_ino_is_set($e) }, 'archive_entry_ino_is_set';
+diag $@ if $@;
 $r = archive_entry_set_ino($e, 0x12);
 is $r, ARCHIVE_OK, 'archive_entry_set_ino';
 is archive_entry_ino($e), 0x12, 'archive_entry_ino';
+ok eval { archive_entry_ino_is_set($e) }, 'archive_entry_ino_is_set';
+diag $@ if $@;
 
 $r = archive_entry_set_rdevmajor($e, 0x24);
 is $r, ARCHIVE_OK, 'archive_entry_rdevmajor';

@@ -3525,6 +3525,22 @@ archive_entry_ino(entry)
 
 #endif
 
+=head2 archive_entry_ino_is_set
+
+ my $bool = archive_entry_ino_is_set($entry);
+
+Returns true if the inode property for the entry has been set.
+
+=cut
+
+#if HAS_archive_entry_ino_is_set
+
+int
+archive_entry_ino_is_set(entry)
+    struct archive_entry *entry
+
+#endif
+
 =head2 archive_entry_set_dev
 
  my $status = archive_entry_set_dev($entry, $device);
