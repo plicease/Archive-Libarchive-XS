@@ -198,6 +198,7 @@ archive_write_data
 archive_write_data_block
 archive_write_disk_gid
 archive_write_disk_new
+archive_write_disk_set_group_lookup
 archive_write_disk_set_options
 archive_write_disk_set_skip_file
 archive_write_disk_set_standard_lookup

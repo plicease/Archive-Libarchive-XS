@@ -189,10 +189,121 @@ mywrite(struct archive *archive, void *client_data, const void *buffer, size_t l
   return status;
 }
 
+struct lookup_callback_data {
+  SV *perl_data, *lookup_callback, *cleanup_callback;
+};
+
+static int64_t
+mylookup_lookup(void *d, const char *name, int64_t id)
+{
+  int count;
+  __LA_INT64_T value;
+
+  struct lookup_callback_data *data = (struct lookup_callback_data *)d;
+  if(data->lookup_callback != NULL)
+  {
+    dSP;
+    ENTER;
+    SAVETMPS;
+    PUSHMARK(SP);
+    if(data->perl_data == NULL)
+      XPUSHs(&PL_sv_undef);
+    else
+      XPUSHs(data->perl_data);
+    XPUSHs(sv_2mortal(newSVpv(name, 0)));
+    XPUSHs(sv_2mortal(newSVi64(id)));
+    PUTBACK;
+
+    count = call_sv(data->lookup_callback, G_SCALAR);
+    
+    SPAGAIN;
+    
+    value = SvI64(POPs);
+    
+    PUTBACK;
+    FREETMPS;
+    LEAVE;
+    
+    return value;
+  }
+  else
+  {
+    return id;
+  }
+}
+
+static void
+mylookup_cleanup(void *d)
+{
+  struct lookup_callback_data *data = (struct lookup_callback_data *)d;
+  
+  if(data->cleanup_callback != NULL)
+  {
+    dSP;
+    ENTER;
+    SAVETMPS;
+    PUSHMARK(SP);
+    if(data->perl_data == NULL)
+      XPUSHs(&PL_sv_undef);
+    else
+      XPUSHs(data->perl_data);
+    PUTBACK;
+  
+    call_sv(data->cleanup_callback, G_DISCARD|G_VOID);
+  }
+  
+  if(data->perl_data != NULL)
+    SvREFCNT_dec(data->perl_data);
+  if(data->lookup_callback != NULL)
+    SvREFCNT_dec(data->lookup_callback);
+  if(data->cleanup_callback != NULL)
+    SvREFCNT_dec(data->cleanup_callback);
+  
+  Safefree(data);
+}
+
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 
 BOOT:
      PERL_MATH_INT64_LOAD_OR_CROAK;
+
+=head2 archive_write_disk_set_group_lookup
+
+ my $status = archive_write_disk_set_group_lookup($arhive, $data, $lookup_callback, $cleanup_callback);
+
+Register a callback for the lookup of group names from group id numbers.  In order to deregister
+call C<archive_write_disk_set_group_lookup> with both callback functions set to C<undef>.
+
+See L<Archive::Libarchive::XS::Callback> for calling conventions for the lookup and cleanup callbacks.
+
+=cut
+
+#if HAS_archive_write_disk_set_group_lookup
+
+int
+archive_write_disk_set_group_lookup(archive, data, lookup_callback, cleanup_callback)
+    struct archive *archive
+    SV *data
+    SV *lookup_callback
+    SV *cleanup_callback
+  CODE:
+    struct lookup_callback_data *c_data;
+    Newx(c_data, 1, struct lookup_callback_data *);
+    if(SvOK(cleanup_callback) || SvOK(lookup_callback))
+    {
+      c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
+      c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
+      c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
+      RETVAL = archive_write_disk_set_group_lookup(archive, c_data, &mylookup_lookup, &mylookup_cleanup);
+    }
+    else
+    {
+      RETVAL = archive_write_disk_set_group_lookup(archive, NULL, NULL, NULL);
+    }
+  OUTPUT:
+    RETVAL
+
+#endif
 
 =head2 archive_entry_stat
 

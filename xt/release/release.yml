@@ -47,6 +47,7 @@ pod_spelling_system:
     - multivolume
     - dev
     - unsets
+    - deregister
 
 pod_coverage:
   # format is "Class#method" or "Class", regex allowed
