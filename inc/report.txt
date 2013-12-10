@@ -20,7 +20,6 @@ unimplemented: archive_entry_sparse_clear
 unimplemented: archive_entry_sparse_count
 unimplemented: archive_entry_sparse_next
 unimplemented: archive_entry_sparse_reset
-unimplemented: archive_entry_unset_mtime
 unimplemented: archive_entry_xattr_add_entry
 unimplemented: archive_entry_xattr_clear
 unimplemented: archive_entry_xattr_count
@@ -58,4 +57,4 @@ unimplemented: archive_read_support_filter_program_signature
 unimplemented: archive_write_disk_set_group_lookup
 unimplemented: archive_write_disk_set_user_lookup
 
-total unimplemented symbols: 52
+total unimplemented symbols: 51

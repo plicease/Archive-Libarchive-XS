@@ -1271,6 +1271,8 @@ Set the mtime (modify time) for the entry object.
 
 =cut
 
+#if HAS_archive_entry_set_mtime
+
 int
 archive_entry_set_mtime(entry, sec, nanosec)
     struct archive_entry *entry
@@ -1281,6 +1283,29 @@ archive_entry_set_mtime(entry, sec, nanosec)
     RETVAL = ARCHIVE_OK;
   OUTPUT:
     RETVAL
+
+#endif
+
+=head2 archive_entry_unset_mtime
+
+ my $status = archive_entry_unset_mtime($entry);
+
+Unset the mtime (modify time) for the entry object.
+
+=cut
+
+#if HAS_archive_entry_unset_mtime
+
+int
+archive_entry_unset_mtime(entry)
+    struct archive_entry *entry
+  CODE:
+    archive_entry_unset_mtime(entry);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
 
 =head2 archive_write_finish_entry
 
