@@ -82,7 +82,7 @@ do { # xs
     $buffer .= "#endif\n\n";
   }
   
-  foreach my $format (sort qw( 7zip ar_bsd ar_svr4 cpio cpio_newc gnutar iso9660 mtree mtree_classic pax pax_restricted shar shar_dump ustar v7tar xar zip ))
+  foreach my $format (sort qw( 7zip ar_bsd ar_svr4 cpio cpio_newc gnutar iso9660 mtree mtree_classic pax pax_restricted shar shar_dump ustar v7tar xar zip old_tar ))
   {
     $buffer .= "=head2 archive_write_set_format_$format(\$archive)\n\n";
     $buffer .= " my \$status = archive_write_set_format_$format(\$archive);\n\n";

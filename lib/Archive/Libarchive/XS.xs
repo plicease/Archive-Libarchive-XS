@@ -5154,6 +5154,22 @@ archive_write_set_format_mtree_classic(archive)
 
 #endif
 
+=head2 archive_write_set_format_old_tar($archive)
+
+ my $status = archive_write_set_format_old_tar($archive);
+
+Set the archive format to old_tar
+
+=cut
+
+#if HAS_archive_write_set_format_old_tar
+
+int
+archive_write_set_format_old_tar(archive)
+    struct archive *archive
+
+#endif
+
 =head2 archive_write_set_format_pax($archive)
 
  my $status = archive_write_set_format_pax($archive);

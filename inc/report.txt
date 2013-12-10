@@ -59,6 +59,5 @@ unimplemented: archive_read_set_switch_callback
 unimplemented: archive_read_support_filter_program_signature
 unimplemented: archive_write_disk_set_group_lookup
 unimplemented: archive_write_disk_set_user_lookup
-unimplemented: archive_write_set_format_old_tar
 
-total unimplemented symbols: 55
+total unimplemented symbols: 54

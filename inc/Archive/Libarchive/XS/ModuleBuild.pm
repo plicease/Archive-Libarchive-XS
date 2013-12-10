@@ -40,6 +40,7 @@ sub ACTION_build
     
     push @symbols, map { "archive_read_support_compression_$_" } qw( all bzip2 compress gzip lzip lzma none program program_signature rpm uu xz );
     push @symbols, map { "archive_write_set_compression_$_" } qw( bzip2 compress gzip lzip lzma none program xz );
+    push @symbols, 'archive_write_set_format_old_tar';
   
     open($fh, '>', File::Spec->catfile('xs', 'func.h.tmp'));
     print $fh "#ifndef FUNC_H\n";

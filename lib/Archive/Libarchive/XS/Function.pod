@@ -1856,6 +1856,12 @@ Set the archive format to mtree
 
 Set the archive format to mtree_classic
 
+=head2 archive_write_set_format_old_tar($archive)
+
+ my $status = archive_write_set_format_old_tar($archive);
+
+Set the archive format to old_tar
+
 =head2 archive_write_set_format_option
 
  my $status = archive_write_set_format_option($archive, $module, $option, $value);
