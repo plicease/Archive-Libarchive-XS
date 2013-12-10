@@ -98,6 +98,7 @@ sub _test_compile_symbol
   print $fh "int main(int argc, char *argv)\n";
   if($symbol =~ /^archive_write_set_format_/ && $symbol !~ /^archive_write_set_format_(program|by_name)/)
   {
+    # TODO: this test should maybe happen regardless of shared/system
     print $fh "{\n";
     print $fh "  struct archive *a = archive_write_new();\n";
     print $fh "  $symbol(a);\n";
