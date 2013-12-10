@@ -27,7 +27,6 @@ unimplemented: archive_entry_xattr_clear
 unimplemented: archive_entry_xattr_count
 unimplemented: archive_entry_xattr_next
 unimplemented: archive_entry_xattr_reset
-unimplemented: archive_filter_bytes
 unimplemented: archive_match_exclude_entry
 unimplemented: archive_match_exclude_pattern
 unimplemented: archive_match_exclude_pattern_from_file
@@ -60,4 +59,4 @@ unimplemented: archive_read_support_filter_program_signature
 unimplemented: archive_write_disk_set_group_lookup
 unimplemented: archive_write_disk_set_user_lookup
 
-total unimplemented symbols: 54
+total unimplemented symbols: 53

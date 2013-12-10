@@ -86,6 +86,7 @@ archive_entry_unset_size
 archive_errno
 archive_error_string
 archive_file_count
+archive_filter_bytes
 archive_filter_code
 archive_filter_count
 archive_filter_name

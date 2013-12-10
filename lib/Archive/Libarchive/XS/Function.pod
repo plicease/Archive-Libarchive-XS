@@ -770,6 +770,13 @@ Returns C<undef> if there is not error.
 Returns a count of the number of files processed by this archive object.  The count
 is incremented by calls to C<archive_write_header> or C<archive_read_next_header>.
 
+=head2 archive_filter_bytes
+
+ my $count = archive_filter_bytes($archive, $level);
+
+Byte count for the given filter level.  See L<#archive_filter_count> for details of the
+level numbering.
+
 =head2 archive_filter_code
 
  my $code = archive_filter_code($archive, $level);

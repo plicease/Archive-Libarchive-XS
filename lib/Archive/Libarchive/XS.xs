@@ -384,9 +384,27 @@ for details of the level numbering.
 #if HAS_archive_filter_code
 
 int 
-archive_filter_code(archive, level);
-    struct archive *archive;
-    int level;
+archive_filter_code(archive, level)
+    struct archive *archive
+    int level
+
+#endif
+
+=head2 archive_filter_bytes
+
+ my $count = archive_filter_bytes($archive, $level);
+
+Byte count for the given filter level.  See L<#archive_filter_count> for details of the
+level numbering.
+
+=cut
+
+#if HAS_archive_filter_bytes
+
+__LA_INT64_T
+archive_filter_bytes(archive, level)
+    struct archive *archive
+    int level
 
 #endif
 
