@@ -44,7 +44,6 @@ unimplemented: archive_read_append_filter_program
 unimplemented: archive_read_append_filter_program_signature
 unimplemented: archive_read_data_into_fd
 unimplemented: archive_read_disk_entry_from_file
-unimplemented: archive_read_disk_set_gname_lookup
 unimplemented: archive_read_disk_set_matching
 unimplemented: archive_read_disk_set_metadata_filter_callback
 unimplemented: archive_read_disk_set_uname_lookup
@@ -55,4 +54,4 @@ unimplemented: archive_read_extract_set_skip_file
 unimplemented: archive_read_set_switch_callback
 unimplemented: archive_read_support_filter_program_signature
 
-total unimplemented symbols: 49
+total unimplemented symbols: 48

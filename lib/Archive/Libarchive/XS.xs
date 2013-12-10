@@ -194,12 +194,12 @@ struct lookup_callback_data {
 };
 
 static int64_t
-mylookup_lookup(void *d, const char *name, int64_t id)
+mylookup_write_lookup(void *d, const char *name, int64_t id)
 {
   int count;
-  __LA_INT64_T value;
-
+  __LA_INT64_T value = id;
   struct lookup_callback_data *data = (struct lookup_callback_data *)d;
+
   if(data->lookup_callback != NULL)
   {
     dSP;
@@ -218,7 +218,8 @@ mylookup_lookup(void *d, const char *name, int64_t id)
     
     SPAGAIN;
     
-    value = SvI64(POPs);
+    if(count >= 1)
+      value = SvI64(POPs);
     
     PUTBACK;
     FREETMPS;
@@ -230,6 +231,52 @@ mylookup_lookup(void *d, const char *name, int64_t id)
   {
     return id;
   }
+}
+
+static const char *
+mylookup_read_lookup(void *d, int64_t id)
+{
+  int count;
+  STRLEN len;
+  SV *sv;
+  const char *tmp;
+  static char *value = NULL;
+  struct lookup_callback_data *data = (struct lookup_callback_data *)d;
+
+  if(data->lookup_callback != NULL)
+  {
+    dSP;
+    ENTER;
+    SAVETMPS;
+    PUSHMARK(SP);
+    if(data->perl_data == NULL)
+      XPUSHs(&PL_sv_undef);
+    else
+      XPUSHs(data->perl_data);
+    XPUSHs(sv_2mortal(newSVi64(id)));
+    PUTBACK;
+    
+    count = call_sv(data->lookup_callback, G_SCALAR);
+    
+    SPAGAIN;
+    
+    if(count >= 1)
+    {
+      sv = POPs;
+      tmp = SvPV(sv, len);
+      Renew(value, len+1, char);
+      strncpy(value, tmp, len+1);
+    }
+    
+    PUTBACK;
+    FREETMPS;
+    LEAVE;
+    
+    if(count >= 1)
+      return value;
+  }
+
+  return NULL;
 }
 
 static void
@@ -269,7 +316,7 @@ BOOT:
 
 =head2 archive_write_disk_set_group_lookup
 
- my $status = archive_write_disk_set_group_lookup($arhive, $data, $lookup_callback, $cleanup_callback);
+ my $status = archive_write_disk_set_group_lookup($archive, $data, $lookup_callback, $cleanup_callback);
 
 Register a callback for the lookup of group names from group id numbers.  In order to deregister
 call C<archive_write_disk_set_group_lookup> with both callback functions set to C<undef>.
@@ -294,7 +341,7 @@ archive_write_disk_set_group_lookup(archive, data, lookup_callback, cleanup_call
       c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
       c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
       c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
-      RETVAL = archive_write_disk_set_group_lookup(archive, c_data, &mylookup_lookup, &mylookup_cleanup);
+      RETVAL = archive_write_disk_set_group_lookup(archive, c_data, &mylookup_write_lookup, &mylookup_cleanup);
     }
     else
     {
@@ -305,9 +352,48 @@ archive_write_disk_set_group_lookup(archive, data, lookup_callback, cleanup_call
 
 #endif
 
+=head2 archive_read_disk_set_gname_lookup
+
+ my $status = archive_read_disk_set_gname_lookup($archive, $data, $lookup_callback, $cleanup_callback);
+
+Register a callback for the lookup of GID from group names.  In order to deregister call
+C<archive_read_disk_set_gname_lookup> with both callback functions set to C<undef>.
+
+See L<Archive::Libarchive::XS::Callback> for calling conventions for the lookup and cleanup callbacks.
+
+=cut
+
+#if HAS_archive_read_disk_set_gname_lookup
+
+int
+archive_read_disk_set_gname_lookup(archive, data, lookup_callback, cleanup_callback)
+    struct archive *archive
+    SV *data
+    SV *lookup_callback
+    SV *cleanup_callback
+  CODE:
+    struct lookup_callback_data *c_data;
+    Newx(c_data, 1, struct lookup_callback_data *);
+    if(SvOK(cleanup_callback) || SvOK(lookup_callback))
+    {
+      c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
+      c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
+      c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
+      RETVAL = archive_read_disk_set_gname_lookup(archive, c_data, &mylookup_read_lookup, &mylookup_cleanup);
+    }
+    else
+    {
+      RETVAL = archive_read_disk_set_gname_lookup(archive, NULL, NULL, NULL);
+    }
+  OUTPUT:
+    RETVAL
+
+
+#endif
+
 =head2 archive_write_disk_set_user_lookup
 
- my $status = archive_write_disk_set_user_lookup($arhive, $data, $lookup_callback, $cleanup_callback);
+ my $status = archive_write_disk_set_user_lookup($archive, $data, $lookup_callback, $cleanup_callback);
 
 Register a callback for the lookup of user names from user id numbers.  In order to deregister
 call C<archive_write_disk_set_user_lookup> with both callback functions set to C<undef>.
@@ -332,7 +418,7 @@ archive_write_disk_set_user_lookup(archive, data, lookup_callback, cleanup_callb
       c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
       c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
       c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
-      RETVAL = archive_write_disk_set_user_lookup(archive, c_data, &mylookup_lookup, &mylookup_cleanup);
+      RETVAL = archive_write_disk_set_user_lookup(archive, c_data, &mylookup_write_lookup, &mylookup_cleanup);
     }
     else
     {
