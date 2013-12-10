@@ -739,6 +739,12 @@ Removes the value for the atime property on the archive.
 
 Unset the birthtime (creation time) property for the archive entry.
 
+=head2 archive_entry_unset_ctime
+
+ my $status = archive_entry_set_ctime($entry);
+
+Unsets the ctime (last time an inode property was changed) property for the archive entry.
+
 =head2 archive_entry_unset_size
 
  my $status = archive_entry_unset_size($entry);
