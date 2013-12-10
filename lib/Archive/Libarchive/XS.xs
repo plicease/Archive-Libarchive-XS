@@ -342,9 +342,9 @@ archive_write_disk_set_group_lookup(archive, data, lookup_callback, cleanup_call
     SV *cleanup_callback
   CODE:
     struct lookup_callback_data *c_data;
-    Newx(c_data, 1, struct lookup_callback_data *);
     if(SvOK(cleanup_callback) || SvOK(lookup_callback))
     {
+      Newx(c_data, 1, struct lookup_callback_data *);
       c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
       c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
       c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
@@ -380,9 +380,9 @@ archive_read_disk_set_gname_lookup(archive, data, lookup_callback, cleanup_callb
     SV *cleanup_callback
   CODE:
     struct lookup_callback_data *c_data;
-    Newx(c_data, 1, struct lookup_callback_data *);
     if(SvOK(cleanup_callback) || SvOK(lookup_callback))
     {
+      Newx(c_data, 1, struct lookup_callback_data *);
       c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
       c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
       c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
@@ -419,9 +419,9 @@ archive_read_disk_set_uname_lookup(archive, data, lookup_callback, cleanup_callb
     SV *cleanup_callback
   CODE:
     struct lookup_callback_data *c_data;
-    Newx(c_data, 1, struct lookup_callback_data *);
     if(SvOK(cleanup_callback) || SvOK(lookup_callback))
     {
+      Newx(c_data, 1, struct lookup_callback_data *);
       c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
       c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
       c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
@@ -458,9 +458,9 @@ archive_write_disk_set_user_lookup(archive, data, lookup_callback, cleanup_callb
     SV *cleanup_callback
   CODE:
     struct lookup_callback_data *c_data;
-    Newx(c_data, 1, struct lookup_callback_data *);
     if(SvOK(cleanup_callback) || SvOK(lookup_callback))
     {
+      Newx(c_data, 1, struct lookup_callback_data *);
       c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
       c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
       c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
