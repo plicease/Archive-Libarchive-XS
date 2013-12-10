@@ -263,9 +263,16 @@ mylookup_read_lookup(void *d, int64_t id)
     if(count >= 1)
     {
       sv = POPs;
-      tmp = SvPV(sv, len);
-      Renew(value, len+1, char);
-      strncpy(value, tmp, len+1);
+      if(SvOK(sv))
+      {
+        tmp = SvPV(sv, len);
+        Renew(value, len+1, char);
+        strncpy(value, tmp, len+1);
+      }
+      else
+      {
+        count = 0;
+      }
     }
     
     PUTBACK;
@@ -384,6 +391,45 @@ archive_read_disk_set_gname_lookup(archive, data, lookup_callback, cleanup_callb
     else
     {
       RETVAL = archive_read_disk_set_gname_lookup(archive, NULL, NULL, NULL);
+    }
+  OUTPUT:
+    RETVAL
+
+
+#endif
+
+=head2 archive_read_disk_set_uname_lookup
+
+ my $status = archive_read_disk_set_uname_lookup($archive, $data, $lookup_callback, $cleanup_callback);
+
+Register a callback for the lookup of UID from user names.  In order to deregister call
+C<archive_read_disk_setugname_lookup> with both callback functions set to C<undef>.
+
+See L<Archive::Libarchive::XS::Callback> for calling conventions for the lookup and cleanup callbacks.
+
+=cut
+
+#if HAS_archive_read_disk_set_uname_lookup
+
+int
+archive_read_disk_set_uname_lookup(archive, data, lookup_callback, cleanup_callback)
+    struct archive *archive
+    SV *data
+    SV *lookup_callback
+    SV *cleanup_callback
+  CODE:
+    struct lookup_callback_data *c_data;
+    Newx(c_data, 1, struct lookup_callback_data *);
+    if(SvOK(cleanup_callback) || SvOK(lookup_callback))
+    {
+      c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
+      c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
+      c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
+      RETVAL = archive_read_disk_set_uname_lookup(archive, c_data, &mylookup_read_lookup, &mylookup_cleanup);
+    }
+    else
+    {
+      RETVAL = archive_read_disk_set_uname_lookup(archive, NULL, NULL, NULL);
     }
   OUTPUT:
     RETVAL

@@ -145,23 +145,62 @@ L<archive_read_open|Archive::Libarchive::XS::Function#archive_read_open>,
 L<archive_read_open2|Archive::Libarchive::XS::Function#archive_read_open2> or
 L<archive_write_open|Archive::Libarchive::XS::Function#archive_write_open>.
 
-=head2 user lookup
+=head2 user id lookup
 
- my $status = archive_write_disk_set_user_lookup($archive, sub {
+ my $status = archive_write_disk_set_user_lookup($archive, $data, sub {
    my($data, $name, $uid) = @_;
    ... # should return the UID for $name or $uid if it can't be found
  }, undef);
 
 Called by archive_write_disk_uid to determine appropriate UID.
 
-=head2 group lookup
+=head2 group id lookup
 
- my $status = archive_write_disk_set_group_lookup($archive, sub {
+ my $status = archive_write_disk_set_group_lookup($archive, $data, sub {
    my($data, $name, $gid) = @_;
    ... # should return the GID for $name or $gid if it can't be found
  }, undef);
 
 Called by archive_write_disk_gid to determine appropriate GID.
+
+=head2 user name lookup
+
+ my $status = archive_read_disk_set_uname_lookup($archive, $data, sub 
+   my($data, $uid) = @_;
+   ... # should return the name for $uid, or undef
+ }, undef);
+
+Called by archive_read_disk_uname to determine appropriate user name.
+
+=head2 group name lookup
+
+ my $status = archive_read_disk_set_gname_lookup($archive, $data, sub 
+   my($data, $gid) = @_;
+   ... # should return the name for $gid, or undef
+ }, undef);
+
+Called by archive_read_disk_gname to determine appropriate group name.
+
+=head2 lookup cleanup
+
+ sub mycleanup
+ {
+   my($data) = @_;
+   ... # any cleanup necessary
+ }
+ 
+ my $status = archive_write_disk_set_user_lookup($archive, $data, \&mylookup, \&mcleanup);
+ 
+ ...
+ 
+ archive_write_disk_set_user_lookup($archive, undef, undef, undef); # mycleanup will be called here
+
+Called when the lookup is registered (can also be passed into
+L<archive_write_disk_set_group_lookup|Archive::Libarchive::XS::Function#archive_write_disk_set_group_lookup>,
+L<archive_read_disk_set_uname_lookup|Archive::Libarchive::XS::Function#archive_read_disk_set_uname_lookup>,
+and
+L<archive_read_disk_set_gname_lookup|Archive::Libarchive::XS::Function#archive_read_disk_set_gname_lookup>.
+
 
 =cut
 

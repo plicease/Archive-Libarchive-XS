@@ -1029,6 +1029,15 @@ all symbolic links.
 This sets the mode used for handling symbolic links.  The "physical" mode does not
 follow any symbolic links.
 
+=head2 archive_read_disk_set_uname_lookup
+
+ my $status = archive_read_disk_set_uname_lookup($archive, $data, $lookup_callback, $cleanup_callback);
+
+Register a callback for the lookup of UID from user names.  In order to deregister call
+C<archive_read_disk_setugname_lookup> with both callback functions set to C<undef>.
+
+See L<Archive::Libarchive::XS::Callback> for calling conventions for the lookup and cleanup callbacks.
+
 =head2 archive_read_disk_uname
 
  my $string = archive_read_disk_uname($archive, $gid);

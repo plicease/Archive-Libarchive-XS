@@ -1,12 +1,10 @@
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::More tests => 5;
 use Archive::Libarchive::XS qw( :all );
 
 # based on test_read_disk.c
 
-my $gmagic = 0x13579;
-my $umagic = 0x1234;
 my $a = archive_read_disk_new();
 ok $a, 'archive_read_disk_new';
 
@@ -18,6 +16,8 @@ subtest 'Default uname/gname lookups always return undef.' => sub {
 
 subtest 'Register some weird lookup functions.' => sub {
   plan tests => 5;
+  my $gmagic = 0x13579;
+  
   my $r = eval { archive_read_disk_set_gname_lookup($a, \$gmagic, \&gname_lookup, \&gname_cleanup) };
   diag $@ if $@;
   is $r, ARCHIVE_OK, 'archive_read_disk_set_gname_lookup';
@@ -28,6 +28,22 @@ subtest 'Register some weird lookup functions.' => sub {
   diag if $@;
   is $r, ARCHIVE_OK, 'De-register.';
   is $gmagic, 0x2468, 'Ensure our cleanup function got called.';
+};
+
+subtest 'Same thing with uname lookup....' => sub {
+  plan tests => 5;
+  my $umagic = 0x1234;
+  my $r = eval { archive_read_disk_set_uname_lookup($a, \$umagic, \&uname_lookup, \&uname_cleanup) };
+  diag $@ if $@;
+  is $r, ARCHIVE_OK, 'archive_read_disk_set_uname_lookup';
+  
+  is archive_read_disk_uname($a, 0), "NOTFOO", 'uname 0 = NOTFOO';
+  is archive_read_disk_uname($a, 1), "FOO",    'uname 1 = FOO';
+  
+  $r = eval { archive_read_disk_set_uname_lookup($a, undef, undef, undef) };
+  diag $@ if $@;
+  is $r, ARCHIVE_OK, 'De-register.';
+  is $umagic, 0x2345, 'Ensure our cleanup function got called.';
 };
 
 subtest 'cleanup' => sub {
@@ -48,4 +64,18 @@ sub gname_lookup
   my($data, $gid) = @_;
   return "FOOGROUP" if $gid == 1;
   return "NOTFOOGROUP";
+}
+
+sub uname_cleanup
+{
+  my($data) = @_;
+  die unless $$data == 0x1234;
+  $$data = 0x2345;
+}
+
+sub uname_lookup
+{
+  my($data, $uid) = @_;
+  return "FOO" if $uid == 1;
+  return "NOTFOO";
 }
