@@ -267,7 +267,8 @@ mylookup_read_lookup(void *d, int64_t id)
       {
         tmp = SvPV(sv, len);
         Renew(value, len+1, char);
-        strncpy(value, tmp, len+1);
+        memcpy(value, tmp, len);
+        value[len] = 0;
       }
       else
       {
