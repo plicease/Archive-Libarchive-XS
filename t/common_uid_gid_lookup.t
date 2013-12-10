@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 6;
+use Test::More tests => 7;
 use Archive::Libarchive::XS qw( :all );
 
 # based on test_write_disk_lookup.c
@@ -29,8 +29,8 @@ subtest 'Register some weird lookup functions' => sub {
 
 subtest 'Verify that our new function got called.' => sub {
   plan tests => 2;
-  is archive_write_disk_gid($a, "FOOGROUP", 8), 73, 'gid FOOGROUP 8 = 73';
-  is archive_write_disk_gid($a, "NOTFOOGROUP", 8), 1, 'gid NOTFOOGROUP 8 = 1';
+  is archive_write_disk_gid($a, "FOOGROUP",    8), 73, 'gid FOOGROUP    8 = 73';
+  is archive_write_disk_gid($a, "NOTFOOGROUP", 8),  1, 'gid NOTFOOGROUP 8 = 1';
 };
 
 subtest 'De-register.' => sub {
@@ -39,6 +39,21 @@ subtest 'De-register.' => sub {
   diag $@ if $@;
   is $r, ARCHIVE_OK, 'archive_write_disk_set_group_lookup';
   is $gmagic, 0x2468, 'Ensure our cleanup function got called.';
+};
+
+subtest 'Same thing with uname lookup....' => sub {
+  plan tests => 5;
+  my $r = eval { archive_write_disk_set_user_lookup($a, \$umagic, \&user_lookup, \&user_cleanup) };
+  diag $@ if $@;
+  is $r, ARCHIVE_OK, 'archive_write_disk_set_user_lookup';
+  
+  is archive_write_disk_uid($a, "FOO",    0),  2, 'uid FOO    0 = 2';
+  is archive_write_disk_uid($a, "NOTFOO", 1), 74, 'uid NOTFOO 1 = 74';
+  
+  $r = eval { archive_write_disk_set_user_lookup($a, undef, undef, undef) };
+  diag $@ if $@;
+  is $r, ARCHIVE_OK, 'archive_write_disk_set_user_lookup';
+  is $umagic, 0x2345, 'Ensure our cleanup function got called';
 };
 
 subtest 'cleanup' => sub {
@@ -60,4 +75,19 @@ sub group_lookup
   die unless $$data == 0x13579;
   return 1 if $name ne 'FOOGROUP';
   return 73;
+}
+
+sub user_cleanup
+{
+  my($data) = @_;
+  die unless $$data == 0x1234;
+  $$data = 0x2345;
+}
+
+sub user_lookup
+{
+  my($data, $name, $uid) = @_;
+  die unless $$data == 0x1234;
+  return 2 if $name eq 'FOO';
+  return 74;
 }

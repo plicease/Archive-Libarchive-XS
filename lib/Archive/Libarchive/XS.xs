@@ -305,6 +305,44 @@ archive_write_disk_set_group_lookup(archive, data, lookup_callback, cleanup_call
 
 #endif
 
+=head2 archive_write_disk_set_user_lookup
+
+ my $status = archive_write_disk_set_user_lookup($arhive, $data, $lookup_callback, $cleanup_callback);
+
+Register a callback for the lookup of user names from user id numbers.  In order to deregister
+call C<archive_write_disk_set_user_lookup> with both callback functions set to C<undef>.
+
+See L<Archive::Libarchive::XS::Callback> for calling conventions for the lookup and cleanup callbacks.
+
+=cut
+
+#if HAS_archive_write_disk_set_user_lookup
+
+int
+archive_write_disk_set_user_lookup(archive, data, lookup_callback, cleanup_callback)
+    struct archive *archive
+    SV *data
+    SV *lookup_callback
+    SV *cleanup_callback
+  CODE:
+    struct lookup_callback_data *c_data;
+    Newx(c_data, 1, struct lookup_callback_data *);
+    if(SvOK(cleanup_callback) || SvOK(lookup_callback))
+    {
+      c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
+      c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
+      c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
+      RETVAL = archive_write_disk_set_user_lookup(archive, c_data, &mylookup_lookup, &mylookup_cleanup);
+    }
+    else
+    {
+      RETVAL = archive_write_disk_set_user_lookup(archive, NULL, NULL, NULL);
+    }
+  OUTPUT:
+    RETVAL
+
+#endif
+
 =head2 archive_entry_stat
 
  my($dev, $ino, $mode, $nlink, $uid, $gid, $rdev, $atime, $mtime, $ctime) = archive_entry_stat($entry);

@@ -1663,6 +1663,15 @@ if the names cannot be looked up.  These functions also implement
 a simple memory cache to reduce the number of calls to 
 C<getpwnam> and C<getgrnam>.
 
+=head2 archive_write_disk_set_user_lookup
+
+ my $status = archive_write_disk_set_user_lookup($arhive, $data, $lookup_callback, $cleanup_callback);
+
+Register a callback for the lookup of user names from user id numbers.  In order to deregister
+call C<archive_write_disk_set_user_lookup> with both callback functions set to C<undef>.
+
+See L<Archive::Libarchive::XS::Callback> for calling conventions for the lookup and cleanup callbacks.
+
 =head2 archive_write_disk_uid
 
  my $int64 = archive_write_disk_uid($archive, $string, $int64);

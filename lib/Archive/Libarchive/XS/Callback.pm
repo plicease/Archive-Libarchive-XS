@@ -145,6 +145,24 @@ L<archive_read_open|Archive::Libarchive::XS::Function#archive_read_open>,
 L<archive_read_open2|Archive::Libarchive::XS::Function#archive_read_open2> or
 L<archive_write_open|Archive::Libarchive::XS::Function#archive_write_open>.
 
+=head2 user lookup
+
+ my $status = archive_write_disk_set_user_lookup($archive, sub {
+   my($data, $name, $uid) = @_;
+   ... # should return the UID for $name or $uid if it can't be found
+ }, undef);
+
+Called by archive_write_disk_uid to determine appropriate UID.
+
+=head2 group lookup
+
+ my $status = archive_write_disk_set_group_lookup($archive, sub {
+   my($data, $name, $gid) = @_;
+   ... # should return the GID for $name or $gid if it can't be found
+ }, undef);
+
+Called by archive_write_disk_gid to determine appropriate GID.
+
 =cut
 
 package
