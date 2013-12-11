@@ -41,7 +41,6 @@ unimplemented: archive_match_path_unmatched_inclusions
 unimplemented: archive_match_path_unmatched_inclusions_next
 unimplemented: archive_read_append_filter
 unimplemented: archive_read_append_filter_program
-unimplemented: archive_read_append_filter_program_signature
 unimplemented: archive_read_data_into_fd
 unimplemented: archive_read_disk_entry_from_file
 unimplemented: archive_read_disk_set_matching
@@ -52,4 +51,4 @@ unimplemented: archive_read_extract_set_progress_callback
 unimplemented: archive_read_extract_set_skip_file
 unimplemented: archive_read_set_switch_callback
 
-total unimplemented symbols: 46
+total unimplemented symbols: 45
