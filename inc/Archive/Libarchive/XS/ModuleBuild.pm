@@ -92,11 +92,23 @@ sub _test_compile_symbol
   my $fn = File::Spec->catfile($dir, "foo$count.c");
   $count++;
   open my $fh, '>', $fn;
+  
   print $fh "#include <archive.h>\n";
   print $fh "#include <archive_entry.h>\n";
   print $fh "int main(int argc, char *argv)\n";
-  print $fh "{ void *ptr = (void*)$symbol; }\n";
-  close $fh;
+  if($symbol =~ /^archive_write_set_format_/ && $symbol !~ /^archive_write_set_format_(program|by_name)/)
+  {
+    print $fh "{\n";
+    print $fh "  struct archive *a = archive_write_new();\n";
+    print $fh "  $symbol(a);\n";
+    print $fh "  archive_write_free(a);\n";
+    print $fh "}\n";
+  }
+  else
+  {
+    print $fh "{ void *ptr = (void*)$symbol; }\n";
+    close $fh;
+  }
   
   my $cflags = $alien->cflags;
   my $libs   = $alien->libs;
@@ -104,12 +116,46 @@ sub _test_compile_symbol
   if(eval q{ use Capture::Tiny; 1 })
   {
     my $error;
+    my $obj;
     Capture::Tiny::capture_merged(sub {
-      eval { $self->compile_c($fn) };
+      eval { $obj = $self->compile_c($fn) };
       $error = $@;
     });
     my $status = $error eq '';
+
+    if($status && $symbol =~ /^archive_write_set_format_(.*)$/)
+    {
+      if($1 !~ /^(program|by_name)$/)
+      {
+        $alien ||= Alien::Libarchive->new;
+        my $exe;
+        my $error;
+        Capture::Tiny::capture_merged(sub {
+          $exe = eval { 
+            $self->cbuilder->link_executable(
+              objects            => [ $obj ],
+              extra_linker_flags => $alien->libs,
+            );
+          };
+          $error = $@;
+        });
+      
+        if($error)
+        {
+          $status = 0;
+        }
+        else
+        {
+          Capture::Tiny::capture_merged(sub {
+            system $exe, 'argument';
+            $status = $? == 0;
+          });
+        }
+      }
+    }
+    
     printf "%-50s %s\n", $symbol, ($status ? 'yes' : 'no');
+
     return $status;
   }
   else
