@@ -4256,6 +4256,30 @@ archive_entry_strmode(entry)
 
 #endif
 
+=head2 archive_read_extract_set_skip_file
+
+ my $status = archive_read_extract_set_skip_file($archive, $dev, $ino);
+
+Record the dev/ino of a file that will not be written.  This is
+generally set to the dev/ino of the archive being read.
+
+=cut
+
+#if HAS_archive_read_extract_set_skip_file
+
+int
+archive_read_extract_set_skip_file(archive, dev, ino)
+    struct archive *archive
+    __LA_INT64_T dev
+    __LA_INT64_T ino
+  CODE:
+    archive_read_extract_set_skip_file(archive, dev, ino);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name

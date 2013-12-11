@@ -1076,6 +1076,13 @@ See L<Archive::Libarchive::XS::Callback> for calling conventions for the lookup 
 Returns a user name given a uid value.  By default always
 returns C<undef>.
 
+=head2 archive_read_extract_set_skip_file
+
+ my $status = archive_read_extract_set_skip_file($archive, $dev, $ino);
+
+Record the dev/ino of a file that will not be written.  This is
+generally set to the dev/ino of the archive being read.
+
 =head2 archive_read_free
 
  my $status = archive_read_free($archive);
