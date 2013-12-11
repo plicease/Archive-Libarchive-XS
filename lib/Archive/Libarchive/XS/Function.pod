@@ -1344,6 +1344,13 @@ dearchived.  Note that this disables automatic detection of the
 compression format, so it makes no sense to specify this in
 conjunction with any other decompression option.
 
+=head2 archive_read_support_filter_program_signature
+
+ my $status = archive_read_support_filter_program_signature($archive, $command, $signature);
+
+Data is feed through the specified external program before being
+dearchived, if the signature matches.
+
 =head2 archive_read_support_filter_rpm
 
  my $status = archive_read_support_filter_rpm($archive);

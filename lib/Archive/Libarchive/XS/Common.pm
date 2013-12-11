@@ -149,6 +149,9 @@ _sub_if_can( archive_write_add_filter_by_name => sub {
 _sub_if_can( archive_write_add_filter_program => sub {
   _archive_write_add_filter_program($_[0], encode(archive_perl_codeset(), $_[1]));
 });
+_sub_if_can( archive_read_support_filter_program_signature => sub {
+  _archive_read_support_filter_program_signature($_[0], encode(archive_perl_codeset(), $_[1]), $_[2]);
+});
 _sub_if_can( archive_write_set_format_by_name => sub {
   _archive_write_set_format_by_name($_[0], encode(archive_perl_codeset(), $_[1]));
 });

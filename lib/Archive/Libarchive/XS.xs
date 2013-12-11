@@ -800,10 +800,36 @@ conjunction with any other decompression option.
 
 int
 _archive_read_support_filter_program(archive, command)
-    struct archive *archive;
-    const char *command;
+    struct archive *archive
+    const char *command
   CODE:
     RETVAL = archive_read_support_filter_program(archive, command);
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_read_support_filter_program_signature
+
+ my $status = archive_read_support_filter_program_signature($archive, $command, $signature);
+
+Data is feed through the specified external program before being
+dearchived, if the signature matches.
+
+=cut
+
+#if HAS_archive_read_support_filter_program_signature
+
+int
+_archive_read_support_filter_program_signature(archive, command, signature)
+    struct archive *archive
+    const char *command
+    SV *signature
+  CODE:
+    void *ptr;
+    STRLEN size;
+    ptr = SvPV(signature, size);
+    RETVAL = archive_read_support_filter_program_signature(archive, command, ptr, size);
   OUTPUT:
     RETVAL
 
