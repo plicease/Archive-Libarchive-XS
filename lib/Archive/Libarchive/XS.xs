@@ -839,8 +839,8 @@ _archive_read_support_filter_program_signature(archive, command, signature)
 
  my $status = archive_read_append_filter_program_signature($archive, $command, $signature);
 
-Data is feed through the specified external program before being
-dearchived, if the signature matches.
+Data is feed through the specified external program before being dearchived, if the signature
+matches.
 
 The C<_append_> form is to manually set the format and filters to be used. This is useful
 to bypass the bidding process when the format and filters to use is known in advance.
@@ -861,6 +861,26 @@ _archive_read_append_filter_program_signature(archive, command, signature)
     RETVAL = archive_read_append_filter_program_signature(archive, command, ptr, size);
   OUTPUT:
     RETVAL
+
+#endif
+
+=head2 archive_read_append_filter
+
+ my $status = archive_read_append_filter($archive, $code)
+
+Add the given filter by its code.
+
+The C<_append_> form is to manually set the format and filters to be used. This is useful
+to bypass the bidding process when the format and filters to use is known in advance.
+
+=cut
+
+#if HAS_archive_read_append_filter
+
+int
+archive_read_append_filter(archive, code)
+    struct archive *archive
+    int code
 
 #endif
 

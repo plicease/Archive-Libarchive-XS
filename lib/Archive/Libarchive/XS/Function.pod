@@ -889,12 +889,21 @@ UTF-8 or "ANSI_X3.4-1968" for ASCII) of the currently configured locale.
 
 Returns true if the internal "codeset" used by libarchive is UTF-8.
 
+=head2 archive_read_append_filter
+
+ my $status = archive_read_append_filter($archive, $code)
+
+Add the given filter by its code.
+
+The C<_append_> form is to manually set the format and filters to be used. This is useful
+to bypass the bidding process when the format and filters to use is known in advance.
+
 =head2 archive_read_append_filter_program_signature
 
  my $status = archive_read_append_filter_program_signature($archive, $command, $signature);
 
-Data is feed through the specified external program before being
-dearchived, if the signature matches.
+Data is feed through the specified external program before being dearchived, if the signature
+matches.
 
 The C<_append_> form is to manually set the format and filters to be used. This is useful
 to bypass the bidding process when the format and filters to use is known in advance.
