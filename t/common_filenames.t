@@ -42,6 +42,7 @@ subtest 'First header.' => sub {
   plan tests => 9;
   $r = archive_read_next_header($a, my $ae);
   is $r, ARCHIVE_OK, 'archive_read_next_header';
+  diag 'archive_error_string = ' . archive_error_string($a) if $r != ARCHIVE_OK;
   is archive_entry_pathname($ae), 'test.txt', 'archive_entry_pathname = test.txt';
   ok eval { archive_entry_mtime($ae) }, 'archive_entry_mtime';
   diag $@ if $@;
@@ -60,6 +61,7 @@ subtest 'Second header.' => sub {
   plan tests => 8;
   $r = archive_read_next_header($a, my $ae);
   is $r, ARCHIVE_OK, 'archive_read_next_header';
+  diag 'archive_error_string = ' . archive_error_string($a) if $r != ARCHIVE_OK;
   is archive_entry_pathname($ae), 'testlink', 'archive_entry_pathname = testlink';
   ok eval { archive_entry_mtime($ae) }, 'archive_entry_mtime';
   diag $@ if $@;
@@ -148,6 +150,7 @@ sub extract
       $data .= unpack 'u', $line;
     }
     open my $fh, '>', $filename;
+    binmode $fh;
     print $fh $data;
     close $fh;
   }
