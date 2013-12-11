@@ -21,7 +21,16 @@ sub new
   $args{extra_linker_flags}   = $alien->libs;
   $args{c_source}             = 'xs';
 
-  $class->SUPER::new(%args);
+  my $self = $class->SUPER::new(%args);
+  
+  $self->add_to_cleanup(
+    File::Spec->catfile('xs', 'func.h.tmp'),
+    File::Spec->catfile('xs', 'func.h'),
+    '*.core',
+    'test-*',
+  );
+  
+  $self;
 }
 
 sub ACTION_build
@@ -79,13 +88,6 @@ sub ACTION_build
   }
   
   $self->SUPER::ACTION_build(@_);
-}
-
-sub ACTION_clean
-{
-  my $self = shift;
-  unlink(File::Spec->catfile('xs', 'func.h.tmp'), File::Spec->catfile('xs', 'func.h'));
-  $self->SUPER::ACTION_clean(@_);
 }
 
 my $dir;
