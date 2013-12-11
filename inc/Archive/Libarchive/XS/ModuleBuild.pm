@@ -36,6 +36,8 @@ sub new
 sub ACTION_build_prep
 {
   my($self) = shift;
+
+  return if -e File::Spec->catfile('xs', 'func.h');
   
   print "creating xs/func.h\n";
   $alien ||= Alien::Libarchive->new;
