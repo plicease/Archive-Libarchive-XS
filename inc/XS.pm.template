@@ -169,7 +169,7 @@ sub archive_entry_<%= $name %>
 
 eval q{
   use Exporter::Tidy
-    func  => [grep /^archive_/,       keys %Archive::Libarchive::XS::],
+    func  => [grep /^archive_/, keys %Archive::Libarchive::XS::],
     const => [grep { _define_constant($_) } qw(
 % foreach my $constant (@$constants) {
       <%= $constant %>

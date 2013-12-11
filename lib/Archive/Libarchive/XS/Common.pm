@@ -97,90 +97,100 @@ sub archive_entry_set_stat
   $status;
 }
 
-*archive_entry_copy_stat = \&archive_entry_set_stat;
+*archive_entry_copy_stat = \&archive_entry_set_stat
+  if __PACKAGE__->can('archive_entry_set_stat');
 
+sub _sub_if_can ($$)
+{
+  my($name,$coderef) = @_;
+  if(__PACKAGE__->can("_$name"))
+  {
+    no strict 'refs';
+    *{$name} = $coderef;
+  }
+}
 
-sub archive_version_string {
+_sub_if_can( archive_version_string => sub {
   decode(archive_perl_codeset(), _archive_version_string());
-}
-sub archive_format_name {
+});
+_sub_if_can( archive_format_name => sub {
   decode(archive_perl_codeset(), _archive_format_name($_[0]));
-}
-sub archive_error_string {
+});
+_sub_if_can( archive_error_string => sub {
   decode(archive_perl_codeset(), _archive_error_string($_[0]));
-}
-sub archive_read_open_filename {
+});
+_sub_if_can( archive_read_open_filename => sub {
   _archive_read_open_filename($_[0], encode(archive_perl_codeset(), $_[1]), $_[2]);
-}
-sub archive_read_support_filter_program {
+});
+_sub_if_can( archive_read_support_filter_program => sub {
   _archive_read_support_filter_program($_[0], encode(archive_perl_codeset(), $_[1]));
-}
-sub archive_read_set_filter_option {
+});
+_sub_if_can( archive_read_set_filter_option => sub {
   _archive_read_set_filter_option($_[0], encode(archive_perl_codeset(), $_[1]), encode(archive_perl_codeset(), $_[2]), encode(archive_perl_codeset(), $_[3]));
-}
-sub archive_read_set_format_option {
+});
+_sub_if_can( archive_read_set_format_option => sub {
   _archive_read_set_format_option($_[0], encode(archive_perl_codeset(), $_[1]), encode(archive_perl_codeset(), $_[2]), encode(archive_perl_codeset(), $_[3]));
-}
-sub archive_read_set_option {
+});
+_sub_if_can( archive_read_set_option => sub {
   _archive_read_set_option($_[0], encode(archive_perl_codeset(), $_[1]), encode(archive_perl_codeset(), $_[2]), encode(archive_perl_codeset(), $_[3]));
-}
-sub archive_read_set_options {
+});
+_sub_if_can( archive_read_set_options => sub {
   _archive_read_set_options($_[0], encode(archive_perl_codeset(), $_[1]));
-}
-sub archive_read_set_format {
+});
+_sub_if_can( archive_read_set_format => sub {
   _archive_read_set_format($_[0], encode(archive_perl_codeset(), $_[1]), encode(archive_perl_codeset(), $_[2]), encode(archive_perl_codeset(), $_[3]));
-}
-sub archive_filter_name {
+});
+_sub_if_can( archive_filter_name => sub {
   decode(archive_perl_codeset(), _archive_filter_name($_[0], $_[1]));
-}
-sub archive_write_add_filter_by_name {
+});
+_sub_if_can( archive_write_add_filter_by_name => sub {
   _archive_write_add_filter_by_name($_[0], encode(archive_perl_codeset(), $_[1]));
-}
-sub archive_write_add_filter_program {
+});
+_sub_if_can( archive_write_add_filter_program => sub {
   _archive_write_add_filter_program($_[0], encode(archive_perl_codeset(), $_[1]));
-}
-sub archive_write_set_format_by_name {
+});
+_sub_if_can( archive_write_set_format_by_name => sub {
   _archive_write_set_format_by_name($_[0], encode(archive_perl_codeset(), $_[1]));
-}
-sub archive_write_open_filename {
+});
+_sub_if_can( archive_write_open_filename => sub {
   _archive_write_open_filename($_[0], encode(archive_perl_codeset(), $_[1]));
-}
-sub archive_write_set_filter_option {
+});
+_sub_if_can( archive_write_set_filter_option => sub {
   _archive_write_set_filter_option($_[0], encode(archive_perl_codeset(), $_[1]), encode(archive_perl_codeset(), $_[2]), encode(archive_perl_codeset(), $_[3]));
-}
-sub archive_write_set_format_option {
+});
+_sub_if_can( archive_write_set_format_option => sub {
   _archive_write_set_format_option($_[0], encode(archive_perl_codeset(), $_[1]), encode(archive_perl_codeset(), $_[2]), encode(archive_perl_codeset(), $_[3]));
-}
-sub archive_write_set_option {
+});
+_sub_if_can( archive_write_set_option => sub {
   _archive_write_set_option($_[0], encode(archive_perl_codeset(), $_[1]), encode(archive_perl_codeset(), $_[2]), encode(archive_perl_codeset(), $_[3]));
-}
-sub archive_write_set_options {
+});
+_sub_if_can( archive_write_set_options => sub {
   _archive_write_set_options($_[0], encode(archive_perl_codeset(), $_[1]));
-}
-sub archive_write_disk_gid {
+});
+_sub_if_can( archive_write_disk_gid => sub {
   _archive_write_disk_gid($_[0], encode(archive_perl_codeset(), $_[1]), $_[2]);
-}
-sub archive_write_disk_uid {
+});
+_sub_if_can( archive_write_disk_uid => sub {
   _archive_write_disk_uid($_[0], encode(archive_perl_codeset(), $_[1]), $_[2]);
-}
-sub archive_entry_fflags_text {
+});
+_sub_if_can( archive_entry_fflags_text => sub {
   decode(archive_perl_codeset(), _archive_entry_fflags_text($_[0]));
-}
-sub archive_read_disk_open {
+});
+_sub_if_can( archive_read_disk_open => sub {
   _archive_read_disk_open($_[0], encode(archive_perl_codeset(), $_[1]));
-}
-sub archive_read_disk_gname {
+});
+_sub_if_can( archive_read_disk_gname => sub {
   decode(archive_perl_codeset(), _archive_read_disk_gname($_[0], $_[1]));
-}
-sub archive_read_disk_uname {
+});
+_sub_if_can( archive_read_disk_uname => sub {
   decode(archive_perl_codeset(), _archive_read_disk_uname($_[0], $_[1]));
-}
-sub archive_entry_acl_add_entry {
+});
+_sub_if_can( archive_entry_acl_add_entry => sub {
   _archive_entry_acl_add_entry($_[0], $_[1], $_[2], $_[3], $_[4], encode(archive_perl_codeset(), $_[5]));
-}
-sub archive_entry_acl_text {
+});
+_sub_if_can( archive_entry_acl_text => sub {
   decode(archive_perl_codeset(), _archive_entry_acl_text($_[0], $_[1]));
-}
+});
 
 1;
 

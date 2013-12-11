@@ -1,7 +1,10 @@
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More;
 use Archive::Libarchive::XS qw( :all );
+
+plan skip_all => 'requires archive_read_disk_set_gname_lookup' unless Archive::Libarchive::XS->can('archive_read_disk_set_gname_lookup');
+plan tests => 5;
 
 # based on test_read_disk.c
 

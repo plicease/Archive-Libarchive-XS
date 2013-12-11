@@ -1,7 +1,10 @@
 use strict;
 use warnings;
-use Test::More tests => 7;
+use Test::More;
 use Archive::Libarchive::XS qw( :all );
+
+plan skip_all => 'requires archive_write_disk_gid' unless Archive::Libarchive::XS->can('archive_write_disk_gid');
+plan tests => 7;
 
 # based on test_write_disk_lookup.c
 

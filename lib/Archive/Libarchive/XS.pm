@@ -187,7 +187,7 @@ sub archive_entry_uname
 
 eval q{
   use Exporter::Tidy
-    func  => [grep /^archive_/,       keys %Archive::Libarchive::XS::],
+    func  => [grep /^archive_/, keys %Archive::Libarchive::XS::],
     const => [grep { _define_constant($_) } qw(
       AE_IFBLK
       AE_IFCHR
