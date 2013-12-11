@@ -33,61 +33,81 @@ sub new
   $self;
 }
 
-sub ACTION_build
+sub ACTION_build_prep
 {
   my($self) = shift;
   
-  unless(-e File::Spec->catfile('xs', 'func.h'))
-  {
+  print "creating xs/func.h\n";
+  $alien ||= Alien::Libarchive->new;
   
-    $alien ||= Alien::Libarchive->new;
-  
-    open(my $fh, '<', File::Spec->catfile('inc', 'symbols.txt'));
-    my @symbols = <$fh>;
-    close $fh;
-    chomp @symbols;
+  open(my $fh, '<', File::Spec->catfile('inc', 'symbols.txt'));
+  my @symbols = <$fh>;
+  close $fh;
+  chomp @symbols;
     
-    push @symbols, map { "archive_read_support_compression_$_" } qw( all bzip2 compress gzip lzip lzma none program program_signature rpm uu xz );
-    push @symbols, map { "archive_write_set_compression_$_" } qw( bzip2 compress gzip lzip lzma none program xz );
-    push @symbols, 'archive_write_set_format_old_tar';
+  push @symbols, map { "archive_read_support_compression_$_" } qw( all bzip2 compress gzip lzip lzma none program program_signature rpm uu xz );
+  push @symbols, map { "archive_write_set_compression_$_" } qw( bzip2 compress gzip lzip lzma none program xz );
+  push @symbols, 'archive_write_set_format_old_tar';
   
-    open($fh, '>', File::Spec->catfile('xs', 'func.h.tmp'));
-    print $fh "#ifndef FUNC_H\n";
-    print $fh "#define FUNC_H\n\n";
+  open($fh, '>', File::Spec->catfile('xs', 'func.h.tmp'));
+  print $fh "#ifndef FUNC_H\n";
+  print $fh "#define FUNC_H\n\n";
 
-    # TODO: can probably scan the dll on Windows 
-    # for the symbols, which will save time
-    if($alien->install_type eq 'system' || $^O eq 'MSWin32')
+  # TODO: can probably scan the dll on Windows 
+  # for the symbols, which will save time
+  if($alien->install_type eq 'system' || $^O eq 'MSWin32')
+  {
+    foreach my $symbol (sort @symbols)
     {
-      foreach my $symbol (sort @symbols)
-      {
-        if($symbol =~ /^archive_write_set_format_/ && $symbol !~ /^archive_write_set_format_(program|by_name)/)
-        {
-          print $fh "#define HAS_$symbol 1\n"
-            if $self->_test_write_format($symbol);
-        }
-        else
-        {
-          print $fh "#define HAS_$symbol 1\n"
-            if $self->_test_symbol($symbol);
-        }
-      }
-    }
-    else
-    {
-      foreach my $symbol (@symbols)
+      if($symbol =~ /^archive_write_set_format_/ && $symbol !~ /^archive_write_set_format_(program|by_name)/)
       {
         print $fh "#define HAS_$symbol 1\n"
-          if DynaLoader::dl_find_symbol_anywhere($symbol);
+          if $self->_test_write_format($symbol);
+      }
+      else
+      {
+        print $fh "#define HAS_$symbol 1\n"
+          if $self->_test_symbol($symbol);
       }
     }
-  
-    print $fh "\n#endif\n";
-    close $fh;
-    rename(File::Spec->catfile('xs', 'func.h.tmp'), File::Spec->catfile('xs', 'func.h'));
   }
-  
+  else
+  {
+    foreach my $symbol (@symbols)
+    {
+      print $fh "#define HAS_$symbol 1\n"
+        if DynaLoader::dl_find_symbol_anywhere($symbol);
+    }
+  }
+
+  print $fh "\n#endif\n";
+  close $fh;
+  rename(File::Spec->catfile('xs', 'func.h.tmp'), File::Spec->catfile('xs', 'func.h')) || die "unable to rename $!";
+}
+
+sub ACTION_build
+{
+  my $self = shift;
+  $self->depends_on('build_prep');
   $self->SUPER::ACTION_build(@_);
+}
+
+sub ACTION_test
+{
+  # doesn't seem like this should be necessary, but without
+  # this, it doesn't call my ACTION_build
+  my $self = shift;
+  $self->depends_on('build');
+  $self->SUPER::ACTION_test(@_);
+}
+
+sub ACTION_install
+{
+  # doesn't seem like this should be necessary, but without
+  # this, it doesn't call my ACTION_build
+  my $self = shift;
+  $self->depends_on('build');
+  $self->SUPER::ACTION_install(@_);
 }
 
 my $dir;
