@@ -1,5 +1,6 @@
 Alien::Libarchive
 Exporter::Tidy
+ExtUtils::CChecker
 Math::Int64
 Module::Build
 Test::More
