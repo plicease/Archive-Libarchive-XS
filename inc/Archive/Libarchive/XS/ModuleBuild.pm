@@ -50,10 +50,18 @@ sub ACTION_build
     # for the symbols, which will save time
     if($alien->install_type eq 'system' || $^O eq 'MSWin32')
     {
-      foreach my $symbol (@symbols)
+      foreach my $symbol (sort @symbols)
       {
-        print $fh "#define HAS_$symbol 1\n"
-          if $self->_test_compile_symbol($symbol);
+        if($symbol =~ /^archive_write_set_format_/ && $symbol !~ /^archive_write_set_format_(program|by_name)/)
+        {
+          print $fh "#define HAS_$symbol 1\n"
+            if $self->_test_write_format($symbol);
+        }
+        else
+        {
+          print $fh "#define HAS_$symbol 1\n"
+            if $self->_test_symbol($symbol);
+        }
       }
     }
     else
@@ -82,87 +90,81 @@ sub ACTION_clean
 
 my $dir;
 my $count = 0;
+my $cc;
 
-sub _test_compile_symbol
+if(eval qq{ use Capture::Tiny; 1 })
+{
+  eval qq{
+    sub _capture_tiny {
+      my \$code = shift;
+      Capture::Tiny::capture_merged(sub { \$code->()});
+    }
+  };
+  die $@ if $@;
+}
+else
+{
+  eval qq{
+    sub _capture_tiny {
+      \$_[0]->();
+    }
+  };
+  die $@ if $@;
+}
+
+sub _cc
+{
+  require ExtUtils::CChecker;
+  $alien ||= Alien::Libarchive->new;
+
+  unless(defined $cc)
+  {
+    $cc = ExtUtils::CChecker->new;
+    $DB::single = 1;
+    $cc->push_extra_compiler_flags($alien->cflags) if $alien->cflags !~ /^\s*$/;
+    $cc->push_extra_linker_flags($alien->libs)     if $alien->libs   !~ /^\s*$/;
+  }
+}
+
+sub _test_write_format
 {
   my($self, $symbol) = @_;
-  
-  $dir = tempdir( CLEANUP => 1 ) unless $dir;
-  
-  my $fn = File::Spec->catfile($dir, "foo$count.c");
-  $count++;
-  open my $fh, '>', $fn;
-  
-  print $fh "#include <archive.h>\n";
-  print $fh "#include <archive_entry.h>\n";
-  print $fh "int main(int argc, char *argv)\n";
-  if($symbol =~ /^archive_write_set_format_/ && $symbol !~ /^archive_write_set_format_(program|by_name)/)
-  {
-    print $fh "{\n";
-    print $fh "  struct archive *a = archive_write_new();\n";
-    print $fh "  $symbol(a);\n";
-    print $fh "  archive_write_free(a);\n";
-    print $fh "}\n";
-  }
-  else
-  {
-    print $fh "{ void *ptr = (void*)$symbol; }\n";
-    close $fh;
-  }
-  
-  my $cflags = $alien->cflags;
-  my $libs   = $alien->libs;
+  _cc();
+  my $ok;
+  _capture_tiny(sub { $ok = $cc->try_compile_run(source => <<EOF1) });
+#include <archive.h>
+#include <archive_entry.h>
+int main(int argc, char *argv)
+{
+  struct archive *a = archive_write_new();
+  $symbol(a);
+  archive_write_free(a);
+  return 0;
+}
+EOF1
+  printf "%-50s %s\n", $symbol, ($ok ? 'yes' : 'no');
+  return $ok;
+}
 
-  if(eval q{ use Capture::Tiny; 1 })
-  {
-    my $error;
-    my $obj;
-    Capture::Tiny::capture_merged(sub {
-      eval { $obj = $self->compile_c($fn) };
-      $error = $@;
-    });
-    my $status = $error eq '';
+sub _test_symbol
+{
+  my($self, $symbol) = @_;
+  _cc();
+  my $ok;
+  _capture_tiny(sub { $ok = $cc->try_compile_run(source => <<EOF2) });
+#include <stdio.h>
+#include <archive.h>
+#include <archive_entry.h>
+int main(int argc, char *argv)
+{
+  void *ptr = (void*)$symbol;
+  printf("%p\\n", ptr);
+  return 0;
+}
+EOF2
 
-    if($status && $symbol =~ /^archive_write_set_format_(.*)$/)
-    {
-      if($1 !~ /^(program|by_name)$/)
-      {
-        $alien ||= Alien::Libarchive->new;
-        my $exe;
-        my $error;
-        Capture::Tiny::capture_merged(sub {
-          $exe = eval { 
-            $self->cbuilder->link_executable(
-              objects            => [ $obj ],
-              extra_linker_flags => $alien->libs,
-            );
-          };
-          $error = $@;
-        });
-      
-        if($error)
-        {
-          $status = 0;
-        }
-        else
-        {
-          Capture::Tiny::capture_merged(sub {
-            system $exe, 'argument';
-            $status = $? == 0;
-          });
-        }
-      }
-    }
-    
-    printf "%-50s %s\n", $symbol, ($status ? 'yes' : 'no');
-
-    return $status;
-  }
-  else
-  {
-    eval { $self->compile_c($fn) };
-    return $@ eq '';
-  }
+  printf "%-50s %s\n", $symbol, ($ok ? 'yes' : 'no');
+  return $ok;
 }
 
 1;
