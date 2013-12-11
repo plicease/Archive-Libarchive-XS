@@ -4280,6 +4280,46 @@ archive_read_extract_set_skip_file(archive, dev, ino)
 
 #endif
 
+=head2 archive_read_extract
+
+ my $status = archive_read_extract($archive, $entry, $flags);
+
+A convenience function that wraps the corresponding archive_write_disk interfaces.  The first call to L<#archive_read_extract> creates a restore object using L<#archive_write_disk_new> and
+L<#archive_write_disk_set_standard_lookup>, then transparently invokes L<#archive_write_disk_set_options>, L<#archive_write_header>, L<#archive_write_data>, and L<#archive_write_finish_entry> to
+create the entry on disk and copy data into it.  The flags argument is passed unmodified to L<#archive_write_disk_set_options>.
+
+=cut
+
+#if HAS_archive_read_extract
+
+int
+archive_read_extract(archive, entry, flags)
+    struct archive *archive
+    struct archive_entry *entry
+    int flags
+
+#endif
+
+=head2 archive_read_extract2
+
+ my $status = archive_read_extract2($archive1, $entry, $archive2);
+
+This is another version of archive_read_extract() that allows you to provide your own restore object.  In particular, this allows you to override the standard lookup functions using
+L<#archive_write_disk_set_group_lookup>, and L<#archive_write_disk_set_user_lookup>.  Note that L<#archive_read_extract2> does not accept a flags argument; you should use
+L<#archive_write_disk_set_options> to set the restore options yourself.
+
+=cut
+
+#if HAS_archive_read_extract2
+
+int
+archive_read_extract2(archive1, entry, archive2)
+    struct archive *archive1
+    struct archive_entry *entry
+    struct archive *archive2
+
+#endif
+
 int
 _constant(name)
         char *name
