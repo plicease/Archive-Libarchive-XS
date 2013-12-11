@@ -53,7 +53,10 @@ is $r, ARCHIVE_OK, 'archive_entry_set_nlink';
 is eval { archive_entry_nlink($e) }, 5, 'archive_entry_nlink';
 diag $@ if $@;
 
-ok !archive_entry_dev_is_set($e), 'archive_entry_dev_is_set';
+SKIP: {
+  skip 'requires archive_entry_dev_is_set', 1 unless Archive::Libarchive::XS->can('archive_entry_dev_is_set');
+  ok !archive_entry_dev_is_set($e), 'archive_entry_dev_is_set';
+};
 $r = archive_entry_set_devmajor($e, 0x24);
 is $r, ARCHIVE_OK, 'archive_entry_devmajor';
 is archive_entry_devmajor($e), 0x24, 'archive_entry_devmajor';
@@ -61,19 +64,28 @@ $r = archive_entry_set_devminor($e, 0x67);
 is $r, ARCHIVE_OK, 'archive_entry_set_devminor';
 is archive_entry_devminor($e), 0x67, 'archive_entry_devminor';
 is archive_entry_dev($e), 0x2467, 'archive_entry_dev';
-ok archive_entry_dev_is_set($e), 'archive_entry_dev_is_set';
+SKIP: {
+  skip 'requires archive_entry_dev_is_set', 1 unless Archive::Libarchive::XS->can('archive_entry_dev_is_set');
+  ok archive_entry_dev_is_set($e), 'archive_entry_dev_is_set';
+};
 
 $r = archive_entry_set_dev($e, 0x1234);
 is $r, ARCHIVE_OK, 'archive_entry_set_dev';
 is archive_entry_dev($e), 0x1234, 'archive_entry_dev';
 
-ok !eval { archive_entry_ino_is_set($e) }, 'archive_entry_ino_is_set';
-diag $@ if $@;
+SKIP: {
+  skip 'archive_entry_ino_is_set', 1 unless Archive::Libarchive::XS->can('archive_entry_ino_is_set');
+  ok !eval { archive_entry_ino_is_set($e) }, 'archive_entry_ino_is_set';
+  diag $@ if $@;
+};
 $r = archive_entry_set_ino($e, 0x12);
 is $r, ARCHIVE_OK, 'archive_entry_set_ino';
 is archive_entry_ino($e), 0x12, 'archive_entry_ino';
-ok eval { archive_entry_ino_is_set($e) }, 'archive_entry_ino_is_set';
-diag $@ if $@;
+SKIP: {
+  skip 'archive_entry_ino_is_set', 1 unless Archive::Libarchive::XS->can('archive_entry_ino_is_set');
+  ok eval { archive_entry_ino_is_set($e) }, 'archive_entry_ino_is_set';
+  diag $@ if $@;
+};
 
 $r = archive_entry_set_rdevmajor($e, 0x24);
 is $r, ARCHIVE_OK, 'archive_entry_rdevmajor';
