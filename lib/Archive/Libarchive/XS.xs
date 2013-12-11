@@ -3785,7 +3785,10 @@ archive_entry_mac_metadata(entry)
   CODE:
     size_t size;
     const void *ptr = archive_entry_mac_metadata(entry, &size);
-    RETVAL = newSVpv(ptr, size);
+    if(ptr == NULL)
+      XSRETURN_EMPTY;
+    else
+      RETVAL = newSVpv(ptr, size);
   OUTPUT:
     RETVAL
 
@@ -3859,7 +3862,7 @@ archive_read_open_filenames(archive, filenames, block_size)
     }
     else
     {
-      num = av_top_index((SV*)SvRV(filenames))+1;
+      num = av_len((SV*)SvRV(filenames))+1; /* av_top_index in newer Perls */
       Newx(c_filenames, num+1, const char *);
       for(i=0; i<num; i++)
       {
