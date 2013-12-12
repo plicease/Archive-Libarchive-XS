@@ -317,6 +317,17 @@ mylookup_cleanup(void *d)
   Safefree(data);
 }
 
+static struct lookup_callback_data *
+new_lookup_callback(SV *data, SV *lookup_callback, SV* cleanup_callback)
+{
+  struct lookup_callback_data *c_data = NULL;
+  Newx(c_data, 1, struct lookup_callback_data);
+  c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
+  c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
+  c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
+  return c_data;
+}
+
 MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 
 BOOT:
@@ -342,19 +353,10 @@ archive_write_disk_set_group_lookup(archive, data, lookup_callback, cleanup_call
     SV *lookup_callback
     SV *cleanup_callback
   CODE:
-    struct lookup_callback_data *c_data;
     if(SvOK(cleanup_callback) || SvOK(lookup_callback))
-    {
-      Newx(c_data, 1, struct lookup_callback_data *);
-      c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
-      c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
-      c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
-      RETVAL = archive_write_disk_set_group_lookup(archive, c_data, &mylookup_write_lookup, &mylookup_cleanup);
-    }
+      RETVAL = archive_write_disk_set_group_lookup(archive, new_lookup_callback(data,lookup_callback,cleanup_callback), &mylookup_write_lookup, &mylookup_cleanup);
     else
-    {
       RETVAL = archive_write_disk_set_group_lookup(archive, NULL, NULL, NULL);
-    }
   OUTPUT:
     RETVAL
 
@@ -380,19 +382,10 @@ archive_read_disk_set_gname_lookup(archive, data, lookup_callback, cleanup_callb
     SV *lookup_callback
     SV *cleanup_callback
   CODE:
-    struct lookup_callback_data *c_data;
     if(SvOK(cleanup_callback) || SvOK(lookup_callback))
-    {
-      Newx(c_data, 1, struct lookup_callback_data *);
-      c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
-      c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
-      c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
-      RETVAL = archive_read_disk_set_gname_lookup(archive, c_data, &mylookup_read_lookup, &mylookup_cleanup);
-    }
+      RETVAL = archive_read_disk_set_gname_lookup(archive, new_lookup_callback(data,lookup_callback,cleanup_callback), &mylookup_read_lookup, &mylookup_cleanup);
     else
-    {
       RETVAL = archive_read_disk_set_gname_lookup(archive, NULL, NULL, NULL);
-    }
   OUTPUT:
     RETVAL
 
@@ -421,17 +414,9 @@ archive_read_disk_set_uname_lookup(archive, data, lookup_callback, cleanup_callb
   CODE:
     struct lookup_callback_data *c_data;
     if(SvOK(cleanup_callback) || SvOK(lookup_callback))
-    {
-      Newx(c_data, 1, struct lookup_callback_data *);
-      c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
-      c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
-      c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
-      RETVAL = archive_read_disk_set_uname_lookup(archive, c_data, &mylookup_read_lookup, &mylookup_cleanup);
-    }
-    else
-    {
+      RETVAL = archive_read_disk_set_uname_lookup(archive, new_lookup_callback(data,lookup_callback,cleanup_callback), &mylookup_read_lookup, &mylookup_cleanup);
+    else 
       RETVAL = archive_read_disk_set_uname_lookup(archive, NULL, NULL, NULL);
-    }
   OUTPUT:
     RETVAL
 
@@ -460,17 +445,9 @@ archive_write_disk_set_user_lookup(archive, data, lookup_callback, cleanup_callb
   CODE:
     struct lookup_callback_data *c_data;
     if(SvOK(cleanup_callback) || SvOK(lookup_callback))
-    {
-      Newx(c_data, 1, struct lookup_callback_data *);
-      c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
-      c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
-      c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
-      RETVAL = archive_write_disk_set_user_lookup(archive, c_data, &mylookup_write_lookup, &mylookup_cleanup);
-    }
+      RETVAL = archive_write_disk_set_user_lookup(archive, new_lookup_callback(data,lookup_callback,cleanup_callback), &mylookup_write_lookup, &mylookup_cleanup);
     else
-    {
       RETVAL = archive_write_disk_set_user_lookup(archive, NULL, NULL, NULL);
-    }
   OUTPUT:
     RETVAL
 
