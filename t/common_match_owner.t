@@ -100,6 +100,7 @@ subtest gid => sub {
 };
 
 subtest uname => sub {
+  plan tests => 21;
   my $m = archive_match_new();
   ok $m, 'archive_match_new';
 
@@ -112,8 +113,30 @@ subtest uname => sub {
   $r = archive_match_include_uname($m, "bar");
   is $r, ARCHIVE_OK, 'archive_match_include_uname bar';
 
-  #$r = archive_entry_set_uname($e, "unknown");
-  #is $r, ARCHIVE_OK, 'archive_entry_set_uname unknown';
+  $r = archive_entry_set_uname($e, "unknown");
+  is $r, ARCHIVE_OK, 'archive_entry_set_uname unknown';
+  ok archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded unknown';
+  ok archive_match_excluded($m, $e), 'archive_match_excluded unknown';
+
+  $r = archive_entry_set_uname($e, "foo");
+  is $r, ARCHIVE_OK, 'archive_entry_set_uname foo';
+  ok !archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded foo';
+  ok !archive_match_excluded($m, $e), 'archive_match_excluded foo';
+
+  $r = archive_entry_set_uname($e, "foo1");
+  is $r, ARCHIVE_OK, 'archive_entry_set_uname foo1';
+  ok archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded foo1';
+  ok archive_match_excluded($m, $e), 'archive_match_excluded foo1';
+
+  $r = archive_entry_set_uname($e, "bar");
+  is $r, ARCHIVE_OK, 'archive_entry_set_uname bar';
+  ok !archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded bar';
+  ok !archive_match_excluded($m, $e), 'archive_match_excluded bar';
+
+  $r = archive_entry_set_uname($e, "bar1");
+  is $r, ARCHIVE_OK, 'archive_entry_set_uname bar1';
+  ok archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded bar1';
+  ok archive_match_excluded($m, $e), 'archive_match_excluded bar1';
 
   $r = archive_match_free($m);
   is $r, ARCHIVE_OK, 'archive_match_free';
@@ -122,24 +145,3 @@ subtest uname => sub {
   is $r, ARCHIVE_OK, 'archive_entry_free';
 };
 
-__END__
-        archive_entry_copy_uname(ae, "unknown");
-        failure("User 'unknown' should be excluded");
-        assertEqualInt(1, archive_match_owner_excluded(m, ae));
-        assertEqualInt(1, archive_match_excluded(m, ae));
-        archive_entry_copy_uname(ae, "foo");
-        failure("User 'foo' should not be excluded");
-        assertEqualInt(0, archive_match_owner_excluded(m, ae));
-        assertEqualInt(0, archive_match_excluded(m, ae));
-        archive_entry_copy_uname(ae, "foo1");
-        failure("User 'foo1' should be excluded");
-        assertEqualInt(1, archive_match_owner_excluded(m, ae));
-        assertEqualInt(1, archive_match_excluded(m, ae));
-        archive_entry_copy_uname(ae, "bar");
-        failure("User 'bar' should not be excluded");
-        assertEqualInt(0, archive_match_owner_excluded(m, ae));
-        assertEqualInt(0, archive_match_excluded(m, ae));
-        archive_entry_copy_uname(ae, "bar1");
-        failure("User 'bar1' should be excluded");
-        assertEqualInt(1, archive_match_owner_excluded(m, ae));
-        assertEqualInt(1, archive_match_excluded(m, ae));

@@ -4385,9 +4385,13 @@ The match object $archive should match entries with the given user name
 #if HAS_archive_match_include_uname
 
 int
-archive_match_include_uname(archive, uname)
+_archive_match_include_uname(archive, uname)
     struct archive *archive
-    const char *uname
+    string_or_null uname
+  CODE:
+    RETVAL = archive_match_include_uname(archive, uname);
+  OUTPUT:
+    RETVAL
 
 #endif
 

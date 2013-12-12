@@ -197,6 +197,9 @@ _sub_if_can( archive_entry_acl_add_entry => sub {
 _sub_if_can( archive_entry_acl_text => sub {
   decode(archive_perl_codeset(), _archive_entry_acl_text($_[0], $_[1]));
 });
+_sub_if_can( archive_match_include_uname => sub {
+  _archive_match_include_uname($_[0], encode(archive_perl_codeset(), $_[1]));
+});
 
 1;
 
