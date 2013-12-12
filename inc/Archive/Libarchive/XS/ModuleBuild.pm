@@ -143,10 +143,10 @@ sub _cc
 
   unless(defined $cc)
   {
+    require Text::ParseWords;
     $cc = ExtUtils::CChecker->new;
-    $DB::single = 1;
-    $cc->push_extra_compiler_flags($alien->cflags) if $alien->cflags !~ /^\s*$/;
-    $cc->push_extra_linker_flags($alien->libs)     if $alien->libs   !~ /^\s*$/;
+    $cc->push_extra_compiler_flags(Text::ParseWords::shellwords($alien->cflags)) if $alien->cflags !~ /^\s*$/;
+    $cc->push_extra_linker_flags(Text::ParseWords::shellwords($alien->libs))     if $alien->libs   !~ /^\s*$/;
   }
 }
 
