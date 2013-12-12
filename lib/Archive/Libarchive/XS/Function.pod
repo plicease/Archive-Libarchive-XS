@@ -852,6 +852,12 @@ and L<#archive_match_owner_excluded>.
 
 Free the resources previously allocated with L<#archive_match_new>.
 
+=head2 archive_match_include_uid
+
+ my $status = archive_match_include_uid($archive, $uid);
+
+FIXME
+
 =head2 archive_match_new
 
  my $archive = archive_match_new();
@@ -993,6 +999,7 @@ traversal.
 
  my $status = archive_read_disk_entry_from_file($archive, $entry, $fh, undef);
  my $status = archive_read_disk_entry_from_file($archive, $entry, $fh, \@stat);
+ my $status = archive_read_disk_entry_from_file($archive, $entry, undef, \@stat);
 
 Populates a struct archive_entry object with information about a particular file.  The archive_entry object must have already been created with L<#archive_entry_new> and at least one of the
 source path or path fields must already be set.  (If both are set, the source path will be used.)

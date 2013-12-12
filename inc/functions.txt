@@ -96,6 +96,7 @@ archive_format
 archive_format_name
 archive_match_excluded
 archive_match_free
+archive_match_include_uid
 archive_match_new
 archive_match_owner_excluded
 archive_match_path_excluded

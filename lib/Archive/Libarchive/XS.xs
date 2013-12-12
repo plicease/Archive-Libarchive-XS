@@ -4307,6 +4307,7 @@ archive_read_extract2(archive1, entry, archive2)
 
  my $status = archive_read_disk_entry_from_file($archive, $entry, $fh, undef);
  my $status = archive_read_disk_entry_from_file($archive, $entry, $fh, \\@stat);
+ my $status = archive_read_disk_entry_from_file($archive, $entry, undef, \\@stat);
 
 Populates a struct archive_entry object with information about a particular file.  The archive_entry object must have already been created with L<#archive_entry_new> and at least one of the
 source path or path fields must already be set.  (If both are set, the source path will be used.)
@@ -4336,6 +4337,23 @@ _archive_read_disk_entry_from_file(archive, entry, fd, stat)
     RETVAL = archive_read_disk_entry_from_file(archive, entry, fd, NULL);
   OUTPUT:
     RETVAL
+
+#endif
+
+=head2 archive_match_include_uid
+
+ my $status = archive_match_include_uid($archive, $uid);
+
+FIXME
+
+=cut
+
+#if HAS_archive_match_include_uid
+
+int
+archive_match_include_uid(archive, uid)
+    struct archive *archive
+    __LA_INT64_T uid
 
 #endif
 
