@@ -4303,6 +4303,42 @@ archive_read_extract2(archive1, entry, archive2)
 
 #endif
 
+=head2 archive_read_disk_entry_from_file
+
+ my $status = archive_read_disk_entry_from_file($archive, $entry, $fh, undef);
+ my $status = archive_read_disk_entry_from_file($archive, $entry, $fh, \\@stat);
+
+Populates a struct archive_entry object with information about a particular file.  The archive_entry object must have already been created with L<#archive_entry_new> and at least one of the
+source path or path fields must already be set.  (If both are set, the source path will be used.)
+
+Information is read from disk using the path name from the struct archive_entry object.  If a file handle ($fh) is provided, some information will be obtained using that file handle, on
+platforms that support the appropriate system calls.
+
+Note: The C API supports passing in a stat structure for some performance benefits.  Currently this is unsupported in the Perl version, and you must pass undef in as the forth argument,
+for possible future compatibility.
+
+Where necessary, user and group ids are converted to user and group names using the currently registered lookup functions above.  This affects the file ownership fields and ACL values in the
+struct archive_entry object.
+
+=cut
+
+#if HAS_archive_read_disk_entry_from_file
+
+int
+_archive_read_disk_entry_from_file(archive, entry, fd, stat)
+    struct archive *archive
+    struct archive_entry *entry
+    int fd
+    SV *stat
+  CODE:
+    if(SvOK(stat))
+      croak("stat field currently not supported");
+    RETVAL = archive_read_disk_entry_from_file(archive, entry, fd, NULL);
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name

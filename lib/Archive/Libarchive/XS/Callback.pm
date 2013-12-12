@@ -354,6 +354,14 @@ sub archive_set_error
   _archive_set_error($archive, $errno, $string);
 }
 
+sub archive_read_disk_entry_from_file ($$$$)
+{
+  my($archive, $entry, $fh, $stat) = @_;
+  my $fd = fileno $fh;
+  $fd = -1 unless defined $fd;
+  _archive_read_disk_entry_from_file($archive, $entry, $fd, $stat);
+}
+
 1;
 
 =head1 SEE ALSO
