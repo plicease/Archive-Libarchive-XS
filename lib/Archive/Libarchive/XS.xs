@@ -4344,7 +4344,7 @@ _archive_read_disk_entry_from_file(archive, entry, fd, stat)
 
  my $status = archive_match_include_uid($archive, $uid);
 
-FIXME
+The match object $archive should match entries with the given $uid
 
 =cut
 
@@ -4354,6 +4354,23 @@ int
 archive_match_include_uid(archive, uid)
     struct archive *archive
     __LA_INT64_T uid
+
+#endif
+
+=head2 archive_match_include_gid
+
+ my $status = archive_match_include_gid($archive, $gid);
+
+The match object $archive should match entries with the given $gid
+
+=cut
+
+#if HAS_archive_match_include_gid
+
+int
+archive_match_include_gid(archive, gid)
+    struct archive *archive
+    __LA_INT64_T gid
 
 #endif
 
