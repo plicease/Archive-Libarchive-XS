@@ -191,6 +191,7 @@ mywrite(struct archive *archive, void *client_data, const void *buffer, size_t l
 
 struct lookup_callback_data {
   SV *perl_data, *lookup_callback, *cleanup_callback;
+  char *value;
 };
 
 static int64_t
@@ -240,7 +241,6 @@ mylookup_read_lookup(void *d, int64_t id)
   STRLEN len;
   SV *sv;
   const char *tmp;
-  static char *value = NULL;
   struct lookup_callback_data *data = (struct lookup_callback_data *)d;
 
   if(data->lookup_callback != NULL)
@@ -266,9 +266,9 @@ mylookup_read_lookup(void *d, int64_t id)
       if(SvOK(sv))
       {
         tmp = SvPV(sv, len);
-        Renew(value, len+1, char);
-        memcpy(value, tmp, len);
-        value[len] = 0;
+        Renew(data->value, len+1, char);
+        memcpy(data->value, tmp, len);
+        data->value[len] = 0;
       }
       else
       {
@@ -281,7 +281,7 @@ mylookup_read_lookup(void *d, int64_t id)
     LEAVE;
     
     if(count >= 1)
-      return value;
+      return data->value;
   }
 
   return NULL;
@@ -313,6 +313,8 @@ mylookup_cleanup(void *d)
     SvREFCNT_dec(data->lookup_callback);
   if(data->cleanup_callback != NULL)
     SvREFCNT_dec(data->cleanup_callback);
+  if(data->value != NULL)
+    Safefree(data->value);
   
   Safefree(data);
 }
@@ -322,9 +324,10 @@ new_lookup_callback(SV *data, SV *lookup_callback, SV* cleanup_callback)
 {
   struct lookup_callback_data *c_data = NULL;
   Newx(c_data, 1, struct lookup_callback_data);
-  c_data->perl_data = SvOK(data) ? SvREFCNT_inc(data) : NULL;
-  c_data->lookup_callback = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
+  c_data->perl_data        = SvOK(data) ? SvREFCNT_inc(data) : NULL;
+  c_data->lookup_callback  = SvOK(lookup_callback) ? SvREFCNT_inc(lookup_callback) : NULL;
   c_data->cleanup_callback = SvOK(cleanup_callback) ? SvREFCNT_inc(cleanup_callback) : NULL;
+  c_data->value            = NULL;
   return c_data;
 }
 
