@@ -4374,6 +4374,23 @@ archive_match_include_gid(archive, gid)
 
 #endif
 
+=head2 archive_match_include_uname
+
+ my $status = archive_match_include_uname($archive, $uname);
+
+The match object $archive should match entries with the given user name
+
+=cut
+
+#if HAS_archive_match_include_uname
+
+int
+archive_match_include_uname(archive, uname)
+    struct archive *archive
+    const char *uname
+
+#endif
+
 int
 _constant(name)
         char *name

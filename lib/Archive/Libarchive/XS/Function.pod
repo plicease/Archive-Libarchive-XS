@@ -864,6 +864,12 @@ The match object $archive should match entries with the given $gid
 
 The match object $archive should match entries with the given $uid
 
+=head2 archive_match_include_uname
+
+ my $status = archive_match_include_uname($archive, $uname);
+
+The match object $archive should match entries with the given user name
+
 =head2 archive_match_new
 
  my $archive = archive_match_new();
