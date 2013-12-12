@@ -4395,6 +4395,27 @@ _archive_match_include_uname(archive, uname)
 
 #endif
 
+=head2 archive_match_include_gname
+
+ my $status = archive_match_include_gname($archive, $gname);
+
+The match object $archive should match entries with the given group name
+
+=cut
+
+#if HAS_archive_match_include_gname
+
+int
+_archive_match_include_gname(archive, gname)
+    struct archive *archive
+    string_or_null gname
+  CODE:
+    RETVAL = archive_match_include_gname(archive, gname);
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name

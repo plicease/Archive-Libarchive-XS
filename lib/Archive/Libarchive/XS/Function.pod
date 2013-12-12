@@ -858,6 +858,12 @@ Free the resources previously allocated with L<#archive_match_new>.
 
 The match object $archive should match entries with the given $gid
 
+=head2 archive_match_include_gname
+
+ my $status = archive_match_include_gname($archive, $gname);
+
+The match object $archive should match entries with the given group name
+
 =head2 archive_match_include_uid
 
  my $status = archive_match_include_uid($archive, $uid);

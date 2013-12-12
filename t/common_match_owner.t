@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::More tests => 4;
 use Archive::Libarchive::XS qw( :all );
 
 # translated from test_archive_match_owner.c
@@ -135,6 +135,52 @@ subtest uname => sub {
 
   $r = archive_entry_set_uname($e, "bar1");
   is $r, ARCHIVE_OK, 'archive_entry_set_uname bar1';
+  ok archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded bar1';
+  ok archive_match_excluded($m, $e), 'archive_match_excluded bar1';
+
+  $r = archive_match_free($m);
+  is $r, ARCHIVE_OK, 'archive_match_free';
+  
+  $r = archive_entry_free($e);
+  is $r, ARCHIVE_OK, 'archive_entry_free';
+};
+
+subtest gname => sub {
+  plan tests => 21;
+  my $m = archive_match_new();
+  ok $m, 'archive_match_new';
+
+  my $e = archive_entry_new();
+  ok $e, 'archive_entry_new';
+
+  $r = archive_match_include_gname($m, "foo");
+  is $r, ARCHIVE_OK, 'archive_match_include_gname foo';
+
+  $r = archive_match_include_gname($m, "bar");
+  is $r, ARCHIVE_OK, 'archive_match_include_gname bar';
+
+  $r = archive_entry_set_gname($e, "unknown");
+  is $r, ARCHIVE_OK, 'archive_entry_set_gname unknown';
+  ok archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded unknown';
+  ok archive_match_excluded($m, $e), 'archive_match_excluded unknown';
+
+  $r = archive_entry_set_gname($e, "foo");
+  is $r, ARCHIVE_OK, 'archive_entry_set_gname foo';
+  ok !archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded foo';
+  ok !archive_match_excluded($m, $e), 'archive_match_excluded foo';
+
+  $r = archive_entry_set_gname($e, "foo1");
+  is $r, ARCHIVE_OK, 'archive_entry_set_gname foo1';
+  ok archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded foo1';
+  ok archive_match_excluded($m, $e), 'archive_match_excluded foo1';
+
+  $r = archive_entry_set_gname($e, "bar");
+  is $r, ARCHIVE_OK, 'archive_entry_set_gname bar';
+  ok !archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded bar';
+  ok !archive_match_excluded($m, $e), 'archive_match_excluded bar';
+
+  $r = archive_entry_set_gname($e, "bar1");
+  is $r, ARCHIVE_OK, 'archive_entry_set_gname bar1';
   ok archive_match_owner_excluded($m, $e), 'archive_match_owner_excluded bar1';
   ok archive_match_excluded($m, $e), 'archive_match_excluded bar1';
 
