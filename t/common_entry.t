@@ -164,10 +164,15 @@ subtest fflags => sub {
 };  
 
 subtest link => sub {
+  plan tests => 7;
+  
   $r = archive_entry_set_hardlink($e, "hardlinkname");
   is $r, ARCHIVE_OK, 'archive_entry_set_hardlink hardlinkname';
   $r = archive_entry_set_symlink($e, undef);
   is $r, ARCHIVE_OK, 'archive_entry_set_symlink undef';
+
+  is archive_entry_hardlink($e), "hardlinkname", 'archive_entry_hardlink = hardlinkname';
+  is archive_entry_symlink($e), undef, 'archive_entry_symlink = undef';
 
   $r = eval { archive_entry_set_link($e, "link") };
   is $r, ARCHIVE_OK, 'archive_entry_set_link';

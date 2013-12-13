@@ -4541,7 +4541,7 @@ _archive_entry_sourcepath(entry)
 
  my $status = archive_entry_set_link($entry, $string);
 
-FIXME
+Set symlink if symlink is already set, else set hardlink.
 
 =cut
 
