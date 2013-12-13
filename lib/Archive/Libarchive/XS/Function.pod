@@ -229,9 +229,25 @@ to allow you to quickly recycle objects without thrashing the heap.
 
 A deep copy operation; all text fields are duplicated.
 
+=head2 archive_entry_copy_fflags_text
+
+ my $status = archive_entry_copy_fflags_text($entry, $string);
+
+Sets the fflags_text property for the archive entry object.
+
+This is an alias for L<#archive_entry_set_fflags_text>.
+
 =head2 archive_entry_copy_mac_metadata
 
 An Alias for L<#archive_entry_set_mac_metadata>.
+
+=head2 archive_entry_copy_sourcepath
+
+ my $status = archive_entry_set_sourcepath($entry, $sourcepath);
+
+Sets the sourcepath property for the archive entry object.
+
+This is an alias for archive_entry_set_sourcepath.
 
 =head2 archive_entry_copy_stat
 
@@ -541,6 +557,12 @@ C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
  my $status = archive_entry_set_fflags($entry, $set, $clear);
 
 Sets the file flag properties for the archive entry.
+
+=head2 archive_entry_set_fflags_text
+
+ my $status = archive_entry_set_fflags_text($entry, $string);
+
+Sets the fflags_text property for the archive entry object.
 
 =head2 archive_entry_set_filetype
 

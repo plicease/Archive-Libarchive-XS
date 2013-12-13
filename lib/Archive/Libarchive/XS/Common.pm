@@ -100,6 +100,12 @@ sub archive_entry_set_stat
 *archive_entry_copy_stat = \&archive_entry_set_stat
   if __PACKAGE__->can('archive_entry_set_stat');
 
+*archive_entry_copy_sourcepath = \&archive_entry_set_sourcepath
+  if __PACKAGE__->can('archive_entry_set_sourcepath');
+
+*archive_entry_copy_fflags_text = \&archive_entry_set_fflags_text
+  if __PACKAGE__->can('archive_entry_set_fflags_text');
+
 sub _sub_if_can ($$)
 {
   my($name,$coderef) = @_;
@@ -208,6 +214,9 @@ _sub_if_can( archive_entry_set_sourcepath => sub {
 });
 _sub_if_can( archive_entry_sourcepath => sub {
   decode(archive_perl_codeset(), _archive_entry_sourcepath($_[0]));
+});
+_sub_if_can( archive_entry_set_fflags_text => sub {
+  _archive_entry_set_fflags_text($_[0], encode(archive_perl_codeset(), $_[1]));
 });
 
 1;

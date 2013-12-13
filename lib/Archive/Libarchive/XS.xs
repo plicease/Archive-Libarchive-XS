@@ -3027,6 +3027,36 @@ _archive_entry_fflags_text(entry)
 
 #endif
 
+=head2 archive_entry_copy_fflags_text
+
+ my $status = archive_entry_copy_fflags_text($entry, $string);
+
+Sets the fflags_text property for the archive entry object.
+
+This is an alias for L<#archive_entry_set_fflags_text>.
+
+=head2 archive_entry_set_fflags_text
+
+ my $status = archive_entry_set_fflags_text($entry, $string);
+
+Sets the fflags_text property for the archive entry object.
+
+=cut
+
+#if HAS_archive_entry_copy_fflags_text
+
+int
+_archive_entry_set_fflags_text(entry, string)
+    struct archive_entry *entry
+    string_or_null string
+  CODE:
+    archive_entry_copy_fflags_text(entry, string);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 =head2 archive_entry_gid
 
  my $gid = archive_entry_gid($entry);
@@ -4456,6 +4486,14 @@ _archive_match_include_gname(archive, gname)
     RETVAL
 
 #endif
+
+=head2 archive_entry_copy_sourcepath
+
+ my $status = archive_entry_set_sourcepath($entry, $sourcepath);
+
+Sets the sourcepath property for the archive entry object.
+
+This is an alias for archive_entry_set_sourcepath.
 
 =head2 archive_entry_set_sourcepath
 

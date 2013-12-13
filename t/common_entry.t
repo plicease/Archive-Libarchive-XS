@@ -133,6 +133,7 @@ is $r, ARCHIVE_OK, 'archive_entry_set_sourcepath';
 is eval { archive_entry_sourcepath($e) }, 'foo', 'archive_entry_set_sourcepath';
 
 subtest fflags => sub {
+  plan tests => 5;
 
   $r = archive_entry_set_fflags($e, 0x55, 0xaa);
   is $r, ARCHIVE_OK, 'archive_entry_set_fflags';
@@ -142,6 +143,24 @@ subtest fflags => sub {
   
   is $set, 0x55, 'set';
   is $clear, 0xaa, 'clear';
+  
+  subtest fflags_text => sub {
+    plan skip_all => 'converting fflags bitmap ot string is system-dependent (test requires FreeBSD)'
+      unless $^O eq 'freebsd';
+    plan tests => 5;
+
+    my $fflags = archive_entry_fflags_text($e);
+    is $fflags, 'uappnd,nouchg,nodump,noopaque,uunlnk', 'archive_entry_fflags_text';
+    
+    $r = eval { archive_entry_set_fflags_text($e, " ,nouappnd, nouchg, dump,uunlnk") };
+    diag $@ if $@;
+    is $r, ARCHIVE_OK, 'archive_entry_set_fflags_text';
+    
+    $r = archive_entry_fflags($e, $set, $clear);
+    is $r, ARCHIVE_OK, 'archive_entry_fflags';
+    is $set, 16, 'set';
+    is $clear, 7, 'clear';
+  };
 };  
 
 $r = archive_entry_free($e);
