@@ -663,9 +663,9 @@ Sets the size property for the archive entry.
 
 =head2 archive_entry_set_sourcepath
 
- my $sourcepath = archive_entry_set_sourcepath();
+ my $status = archive_entry_set_sourcepath($entry, $sourcepath);
 
-Sets the sourcepath property for the archive entry object
+Sets the sourcepath property for the archive entry object.
 
 =head2 archive_entry_set_stat
 
@@ -704,6 +704,12 @@ Returns the size of the entry in bytes.
  my $bool = archive_entry_size_is_set($entry)
 
 Returns true if the size property for the archive entry has been set.
+
+=head2 archive_entry_sourcepath
+
+ my $sourcepath = archive_entry_sourcepath($entry);
+
+Gets the sourcepath property for the archive entry object.
 
 =head2 archive_entry_stat
 
