@@ -76,7 +76,7 @@ diag 'read filters:';
 
 foreach my $filter (sort grep { s/^archive_read_support_filter_// } keys %Archive::Libarchive::XS::)
 {
-  next if $filter =~ /^(all|program)$/;
+  next if $filter =~ /^(all|program|program_signature)$/;
   my $ok = 'no';
   eval {
     my $archive = Archive::Libarchive::XS::archive_read_new();
