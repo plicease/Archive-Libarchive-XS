@@ -1538,6 +1538,22 @@ archive_entry_set_perm(entry, perm)
 
 #endif
 
+=head2 archive_entry_perm
+
+ my $perm = archive_entry_perm($entry);
+
+Get the permission bits for the entry.  This is the usual UNIX octal permission thing.
+
+=cut
+
+#if HAS_archive_entry_perm
+
+int
+archive_entry_perm(entry)
+    struct archive_entry *entry
+
+#endif
+
 =head2 archive_write_header
 
  my $status = archive_write_header($archive, $entry);

@@ -46,6 +46,7 @@ archive_entry_new
 archive_entry_new2
 archive_entry_nlink
 archive_entry_pathname
+archive_entry_perm
 archive_entry_rdev
 archive_entry_rdevmajor
 archive_entry_rdevminor

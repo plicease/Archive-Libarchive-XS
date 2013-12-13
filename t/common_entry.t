@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 48;
+use Test::More tests => 49;
 use Archive::Libarchive::XS qw( :all );
 
 my $r;
@@ -25,6 +25,9 @@ is $r, ARCHIVE_OK, 'archive_entry_set_mode';
 is eval { archive_entry_mode($e) }, 0644, 'archive_entry_mode (0644)';
 diag $@ if $@;
 
+is eval { archive_entry_perm($e) }, 0644, 'archive_entry_perm(0644)';
+diag $@ if $@;
+
 $r = eval { archive_entry_set_filetype($e, AE_IFREG) };
 diag $@ if $@;
 is $r, ARCHIVE_OK, 'archive_entry_set_filetype';
@@ -33,6 +36,7 @@ is eval { archive_entry_filetype($e) }, AE_IFREG, 'archive_entry_filetype';
 diag $@ if $@;
 
 is eval { archive_entry_strmode($e) }, '-rw-r--r-- ', 'archive_entry_strmode';
+diag $@ if $@;
 
 is archive_entry_uid($e), 0, 'archive_entry_uid = 0';
 $r = archive_entry_set_uid($e, 101);

@@ -471,6 +471,12 @@ Gets the number of hardlinks for the entry.
 
 Retrieve the pathname for the archive entry object.
 
+=head2 archive_entry_perm
+
+ my $perm = archive_entry_perm($entry);
+
+Get the permission bits for the entry.  This is the usual UNIX octal permission thing.
+
 =head2 archive_entry_rdev
 
  my $device = archive_entry_rdev($entry);
