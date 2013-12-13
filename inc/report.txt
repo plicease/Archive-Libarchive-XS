@@ -4,6 +4,7 @@ extra: archive_write_open_fh
 extra: archive_perl_codeset
 extra: archive_perl_utf8_mode
 extra: archive_entry_set_mac_metadata
+extra: archive_entry_set_sourcepath
 
 unimplemented: archive_entry_copy_bhfi
 unimplemented: archive_entry_copy_fflags_text

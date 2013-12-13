@@ -661,6 +661,12 @@ Sets the minor component of the rdev property for the archive entry.
 
 Sets the size property for the archive entry.
 
+=head2 archive_entry_set_sourcepath
+
+ my $sourcepath = archive_entry_set_sourcepath();
+
+Sets the sourcepath property for the archive entry object
+
 =head2 archive_entry_set_stat
 
  my $status = archive_entry_stat($entry, $dev, $ino, $mode, $nlink, $uid, $gid, $rdev, $atime, $mtime, $ctime);

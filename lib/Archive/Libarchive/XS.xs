@@ -4432,6 +4432,28 @@ _archive_match_include_gname(archive, gname)
 
 #endif
 
+=head2 archive_entry_set_sourcepath
+
+ my $sourcepath = archive_entry_set_sourcepath();
+
+Sets the sourcepath property for the archive entry object
+
+=cut
+
+#if HAS_archive_entry_copy_sourcepath
+
+int
+_archive_entry_set_sourcepath(entry, sourcepath)
+    struct archive_entry *entry
+    const char *sourcepath;
+  CODE:
+    archive_entry_copy_sourcepath(entry, sourcepath);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name

@@ -203,6 +203,9 @@ _sub_if_can( archive_match_include_uname => sub {
 _sub_if_can( archive_match_include_gname => sub {
   _archive_match_include_gname($_[0], encode(archive_perl_codeset(), $_[1]));
 });
+_sub_if_can( archive_entry_set_sourcepath => sub {
+  _archive_entry_set_sourcepath($_[0], encode(archive_perl_codeset(), $_[1]));
+});
 
 1;
 
