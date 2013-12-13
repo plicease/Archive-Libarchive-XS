@@ -214,6 +214,7 @@ do { # symbol list
     archive_entry_copy_pathname
     archive_entry_copy_symlink
     archive_entry_copy_uname
+    archive_entry_copy_link
   );
 
   delete $symbols{$_} for @wontimplement;
