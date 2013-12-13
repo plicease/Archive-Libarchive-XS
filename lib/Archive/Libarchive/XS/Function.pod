@@ -621,6 +621,12 @@ find hardlinks.
 This actually uses the libarchive C<archive_entry_set_ino64> function
 (in libarchive C<archive_entry_set_ino> is a legacy interface).
 
+=head2 archive_entry_set_link
+
+ my $status = archive_entry_set_link($entry, $string);
+
+FIXME
+
 =head2 archive_entry_set_mac_metadata
 
  my $status = archive_entry_set_mac_metadata($entry, $buffer);

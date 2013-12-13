@@ -218,6 +218,9 @@ _sub_if_can( archive_entry_sourcepath => sub {
 _sub_if_can( archive_entry_set_fflags_text => sub {
   _archive_entry_set_fflags_text($_[0], encode(archive_perl_codeset(), $_[1]));
 });
+_sub_if_can( archive_entry_set_link => sub {
+  _archive_entry_set_link($_[0], encode(archive_perl_codeset(), $_[1]));
+});
 
 1;
 

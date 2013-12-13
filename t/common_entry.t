@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 52;
+use Test::More tests => 53;
 use Archive::Libarchive::XS qw( :all );
 
 my $r;
@@ -162,6 +162,19 @@ subtest fflags => sub {
     is $clear, 7, 'clear';
   };
 };  
+
+subtest link => sub {
+  $r = archive_entry_set_hardlink($e, "hardlinkname");
+  is $r, ARCHIVE_OK, 'archive_entry_set_hardlink hardlinkname';
+  $r = archive_entry_set_symlink($e, undef);
+  is $r, ARCHIVE_OK, 'archive_entry_set_symlink undef';
+
+  $r = eval { archive_entry_set_link($e, "link") };
+  is $r, ARCHIVE_OK, 'archive_entry_set_link';
+  
+  is archive_entry_hardlink($e), "link", 'archive_entry_hardlink = link';
+  is archive_entry_symlink($e), undef, 'archive_entry_symlink = undef';
+};
 
 $r = archive_entry_free($e);
 is $r, ARCHIVE_OK, 'archive_entry_free';

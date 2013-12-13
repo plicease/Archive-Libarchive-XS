@@ -14,19 +14,27 @@ archive_entry_set_<%= $name %>(entry, <%= $name %>)
     struct archive_entry *entry
     SV *<%= $name %>
   CODE:
-#ifdef HAS_archive_entry_update_<%= $name %>_utf8
-    if(DO_UTF8(<%= $name %>))
+    if(SvOK(<%= $name %>))
     {
-      RETVAL = archive_entry_update_<%= $name %>_utf8(entry, SvPV_nolen(<%= $name %>));
-      if(RETVAL > 0)
+#ifdef HAS_archive_entry_update_<%= $name %>_utf8
+      if(DO_UTF8(<%= $name %>))
+      {
+        RETVAL = archive_entry_update_<%= $name %>_utf8(entry, SvPV_nolen(<%= $name %>));
+        if(RETVAL > 0)
+          RETVAL = ARCHIVE_OK;
+      }
+      else
+      {
+#endif
+        archive_entry_copy_<%= $name %>(entry, SvPV_nolen(<%= $name %>));
         RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_<%= $name %>_utf8
+      }
     }
     else
     {
-#endif
-      archive_entry_copy_<%= $name %>(entry, SvPV_nolen(<%= $name %>));
+      archive_entry_copy_<%= $name %>(entry, NULL);
       RETVAL = ARCHIVE_OK;
-#ifdef HAS_archive_entry_update_<%= $name %>_utf8
     }
 #endif
   OUTPUT:

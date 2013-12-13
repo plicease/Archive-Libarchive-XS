@@ -4537,6 +4537,28 @@ _archive_entry_sourcepath(entry)
 
 #endif
 
+=head2 archive_entry_set_link
+
+ my $status = archive_entry_set_link($entry, $string);
+
+FIXME
+
+=cut
+
+#if HAS_archive_entry_set_link
+
+int
+_archive_entry_set_link(entry, string)
+    struct archive_entry *entry
+    string_or_null string
+  CODE:
+    archive_entry_set_link(entry, string);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name
@@ -6043,19 +6065,27 @@ archive_entry_set_gname(entry, gname)
     struct archive_entry *entry
     SV *gname
   CODE:
-#ifdef HAS_archive_entry_update_gname_utf8
-    if(DO_UTF8(gname))
+    if(SvOK(gname))
     {
-      RETVAL = archive_entry_update_gname_utf8(entry, SvPV_nolen(gname));
-      if(RETVAL > 0)
+#ifdef HAS_archive_entry_update_gname_utf8
+      if(DO_UTF8(gname))
+      {
+        RETVAL = archive_entry_update_gname_utf8(entry, SvPV_nolen(gname));
+        if(RETVAL > 0)
+          RETVAL = ARCHIVE_OK;
+      }
+      else
+      {
+#endif
+        archive_entry_copy_gname(entry, SvPV_nolen(gname));
         RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_gname_utf8
+      }
     }
     else
     {
-#endif
-      archive_entry_copy_gname(entry, SvPV_nolen(gname));
+      archive_entry_copy_gname(entry, NULL);
       RETVAL = ARCHIVE_OK;
-#ifdef HAS_archive_entry_update_gname_utf8
     }
 #endif
   OUTPUT:
@@ -6098,19 +6128,27 @@ archive_entry_set_hardlink(entry, hardlink)
     struct archive_entry *entry
     SV *hardlink
   CODE:
-#ifdef HAS_archive_entry_update_hardlink_utf8
-    if(DO_UTF8(hardlink))
+    if(SvOK(hardlink))
     {
-      RETVAL = archive_entry_update_hardlink_utf8(entry, SvPV_nolen(hardlink));
-      if(RETVAL > 0)
+#ifdef HAS_archive_entry_update_hardlink_utf8
+      if(DO_UTF8(hardlink))
+      {
+        RETVAL = archive_entry_update_hardlink_utf8(entry, SvPV_nolen(hardlink));
+        if(RETVAL > 0)
+          RETVAL = ARCHIVE_OK;
+      }
+      else
+      {
+#endif
+        archive_entry_copy_hardlink(entry, SvPV_nolen(hardlink));
         RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_hardlink_utf8
+      }
     }
     else
     {
-#endif
-      archive_entry_copy_hardlink(entry, SvPV_nolen(hardlink));
+      archive_entry_copy_hardlink(entry, NULL);
       RETVAL = ARCHIVE_OK;
-#ifdef HAS_archive_entry_update_hardlink_utf8
     }
 #endif
   OUTPUT:
@@ -6153,19 +6191,27 @@ archive_entry_set_pathname(entry, pathname)
     struct archive_entry *entry
     SV *pathname
   CODE:
-#ifdef HAS_archive_entry_update_pathname_utf8
-    if(DO_UTF8(pathname))
+    if(SvOK(pathname))
     {
-      RETVAL = archive_entry_update_pathname_utf8(entry, SvPV_nolen(pathname));
-      if(RETVAL > 0)
+#ifdef HAS_archive_entry_update_pathname_utf8
+      if(DO_UTF8(pathname))
+      {
+        RETVAL = archive_entry_update_pathname_utf8(entry, SvPV_nolen(pathname));
+        if(RETVAL > 0)
+          RETVAL = ARCHIVE_OK;
+      }
+      else
+      {
+#endif
+        archive_entry_copy_pathname(entry, SvPV_nolen(pathname));
         RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_pathname_utf8
+      }
     }
     else
     {
-#endif
-      archive_entry_copy_pathname(entry, SvPV_nolen(pathname));
+      archive_entry_copy_pathname(entry, NULL);
       RETVAL = ARCHIVE_OK;
-#ifdef HAS_archive_entry_update_pathname_utf8
     }
 #endif
   OUTPUT:
@@ -6208,19 +6254,27 @@ archive_entry_set_symlink(entry, symlink)
     struct archive_entry *entry
     SV *symlink
   CODE:
-#ifdef HAS_archive_entry_update_symlink_utf8
-    if(DO_UTF8(symlink))
+    if(SvOK(symlink))
     {
-      RETVAL = archive_entry_update_symlink_utf8(entry, SvPV_nolen(symlink));
-      if(RETVAL > 0)
+#ifdef HAS_archive_entry_update_symlink_utf8
+      if(DO_UTF8(symlink))
+      {
+        RETVAL = archive_entry_update_symlink_utf8(entry, SvPV_nolen(symlink));
+        if(RETVAL > 0)
+          RETVAL = ARCHIVE_OK;
+      }
+      else
+      {
+#endif
+        archive_entry_copy_symlink(entry, SvPV_nolen(symlink));
         RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_symlink_utf8
+      }
     }
     else
     {
-#endif
-      archive_entry_copy_symlink(entry, SvPV_nolen(symlink));
+      archive_entry_copy_symlink(entry, NULL);
       RETVAL = ARCHIVE_OK;
-#ifdef HAS_archive_entry_update_symlink_utf8
     }
 #endif
   OUTPUT:
@@ -6263,19 +6317,27 @@ archive_entry_set_uname(entry, uname)
     struct archive_entry *entry
     SV *uname
   CODE:
-#ifdef HAS_archive_entry_update_uname_utf8
-    if(DO_UTF8(uname))
+    if(SvOK(uname))
     {
-      RETVAL = archive_entry_update_uname_utf8(entry, SvPV_nolen(uname));
-      if(RETVAL > 0)
+#ifdef HAS_archive_entry_update_uname_utf8
+      if(DO_UTF8(uname))
+      {
+        RETVAL = archive_entry_update_uname_utf8(entry, SvPV_nolen(uname));
+        if(RETVAL > 0)
+          RETVAL = ARCHIVE_OK;
+      }
+      else
+      {
+#endif
+        archive_entry_copy_uname(entry, SvPV_nolen(uname));
         RETVAL = ARCHIVE_OK;
+#ifdef HAS_archive_entry_update_uname_utf8
+      }
     }
     else
     {
-#endif
-      archive_entry_copy_uname(entry, SvPV_nolen(uname));
+      archive_entry_copy_uname(entry, NULL);
       RETVAL = ARCHIVE_OK;
-#ifdef HAS_archive_entry_update_uname_utf8
     }
 #endif
   OUTPUT:

@@ -64,6 +64,7 @@ archive_entry_set_gid
 archive_entry_set_gname
 archive_entry_set_hardlink
 archive_entry_set_ino
+archive_entry_set_link
 archive_entry_set_mac_metadata
 archive_entry_set_mode
 archive_entry_set_mtime
