@@ -12,7 +12,6 @@ unimplemented: archive_entry_copy_link
 unimplemented: archive_entry_copy_sourcepath
 unimplemented: archive_entry_partial_links
 unimplemented: archive_entry_set_birthtime
-unimplemented: archive_entry_set_fflags
 unimplemented: archive_entry_set_link
 unimplemented: archive_entry_sparse_add_entry
 unimplemented: archive_entry_sparse_clear
@@ -40,4 +39,4 @@ unimplemented: archive_read_disk_set_metadata_filter_callback
 unimplemented: archive_read_extract_set_progress_callback
 unimplemented: archive_read_set_switch_callback
 
-total unimplemented symbols: 33
+total unimplemented symbols: 32

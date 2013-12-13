@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 51;
+use Test::More tests => 52;
 use Archive::Libarchive::XS qw( :all );
 
 my $r;
@@ -131,6 +131,18 @@ $r = eval { archive_entry_set_sourcepath($e, "foo") };
 diag $@ if $@;
 is $r, ARCHIVE_OK, 'archive_entry_set_sourcepath';
 is eval { archive_entry_sourcepath($e) }, 'foo', 'archive_entry_set_sourcepath';
+
+subtest fflags => sub {
+
+  $r = archive_entry_set_fflags($e, 0x55, 0xaa);
+  is $r, ARCHIVE_OK, 'archive_entry_set_fflags';
+
+  $r = archive_entry_fflags($e, my $set, my $clear);
+  is $r, ARCHIVE_OK, 'archive_entry_fflags';
+  
+  is $set, 0x55, 'set';
+  is $clear, 0xaa, 'clear';
+};  
 
 $r = archive_entry_free($e);
 is $r, ARCHIVE_OK, 'archive_entry_free';

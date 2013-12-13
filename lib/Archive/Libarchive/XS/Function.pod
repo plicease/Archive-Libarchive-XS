@@ -296,7 +296,9 @@ Returns the device minor property for the archive entry.
 
  my $status = archive_entry_fflags($entry, $set, $clear);
 
-Returns the file flags property for the archive entry.
+Gets the file flag properties for the archive entry.  The
+C<$set> and C<$clear> arguments are updated to return their
+values.
 
 =head2 archive_entry_fflags_text($entry)
 
@@ -533,6 +535,12 @@ Sets the device minor property for the archive entry.
 
 The device property is an integer identifying the device, and is used by
 C<archive_entry_linkify> (along with the ino64 property) to find hardlinks.
+
+=head2 archive_entry_set_fflags
+
+ my $status = archive_entry_set_fflags($entry, $set, $clear);
+
+Sets the file flag properties for the archive entry.
 
 =head2 archive_entry_set_filetype
 

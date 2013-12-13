@@ -2903,7 +2903,9 @@ archive_entry_dev_is_set(entry)
 
  my $status = archive_entry_fflags($entry, $set, $clear);
 
-Returns the file flags property for the archive entry.
+Gets the file flag properties for the archive entry.  The
+C<$set> and C<$clear> arguments are updated to return their
+values.
 
 =cut
 
@@ -2919,14 +2921,37 @@ archive_entry_fflags(entry, sv_set, sv_clear)
     unsigned long set;
     unsigned long clear;
     archive_entry_fflags(entry, &set, &clear);
-    tmp = sv_2mortal(newSVi64(set));
+    tmp = sv_2mortal(newSVuv(set));
     sv_setsv(sv_set, tmp);
-    tmp = sv_2mortal(newSVi64(clear));
+    tmp = sv_2mortal(newSVuv(clear));
     sv_setsv(sv_clear, tmp);
     RETVAL = ARCHIVE_OK;
   OUTPUT:
     sv_set
     sv_clear
+    RETVAL
+
+#endif
+
+=head2 archive_entry_set_fflags
+
+ my $status = archive_entry_set_fflags($entry, $set, $clear);
+
+Sets the file flag properties for the archive entry.
+
+=cut
+
+#if HAS_archive_entry_set_fflags
+
+int
+archive_entry_set_fflags(entry, set, clear)
+    struct archive_entry *entry
+    unsigned long set
+    unsigned long clear
+  CODE:
+    archive_entry_set_fflags(entry, set, clear);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
     RETVAL
 
 #endif
