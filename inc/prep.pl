@@ -1,6 +1,5 @@
 use strict;
 use warnings;
-use v5.10;
 use Alien::Libarchive;
 use Path::Class qw( file dir );
 
