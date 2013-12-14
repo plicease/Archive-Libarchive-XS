@@ -1,4 +1,4 @@
-# Archive::Libarchive::XS
+# Archive::Libarchive::XS [![Build Status](https://secure.travis-ci.org/plicease/Archive-Libarchive-XS.png)](http://travis-ci.org/plicease/Archive-Libarchive-XS)
 
 Perl bindings to libarchive via XS
 
