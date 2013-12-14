@@ -4,5 +4,3 @@ ExtUtils::CChecker
 Math::Int64
 Module::Build
 Test::More
-Text::Iconv
-constant
