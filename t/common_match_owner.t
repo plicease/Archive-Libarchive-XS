@@ -5,6 +5,9 @@ use Archive::Libarchive::XS qw( :all );
 
 # translated from test_archive_match_owner.c
 
+plan skip_all => 'requires archive_match_new' unless eval { Archive::Libarchive::XS->can('archive_match_new') };
+plan tests => 4;
+
 my $r;
 
 subtest uid => sub {

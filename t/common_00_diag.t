@@ -162,3 +162,13 @@ foreach my $format (sort grep { s/^archive_write_set_format_// } keys %Archive::
 
 diag '';
 diag '';
+
+if(eval { require Alien::Libarchive; 1 })
+{
+  my $alien = Alien::Libarchive->new;
+  diag 'Alien::Libarchive cflags = ' . $alien->cflags;
+  diag 'Alien::Libarchive libs   = ' . $alien->libs;
+  
+  diag '';
+  diag '';
+}
