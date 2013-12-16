@@ -182,7 +182,7 @@ subtest link => sub {
 };
 
 subtest xattr => sub {
-  plan tests => 27;
+  plan tests => 24;
   $r = archive_entry_xattr_add_entry($e, "xattr1", "xattrvalue1\0");
   is $r, ARCHIVE_OK, 'archive_entry_xattr_add_entry';
     
@@ -201,7 +201,6 @@ subtest xattr => sub {
   is $r, ARCHIVE_WARN, 'archive_entry_xattr_next';
   is $xname, undef,       'xname = undef';
   is $xval, undef,        'xval  = undef';
-  is length $xval, undef, 'len   = undef';
     
   $r = archive_entry_xattr_clear($e);
   is $r, ARCHIVE_OK, 'archive_entry_xattr_clear';
@@ -212,7 +211,6 @@ subtest xattr => sub {
   is $r, ARCHIVE_WARN, 'archive_entry_xattr_next';
   is $xname, undef,       'xname = undef';
   is $xval, undef,        'xval  = undef';
-  is length $xval, undef, 'len   = undef';
 
   $r = archive_entry_xattr_add_entry($e, "xattr1", "xattrvalue1\0");
   is $r, ARCHIVE_OK, 'archive_entry_xattr_add_entry';
@@ -230,7 +228,6 @@ subtest xattr => sub {
   is $r, ARCHIVE_WARN, 'archive_entry_xattr_next';
   is $xname, undef,       'xname = undef';
   is $xval, undef,        'xval  = undef';
-  is length $xval, undef, 'len   = undef';
 };
 
 $r = archive_entry_free($e);
