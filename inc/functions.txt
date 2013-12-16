@@ -93,6 +93,11 @@ archive_entry_unset_birthtime
 archive_entry_unset_ctime
 archive_entry_unset_mtime
 archive_entry_unset_size
+archive_entry_xattr_add_entry
+archive_entry_xattr_clear
+archive_entry_xattr_count
+archive_entry_xattr_next
+archive_entry_xattr_reset
 archive_errno
 archive_error_string
 archive_file_count

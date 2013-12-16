@@ -15,11 +15,6 @@ unimplemented: archive_entry_sparse_clear
 unimplemented: archive_entry_sparse_count
 unimplemented: archive_entry_sparse_next
 unimplemented: archive_entry_sparse_reset
-unimplemented: archive_entry_xattr_add_entry
-unimplemented: archive_entry_xattr_clear
-unimplemented: archive_entry_xattr_count
-unimplemented: archive_entry_xattr_next
-unimplemented: archive_entry_xattr_reset
 unimplemented: archive_match_exclude_entry
 unimplemented: archive_match_exclude_pattern
 unimplemented: archive_match_exclude_pattern_from_file
@@ -36,4 +31,4 @@ unimplemented: archive_read_disk_set_metadata_filter_callback
 unimplemented: archive_read_extract_set_progress_callback
 unimplemented: archive_read_set_switch_callback
 
-total unimplemented symbols: 28
+total unimplemented symbols: 23

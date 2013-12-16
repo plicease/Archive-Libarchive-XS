@@ -4559,6 +4559,126 @@ _archive_entry_set_link(entry, string)
 
 #endif
 
+=head2 archive_entry_xattr_add_entry
+
+ my $status = archive_entry_xattr_add_entry($entry, $name, $value);
+
+Add an extended attribute (xattr) to the archive entry.
+
+=cut
+
+#if HAS_archive_entry_xattr_add_entry
+
+int
+archive_entry_xattr_add_entry(entry, name, buffer)
+    struct archive_entry *entry
+    const char *name
+    SV *buffer
+  CODE:
+    const void *ptr;
+    STRLEN size;
+    ptr = SvPV(buffer, size);
+    archive_entry_xattr_add_entry(entry, name, ptr, size);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_xattr_clear
+
+ my $status = archive_entry_xattr_clear($entry);
+
+Remove all extended attributes (xattr) to the archive entry.
+
+=cut
+
+#if HAS_archive_entry_xattr_clear
+
+int
+archive_entry_xattr_clear(entry)
+    struct archive_entry *entry
+  CODE:
+    archive_entry_xattr_clear(entry);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_xattr_count
+
+ my $count = archive_entry_xattr_count($entry);
+
+Returns the number of extended attributes (xattr) for the archive entry.
+
+=cut
+
+#if HAS_archive_entry_xattr_count
+
+int
+archive_entry_xattr_count(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_xattr_reset
+
+ my $status = archive_entry_xattr_reset($entry);
+
+Reset the internal extended attributes (xattr) cursor for the archive entry.
+
+=cut
+
+#if HAS_archive_entry_xattr_reset
+
+int
+archive_entry_xattr_reset(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_xattr_next
+
+ my $status = archive_entry_xattr_next($entry, $name, $buffer);
+
+Retrieve the extended attribute (xattr) at the extended attributes (xattr) cursor, and
+increment the cursor.  If the cursor is already at the end, it will return ARCHIVE_WARN,
+$name and $buffer will be undef.  Here is an example which loops through all extended
+attributes (xattr) for an archive entry:
+
+ archive_entry_xattr_reset($entry);
+ while(my $r = archive_entry_xattr_next($entry, my $name, my $value))
+ {
+   last if $r == ARCHIVE_WARN;
+   die archive_error_string($a) if $r < ARCHIVE_OK;
+   
+   # do something with $name and $value
+ }
+
+=cut
+
+#if HAS_archive_entry_xattr_next
+
+int
+archive_entry_xattr_next(entry, name, buffer)
+    struct archive_entry *entry
+    SV *name
+    SV *buffer
+  CODE:
+    const char *name_ptr;
+    const void *value_ptr;
+    size_t size;
+    RETVAL = archive_entry_xattr_next(entry, &name_ptr, &value_ptr, &size);
+    sv_setpv(name, name_ptr);
+    sv_setpvn(buffer, value_ptr, size);
+  OUTPUT:
+    RETVAL
+    name
+    buffer
+
+#endif
+
 int
 _constant(name)
         char *name

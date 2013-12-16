@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 53;
+use Test::More tests => 54;
 use Archive::Libarchive::XS qw( :all );
 
 my $r;
@@ -179,6 +179,58 @@ subtest link => sub {
   
   is archive_entry_hardlink($e), "link", 'archive_entry_hardlink = link';
   is archive_entry_symlink($e), undef, 'archive_entry_symlink = undef';
+};
+
+subtest xattr => sub {
+  plan tests => 27;
+  $r = archive_entry_xattr_add_entry($e, "xattr1", "xattrvalue1\0");
+  is $r, ARCHIVE_OK, 'archive_entry_xattr_add_entry';
+    
+  is archive_entry_xattr_reset($e), 1, 'archive_entry_xattr_reset';
+    
+  $r = archive_entry_xattr_next($e, my $xname, my $xval);
+  is $r, ARCHIVE_OK, 'archive_entry_xattr_next';
+   
+  is $xname, 'xattr1',        'xname = xattr1';
+  is $xval,  "xattrvalue1\0", 'xval  = xattrvaue1';
+  is length $xval, 12,
+    
+  is archive_entry_xattr_count($e), 1, 'archive_entry_xattr_count';
+    
+  $r = archive_entry_xattr_next($e, $xname, $xval);
+  is $r, ARCHIVE_WARN, 'archive_entry_xattr_next';
+  is $xname, undef,       'xname = undef';
+  is $xval, undef,        'xval  = undef';
+  is length $xval, undef, 'len   = undef';
+    
+  $r = archive_entry_xattr_clear($e);
+  is $r, ARCHIVE_OK, 'archive_entry_xattr_clear';
+    
+  is archive_entry_xattr_reset($e), 0, 'archive_entry_xattr_reset';
+    
+  $r = archive_entry_xattr_next($e, $xname, $xval);
+  is $r, ARCHIVE_WARN, 'archive_entry_xattr_next';
+  is $xname, undef,       'xname = undef';
+  is $xval, undef,        'xval  = undef';
+  is length $xval, undef, 'len   = undef';
+
+  $r = archive_entry_xattr_add_entry($e, "xattr1", "xattrvalue1\0");
+  is $r, ARCHIVE_OK, 'archive_entry_xattr_add_entry';
+  is archive_entry_xattr_reset($e), 1, 'archive_entry_xattr_reset';
+  $r = archive_entry_xattr_add_entry($e, "xattr2", "xattrvalue2\0");
+  is $r, ARCHIVE_OK, 'archive_entry_xattr_add_entry';
+  is archive_entry_xattr_reset($e), 2, 'archive_entry_xattr_reset';
+
+  $r = archive_entry_xattr_next($e, $xname, $xval);
+  is $r, ARCHIVE_OK, 'archive_entry_xattr_next';
+  $r = archive_entry_xattr_next($e, $xname, $xval);
+  is $r, ARCHIVE_OK, 'archive_entry_xattr_next';
+  $r = archive_entry_xattr_next($e, $xname, $xval);
+
+  is $r, ARCHIVE_WARN, 'archive_entry_xattr_next';
+  is $xname, undef,       'xname = undef';
+  is $xval, undef,        'xval  = undef';
+  is length $xval, undef, 'len   = undef';
 };
 
 $r = archive_entry_free($e);

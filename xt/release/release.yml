@@ -49,6 +49,7 @@ pod_spelling_system:
     - unsets
     - deregister
     - sourcepath
+    - xattr
 
 pod_coverage:
   # format is "Class#method" or "Class", regex allowed

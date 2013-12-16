@@ -811,6 +811,48 @@ Unset the mtime (modify time) for the entry object.
 
 Unsets the size property for the archive entry.
 
+=head2 archive_entry_xattr_add_entry
+
+ my $status = archive_entry_xattr_add_entry($entry, $name, $value);
+
+Add an extended attribute (xattr) to the archive entry.
+
+=head2 archive_entry_xattr_clear
+
+ my $status = archive_entry_xattr_clear($entry);
+
+Remove all extended attributes (xattr) to the archive entry.
+
+=head2 archive_entry_xattr_count
+
+ my $count = archive_entry_xattr_count($entry);
+
+Returns the number of extended attributes (xattr) for the archive entry.
+
+=head2 archive_entry_xattr_next
+
+ my $status = archive_entry_xattr_next($entry, $name, $buffer);
+
+Retrieve the extended attribute (xattr) at the extended attributes (xattr) cursor, and
+increment the cursor.  If the cursor is already at the end, it will return ARCHIVE_WARN,
+$name and $buffer will be undef.  Here is an example which loops through all extended
+attributes (xattr) for an archive entry:
+
+ archive_entry_xattr_reset($entry);
+ while(my $r = archive_entry_xattr_next($entry, my $name, my $value))
+ {
+   last if $r == ARCHIVE_WARN;
+   die archive_error_string($a) if $r < ARCHIVE_OK;
+   
+   # do something with $name and $value
+ }
+
+=head2 archive_entry_xattr_reset
+
+ my $status = archive_entry_xattr_reset($entry);
+
+Reset the internal extended attributes (xattr) cursor for the archive entry.
+
 =head2 archive_errno
 
  my $errno = archive_errno($archive);
