@@ -193,8 +193,8 @@ subtest xattr => sub {
    
   is $xname, 'xattr1',        'xname = xattr1';
   is $xval,  "xattrvalue1\0", 'xval  = xattrvaue1';
-  is length $xval, 12,
-    
+  is length $xval, 12,        'len   = 12';
+  
   is archive_entry_xattr_count($e), 1, 'archive_entry_xattr_count';
     
   $r = archive_entry_xattr_next($e, $xname, $xval);
