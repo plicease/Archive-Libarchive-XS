@@ -97,6 +97,35 @@ sub archive_entry_set_stat
   $status;
 }
 
+sub archive_read_data_into_fh
+{
+  my($archive, $fh) = @_;
+
+  my $bw = 0;
+  my $zero;
+
+  while(1)
+  {
+    my $r = archive_read_data_block($archive, my $buff, my $offset);
+    return ARCHIVE_OK() if $r == ARCHIVE_EOF();
+    if($r == ARCHIVE_OK() || $r == ARCHIVE_WARN())
+    {
+      while($offset != $bw)
+      {
+        # TODO: this is slow do something a little less brain dead.
+        print $fh "\0";
+        $bw++;
+      }
+      $bw += length $buff;
+      print $fh $buff;
+    }
+    else
+    {
+      return $r;
+    }
+  }
+}
+
 *archive_entry_copy_stat = \&archive_entry_set_stat
   if __PACKAGE__->can('archive_entry_set_stat');
 

@@ -205,6 +205,7 @@ do { # symbol list
     archive_read_set_callback_data2
     archive_read_open_FILE
     archive_read_open_fd
+    archive_read_data_into_fd
     archive_read_open_memory2
     archive_write_open_fd
     archive_write_open_FILE

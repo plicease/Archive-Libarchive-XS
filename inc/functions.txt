@@ -125,6 +125,7 @@ archive_read_append_filter_program_signature
 archive_read_close
 archive_read_data
 archive_read_data_block
+archive_read_data_into_fh
 archive_read_data_skip
 archive_read_disk_can_descend
 archive_read_disk_current_filesystem

@@ -336,6 +336,12 @@ MODULE = Archive::Libarchive::XS   PACKAGE = Archive::Libarchive::XS
 BOOT:
      PERL_MATH_INT64_LOAD_OR_CROAK;
 
+=head2 archive_read_data_into_fh
+
+ my $status = archive_read_data_into_fh($archive, $fh);
+
+A convenience function that repeatedly calls L<#archive_read_data_block> to copy the entire entry to the provided file handle.
+
 =head2 archive_write_disk_set_group_lookup
 
  my $status = archive_write_disk_set_group_lookup($archive, $data, $lookup_callback, $cleanup_callback);
