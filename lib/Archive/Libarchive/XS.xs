@@ -4567,7 +4567,7 @@ _archive_entry_set_link(entry, string)
 
 =head2 archive_entry_xattr_add_entry
 
- my $status = archive_entry_xattr_add_entry($entry, $name, $value);
+ my $status = archive_entry_xattr_add_entry($entry, $name, $buffer);
 
 Add an extended attribute (xattr) to the archive entry.
 
