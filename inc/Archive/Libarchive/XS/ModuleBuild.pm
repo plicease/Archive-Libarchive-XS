@@ -158,7 +158,7 @@ sub _test_write_format
   _capture_tiny(sub { $ok = $cc->try_compile_run(source => <<EOF1) });
 #include <archive.h>
 #include <archive_entry.h>
-int main(int argc, char *argv)
+int main(int argc, char **argv)
 {
   struct archive *a = archive_write_new();
   $symbol(a);
@@ -179,7 +179,7 @@ sub _test_symbol
 #include <stdio.h>
 #include <archive.h>
 #include <archive_entry.h>
-int main(int argc, char *argv)
+int main(int argc, char **argv)
 {
   void *ptr = (void*)$symbol;
   printf("%p\\n", ptr);
