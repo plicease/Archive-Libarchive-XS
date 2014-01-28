@@ -3,6 +3,12 @@ use warnings;
 use Test::More;
 use Archive::Libarchive::XS qw( :all );
 
+foreach my $symbol (map { "archive_entry_sparse_$_" } qw( count reset next clear add_entry ))
+{
+  plan skip_all => "test requires $symbol"
+    unless Archive::Libarchive::XS->can($symbol);
+}
+
 plan tests => 4;
 
 my $r;
