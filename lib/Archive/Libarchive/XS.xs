@@ -4965,6 +4965,25 @@ _archive_match_include_pattern_from_file(archive, filename, null_separator)
 
 #endif
 
+=head2 archive_match_include_time
+
+ my $status = archive_match_include_time($archive, $flag, $sec, $nsec);
+
+Set inclusion time
+
+=cut
+
+#ifdef HAS_archive_match_include_time
+
+int
+archive_match_include_time(archive, flag, sec, nsec)
+    struct archive *archive
+    int flag
+    time_t sec
+    long nsec
+
+#endif
+
 int
 _constant(name)
         char *name

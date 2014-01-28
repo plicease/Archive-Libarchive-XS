@@ -1047,6 +1047,12 @@ Add inclusion pathname pattern
 
 Add inclusion pathname pattern from file
 
+=head2 archive_match_include_time
+
+ my $status = archive_match_include_time($archive, $flag, $sec, $nsec);
+
+Set inclusion time
+
 =head2 archive_match_include_uid
 
  my $status = archive_match_include_uid($archive, $uid);
