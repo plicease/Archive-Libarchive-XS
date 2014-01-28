@@ -979,6 +979,12 @@ codes.
 
 A textual description of the format of the current entry.
 
+=head2 archive_match_exclude_entry
+
+ my $status = archive_match_exclude_entry($archive, $flag, $entry);
+
+Add exclusion entry
+
 =head2 archive_match_excluded
 
  my $bool = archive_match_excluded($archive, $entry);

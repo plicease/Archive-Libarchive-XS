@@ -4821,6 +4821,24 @@ archive_entry_sparse_next(entry, offset, length)
 
 #endif
 
+=head2 archive_match_exclude_entry
+
+ my $status = archive_match_exclude_entry($archive, $flag, $entry);
+
+Add exclusion entry
+
+=cut
+
+#ifdef HAS_archive_match_exclude_entry
+
+int
+archive_match_exclude_entry(archive, flag, entry)
+    struct archive *archive
+    int flag
+    struct archive_entry *entry
+
+#endif
+
 int
 _constant(name)
         char *name
