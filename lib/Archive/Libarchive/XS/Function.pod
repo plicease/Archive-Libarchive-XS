@@ -1035,6 +1035,18 @@ The match object $archive should match entries with the given $gid
 
 The match object $archive should match entries with the given group name
 
+=head2 archive_match_include_pattern
+
+ my $status = archive_match_include_pattern_from_file($archive, $pattern);
+
+Add inclusion pathname pattern
+
+=head2 archive_match_include_pattern_from_file
+
+ my $status = archive_match_include_pattern_from_file($archive, $filename, $null_separator);
+
+Add inclusion pathname pattern from file
+
 =head2 archive_match_include_uid
 
  my $status = archive_match_include_uid($archive, $uid);

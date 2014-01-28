@@ -4874,7 +4874,7 @@ int
 _archive_match_exclude_pattern_from_file(archive, filename, null_separator)
     struct archive *archive
     const char *filename
-    int null_separator
+    int null_separator 
   CODE:
     RETVAL = archive_match_exclude_pattern_from_file(archive, filename, null_separator);
   OUTPUT:
@@ -4917,6 +4917,49 @@ _archive_match_include_file_time(archive, flag, pathname)
     const char *pathname
   CODE:
     RETVAL = archive_match_include_file_time(archive, flag, pathname);
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_match_include_pattern
+
+ my $status = archive_match_include_pattern_from_file($archive, $pattern);
+
+Add inclusion pathname pattern
+
+=cut
+
+#ifdef HAS_archive_match_include_pattern
+
+int
+_archive_match_include_pattern(archive, pattern)
+    struct archive *archive
+    const char *pattern
+  CODE:
+    RETVAL = archive_match_include_pattern(archive, pattern);
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_match_include_pattern_from_file
+
+ my $status = archive_match_include_pattern_from_file($archive, $filename, $null_separator);
+
+Add inclusion pathname pattern from file
+
+=cut
+
+#ifdef HAS_archive_match_include_pattern_from_file
+
+int
+_archive_match_include_pattern_from_file(archive, filename, null_separator)
+    struct archive *archive
+    const char *filename
+    int null_separator 
+  CODE:
+    RETVAL = archive_match_include_pattern_from_file(archive, filename, null_separator);
   OUTPUT:
     RETVAL
 
