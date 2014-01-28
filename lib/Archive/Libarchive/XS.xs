@@ -4712,7 +4712,7 @@ archive_entry_xattr_next(entry, name, buffer)
 
  my $status = archive_entry_sparse_clear($entry)
 
-FIXME
+Remove all sparse region from the archive entry.
 
 =cut
 
@@ -4733,7 +4733,7 @@ archive_entry_sparse_clear(entry)
 
  my $status = archive_entry_sparse_add_entry($entry, $offset, $length)
 
-FIXME
+Add a sparse region to the entry.
 
 =cut
 
@@ -4756,7 +4756,7 @@ archive_entry_sparse_add_entry(entry, offset, length)
 
  my $count = archive_entry_sparse_count($entry);
 
-FIXME
+Return the number of sparse entries in the entry.
 
 =cut
 
@@ -4770,9 +4770,9 @@ archive_entry_sparse_count(entry)
 
 =head2 archive_entry_sparse_reset
 
- my $FIXME = archive_entry_sparse_reset($entry);
+ my $count = archive_entry_sparse_reset($entry);
 
-FIXME
+Reset the internal sparse region iterator for the entry (see L<#archive_entry_sparse_next> for an example).
 
 =cut
 
@@ -4786,9 +4786,18 @@ archive_entry_sparse_reset(entry)
 
 =head2 archive_entry_sparse_next
 
- my $FIXME = archive_entry_sparse_next($entry, $offset, $length);
+ my $status = archive_entry_sparse_next($entry, $offset, $length);
 
-FIXME
+Return the next sparse region for the entry.  Example:
+
+ archive_entry_sparse_reset($entry);
+ while(my $r = archive_entry_sparse_next($entry, $offset, $length))
+ {
+   last if $r == ARCHIVE_WARN;
+   die archive_error_string($a) if $r < ARCHIVE_OK;
+   
+   # do something with $name and $value
+ }
 
 =cut
 
