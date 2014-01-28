@@ -1083,6 +1083,12 @@ Test if a file is excluded by its uid, gid, user name or group name.
 
 Test if pathname is excluded.
 
+=head2 archive_match_path_unmatched_inclusions
+
+ my $count = archive_match_path_unmatched_inclusions($archive);
+
+Return the amount number of unmatched inclusion patterns
+
 =head2 archive_match_time_excluded
 
  my $bool = archive_match_time_excluded($archive, $entry);

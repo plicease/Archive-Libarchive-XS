@@ -4984,6 +4984,22 @@ archive_match_include_time(archive, flag, sec, nsec)
 
 #endif
 
+=head2 archive_match_path_unmatched_inclusions
+
+ my $count = archive_match_path_unmatched_inclusions($archive);
+
+Return the amount number of unmatched inclusion patterns
+
+=cut
+
+#ifdef HAS_archive_match_path_unmatched_inclusions
+
+int
+archive_match_path_unmatched_inclusions(archive)
+    struct archive *archive
+
+#endif
+
 int
 _constant(name)
         char *name
