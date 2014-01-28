@@ -1,3 +1,5 @@
+#include <string.h>
+
 #if defined(__CYGWIN__) || !defined(_WIN32)
 #include <langinfo.h>
 #include <locale.h>

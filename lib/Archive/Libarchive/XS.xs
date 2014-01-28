@@ -3942,7 +3942,7 @@ archive_read_open_filenames(archive, filenames, block_size)
     }
     else
     {
-      num = av_len((SV*)SvRV(filenames))+1; /* av_top_index in newer Perls */
+      num = av_len((AV*)SvRV(filenames))+1; /* av_top_index in newer Perls */
       Newx(c_filenames, num+1, const char *);
       for(i=0; i<num; i++)
       {
