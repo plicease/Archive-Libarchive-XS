@@ -5000,6 +5000,29 @@ archive_match_path_unmatched_inclusions(archive)
 
 #endif
 
+=head2 archive_match_path_unmatched_inclusions_next
+
+ my $status = archive_match_path_unmatched_inclusions_next($archive, $pattern);
+
+Fetch the next unmatched pattern.
+
+=cut
+
+#ifdef HAS_archive_match_path_unmatched_inclusions_next
+
+int
+archive_match_path_unmatched_inclusions_next(archive, pattern)
+    struct archive *archive
+    SV *pattern
+  CODE:
+    const char *tmp;
+    RETVAL = archive_match_path_unmatched_inclusions_next(archive, &tmp);
+    sv_setpv(pattern, tmp);
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name

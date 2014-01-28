@@ -1089,6 +1089,12 @@ Test if pathname is excluded.
 
 Return the amount number of unmatched inclusion patterns
 
+=head2 archive_match_path_unmatched_inclusions_next
+
+ my $status = archive_match_path_unmatched_inclusions_next($archive, $pattern);
+
+Fetch the next unmatched pattern.
+
 =head2 archive_match_time_excluded
 
  my $bool = archive_match_time_excluded($archive, $entry);
