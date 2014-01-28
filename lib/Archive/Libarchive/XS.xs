@@ -2676,6 +2676,29 @@ archive_entry_set_atime(entry, atime, nsec)
 
 #endif
 
+=head2 archive_entry_set_birthtime
+
+ my $status = archive_entry_set_birthtime($entry, $birthtime, $nsec);
+
+Sets the birthtime (creation time) for the archive entry.
+
+=cut
+
+#if HAS_archive_entry_set_birthtime
+
+int
+archive_entry_set_birthtime(entry, birthtime, nsec)
+    struct archive_entry *entry
+    time_t birthtime
+    long nsec
+  CODE:
+    archive_entry_set_birthtime(entry, birthtime, nsec);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
 =head2 archive_entry_atime_nsec
 
  my $atime = archive_entry_atime_nsec($entry);
