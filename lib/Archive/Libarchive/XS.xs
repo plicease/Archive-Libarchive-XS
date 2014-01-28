@@ -4882,6 +4882,24 @@ _archive_match_exclude_pattern_from_file(archive, filename, null_separator)
 
 #endif
 
+=head2 archive_match_include_date
+
+ my $status = archive_match_include_date($archive, $flag, $date_string);
+
+Set inclusion time by a date string
+
+=cut
+
+#ifdef HAS_archive_match_include_date
+
+int
+archive_match_include_date(archive, flag, date_string)
+    struct archive *archive
+    int flag
+    const char *date_string
+
+#endif
+
 int
 _constant(name)
         char *name
