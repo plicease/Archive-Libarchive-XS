@@ -4900,6 +4900,28 @@ archive_match_include_date(archive, flag, date_string)
 
 #endif
 
+=head2 archive_match_include_file_time
+
+ my $status = archive_match_include_file_time($archive, $flag, $pathname);
+
+Set inclusion time by a particular file
+
+=cut
+
+#ifdef HAS_archive_match_include_file_time
+
+int
+_archive_match_include_file_time(archive, flag, pathname)
+    struct archive *archive
+    int flag
+    const char *pathname
+  CODE:
+    RETVAL = archive_match_include_file_time(archive, flag, pathname);
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name

@@ -1017,6 +1017,12 @@ Free the resources previously allocated with L<#archive_match_new>.
 
 Set inclusion time by a date string
 
+=head2 archive_match_include_file_time
+
+ my $status = archive_match_include_file_time($archive, $flag, $pathname);
+
+Set inclusion time by a particular file
+
 =head2 archive_match_include_gid
 
  my $status = archive_match_include_gid($archive, $gid);

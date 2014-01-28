@@ -256,6 +256,9 @@ _sub_if_can( archive_match_exclude_pattern => sub {
 _sub_if_can( archive_match_exclude_pattern_from_file => sub {
   _archive_match_exclude_pattern_from_file($_[0], encode(archive_perl_codeset(), $_[1]), $_[2])
 });
+_sub_if_can( archive_match_include_file_time => sub {
+  _archive_match_include_file_time($_[0], $_[1], encode(arhcive_perl_codeset(), $_[2]))
+});
 
 1;
 
