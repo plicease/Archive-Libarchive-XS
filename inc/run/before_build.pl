@@ -11,13 +11,13 @@ my @macros = do { # constants
 
   # keep any new macros, even if we are doing a dzil build
   # against an old libarchive
-  my %macros = (map { chomp; $_ => 1 } file(__FILE__)->parent->file('constants.txt')->slurp, grep { $_ ne 'ARCHIVE_VERSION_STRING' } grep { $_ !~ /H_INCLUDED$/ } $alien->_macro_list);
+  my %macros = (map { chomp; $_ => 1 } file(__FILE__)->parent->parent->file('constants.txt')->slurp, grep { $_ ne 'ARCHIVE_VERSION_STRING' } grep { $_ !~ /H_INCLUDED$/ } $alien->_macro_list);
   sort keys %macros;  
 };
-file(__FILE__)->parent->file('constants.txt')->spew(join "\n", @macros);
+file(__FILE__)->parent->parent->file('constants.txt')->spew(join "\n", @macros);
 
 do { # xs
-  my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS.xs ))->absolute;
+  my $file = file(__FILE__)->parent->parent->parent->file(qw( lib Archive Libarchive XS.xs ))->absolute;
   my @xs = $file->slurp;
 
   my $buffer;
@@ -100,7 +100,7 @@ do { # xs
     use Mojo::Template;
     my $mt = Mojo::Template->new;
     $mt->prepend(qq{my \$name = '$name';\n});
-    $buffer .= $mt->render( scalar file(__FILE__)->parent->file(qw( path.xs.template ))->slurp );
+    $buffer .= $mt->render( scalar file(__FILE__)->parent->parent->file(qw( path.xs.template ))->slurp );
   }
 
   $file->spew($buffer);
@@ -121,7 +121,7 @@ do { # symbol list
     }
   }
   
-  open(my $fh, '<', file(__FILE__)->parent->file('symbols.txt'));
+  open(my $fh, '<', file(__FILE__)->parent->parent->file('symbols.txt'));
   foreach my $line (<$fh>)
   {
     chomp $line;
@@ -194,7 +194,7 @@ do { # symbol list
   
   delete $symbols{$_} for @typedefs;
   
-  file(__FILE__)->parent->file('symbols.txt')->spew(join "\n", sort keys %symbols);
+  file(__FILE__)->parent->parent->file('symbols.txt')->spew(join "\n", sort keys %symbols);
   
   delete $symbols{$_} for grep /_(w|utf8)$/, keys %symbols;
   
@@ -227,7 +227,7 @@ do {
   my $mt = Mojo::Template->new;
   
   my $pa = Pod::Abstract->load_file(
-    file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS.xs ))->stringify
+    file(__FILE__)->parent->parent->parent->file(qw( lib Archive Libarchive XS.xs ))->stringify
   );
   
   $_->detach for $pa->select('//#cut');
@@ -264,24 +264,24 @@ do {
   });
   
   do {
-    my $perl = $mt->render( scalar file(__FILE__)->parent->file(qw( XS.pm.template ))->slurp );
-    my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS.pm ))->absolute;
+    my $perl = $mt->render( scalar file(__FILE__)->parent->parent->file(qw( XS.pm.template ))->slurp );
+    my $file = file(__FILE__)->parent->parent->parent->file(qw( lib Archive Libarchive XS.pm ))->absolute;
     $file->spew($perl);
   };
 
   do {
-    my $pod = $mt->render( scalar file(__FILE__)->parent->file(qw( Function.pod.template ))->slurp );
-    my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS Function.pod ))->absolute;
+    my $pod = $mt->render( scalar file(__FILE__)->parent->parent->file(qw( Function.pod.template ))->slurp );
+    my $file = file(__FILE__)->parent->parent->parent->file(qw( lib Archive Libarchive XS Function.pod ))->absolute;
     $file->spew($pod);
   };
 
   do {
-    my $pod = $mt->render( scalar file(__FILE__)->parent->file(qw( Constant.pod.template ))->slurp );
-    my $file = file(__FILE__)->parent->parent->file(qw( lib Archive Libarchive XS Constant.pod ))->absolute;
+    my $pod = $mt->render( scalar file(__FILE__)->parent->parent->file(qw( Constant.pod.template ))->slurp );
+    my $file = file(__FILE__)->parent->parent->parent->file(qw( lib Archive Libarchive XS Constant.pod ))->absolute;
     $file->spew($pod);
   };
   
-  file(__FILE__)->parent->file('functions.txt')->spew(join "\n", sort keys %functions);
+  file(__FILE__)->parent->parent->file('functions.txt')->spew(join "\n", sort keys %functions);
 };
 
 my $count = 0;
@@ -296,5 +296,5 @@ foreach my $symbol (sort keys %symbols)
 
 $report .= "\ntotal unimplemented symbols: $count\n";
 
-file(__FILE__)->parent->file('report.txt')->spew($report);
+file(__FILE__)->parent->parent->file('report.txt')->spew($report);
 
