@@ -114,6 +114,7 @@ archive_filter_name
 archive_format
 archive_format_name
 archive_match_exclude_entry
+archive_match_exclude_pattern
 archive_match_excluded
 archive_match_free
 archive_match_include_gid

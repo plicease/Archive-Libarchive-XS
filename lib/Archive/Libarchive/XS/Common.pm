@@ -250,6 +250,9 @@ _sub_if_can( archive_entry_set_fflags_text => sub {
 _sub_if_can( archive_entry_set_link => sub {
   _archive_entry_set_link($_[0], encode(archive_perl_codeset(), $_[1]));
 });
+_sub_if_can( archive_match_exclude_pattern => sub {
+  _archive_match_exclude_pattern($_[0], encode(archive_perl_codeset(), $_[1]))
+});
 
 1;
 

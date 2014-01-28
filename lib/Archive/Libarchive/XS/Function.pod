@@ -985,6 +985,12 @@ A textual description of the format of the current entry.
 
 Add exclusion entry
 
+=head2 archive_match_exclude_pattern
+
+ my $status = archive_match_exclude_pattern($archive, $pattern);
+
+Add exclusion pathname pattern.
+
 =head2 archive_match_excluded
 
  my $bool = archive_match_excluded($archive, $entry);

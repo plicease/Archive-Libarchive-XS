@@ -4839,6 +4839,27 @@ archive_match_exclude_entry(archive, flag, entry)
 
 #endif
 
+=head2 archive_match_exclude_pattern
+
+ my $status = archive_match_exclude_pattern($archive, $pattern);
+
+Add exclusion pathname pattern.
+
+=cut
+
+#ifdef HAS_archive_match_exclude_pattern
+
+int
+_archive_match_exclude_pattern(archive, pattern)
+    struct archive *archive
+    const char *pattern
+  CODE:
+    RETVAL = archive_match_exclude_pattern(archive, pattern);
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name
