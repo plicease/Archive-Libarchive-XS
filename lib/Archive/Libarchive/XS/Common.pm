@@ -253,6 +253,9 @@ _sub_if_can( archive_entry_set_link => sub {
 _sub_if_can( archive_match_exclude_pattern => sub {
   _archive_match_exclude_pattern($_[0], encode(archive_perl_codeset(), $_[1]))
 });
+_sub_if_can( archive_match_exclude_pattern_from_file => sub {
+  _archive_match_exclude_pattern_from_file($_[0], encode(archive_perl_codeset(), $_[1]), $_[2])
+});
 
 1;
 

@@ -991,6 +991,12 @@ Add exclusion entry
 
 Add exclusion pathname pattern.
 
+=head2 archive_match_exclude_pattern_from_file
+
+ my $status = archive_match_exclude_pattern_from_file($archive, $filename, $null_separator);
+
+Add exclusion pathname pattern from file.
+
 =head2 archive_match_excluded
 
  my $bool = archive_match_excluded($archive, $entry);

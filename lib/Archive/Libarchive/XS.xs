@@ -4860,6 +4860,28 @@ _archive_match_exclude_pattern(archive, pattern)
 
 #endif
 
+=head2 archive_match_exclude_pattern_from_file
+
+ my $status = archive_match_exclude_pattern_from_file($archive, $filename, $null_separator);
+
+Add exclusion pathname pattern from file.
+
+=cut
+
+#ifdef HAS_archive_match_exclude_pattern_from_file
+
+int
+_archive_match_exclude_pattern_from_file(archive, filename, null_separator)
+    struct archive *archive
+    const char *filename
+    int null_separator
+  CODE:
+    RETVAL = archive_match_exclude_pattern_from_file(archive, filename, null_separator);
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name
