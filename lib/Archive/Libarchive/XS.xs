@@ -4708,6 +4708,110 @@ archive_entry_xattr_next(entry, name, buffer)
 
 #endif
 
+=head2 archive_entry_sparse_clear
+
+ my $status = archive_entry_sparse_clear($entry)
+
+FIXME
+
+=cut
+
+#if HAS_archive_entry_sparse_clear
+
+int
+archive_entry_sparse_clear(entry)
+    struct archive_entry *entry
+  CODE:
+    archive_entry_sparse_clear(entry);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_sparse_add_entry
+
+ my $status = archive_entry_sparse_add_entry($entry, $offset, $length)
+
+FIXME
+
+=cut
+
+#if HAS_archive_entry_sparse_add_entry
+
+int
+archive_entry_sparse_add_entry(entry, offset, length)
+    struct archive_entry *entry
+    __LA_INT64_T offset
+    __LA_INT64_T length
+  CODE:
+    archive_entry_sparse_add_entry(entry, offset, length);
+    RETVAL = ARCHIVE_OK;
+  OUTPUT:
+    RETVAL
+
+#endif
+
+=head2 archive_entry_sparse_count
+
+ my $count = archive_entry_sparse_count($entry);
+
+FIXME
+
+=cut
+
+#if HAS_archive_entry_sparse_count
+
+int
+archive_entry_sparse_count(entry)
+   struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_sparse_reset
+
+ my $FIXME = archive_entry_sparse_reset($entry);
+
+FIXME
+
+=cut
+
+#if HAS_archive_entry_sparse_reset
+
+int
+archive_entry_sparse_reset(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_sparse_next
+
+ my $FIXME = archive_entry_sparse_next($entry, $offset, $length);
+
+FIXME
+
+=cut
+
+#ifdef HAS_archive_entry_sparse_next
+
+int
+archive_entry_sparse_next(entry, offset, length)
+    struct archive_entry *entry
+    SV *offset
+    SV *length
+  CODE:
+    __LA_INT64_T o, l;
+    SV *otmp, *ltmp;
+    RETVAL = archive_entry_sparse_next(entry, &o, &l);
+    otmp = sv_2mortal(newSVi64(o));
+    sv_setsv(offset, otmp);
+    ltmp = sv_2mortal(newSVi64(l));
+    sv_setsv(length, ltmp);
+  OUTPUT:
+    RETVAL
+
+#endif
+
 int
 _constant(name)
         char *name
