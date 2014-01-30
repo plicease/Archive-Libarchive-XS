@@ -421,7 +421,6 @@ archive_read_disk_set_uname_lookup(archive, data, lookup_callback, cleanup_callb
     SV *lookup_callback
     SV *cleanup_callback
   CODE:
-    struct lookup_callback_data *c_data;
     if(SvOK(cleanup_callback) || SvOK(lookup_callback))
       RETVAL = archive_read_disk_set_uname_lookup(archive, new_lookup_callback(data,lookup_callback,cleanup_callback), &mylookup_read_lookup, &mylookup_cleanup);
     else 
@@ -452,7 +451,6 @@ archive_write_disk_set_user_lookup(archive, data, lookup_callback, cleanup_callb
     SV *lookup_callback
     SV *cleanup_callback
   CODE:
-    struct lookup_callback_data *c_data;
     if(SvOK(cleanup_callback) || SvOK(lookup_callback))
       RETVAL = archive_write_disk_set_user_lookup(archive, new_lookup_callback(data,lookup_callback,cleanup_callback), &mylookup_write_lookup, &mylookup_cleanup);
     else
