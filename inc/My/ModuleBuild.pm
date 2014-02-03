@@ -106,7 +106,7 @@ sub ACTION_build_prep
 
   # TODO: can probably scan the dll on Windows 
   # for the symbols, which will save time
-  if($alien->install_type eq 'system' || $^O eq 'MSWin32')
+  if($alien->install_type eq 'system' || $^O eq 'MSWin32' || $^O eq 'cygwin')
   {
     foreach my $symbol (sort @symbols)
     {
