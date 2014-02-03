@@ -271,6 +271,7 @@ do {
 
   do {
     my $pod = $mt->render( scalar file(__FILE__)->parent->parent->file(qw( Function.pod.template ))->slurp );
+    $pod =~ s{L<#(.*?)>}{L<$1|Archive::Libarchive::XS::Function#$1>}g;
     my $file = file(__FILE__)->parent->parent->parent->file(qw( lib Archive Libarchive XS Function.pod ))->absolute;
     $file->spew($pod);
   };
