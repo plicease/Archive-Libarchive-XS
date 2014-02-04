@@ -2,5 +2,8 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.05      2014-02-03 21:09:11 -0500
+  - include fix to MSVC++ that got missed in previous release
+
 0.04      2014-02-03 21:07:31 -0500
   - firsty CPAN release
