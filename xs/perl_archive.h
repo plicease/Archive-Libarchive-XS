@@ -55,6 +55,11 @@ int archive_perl_utf8_mode(void);
 #define HAS_archive_write_add_filter_program                              HAS_archive_write_set_compression_program
 #define HAS_archive_write_add_filter_xz                                   HAS_archive_write_set_compression_xz
 
+#define archive_read_free(a)                                              archive_read_finish(a)
+#define HAS_archive_read_free                                             HAS_archive_read_finish
+#define archive_write_free(a)                                             archive_write_finish(a)
+#define HAS_archive_write_free                                            HAS_archive_write_finish
+
 #endif
 
 #endif
