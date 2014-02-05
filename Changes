@@ -1,6 +1,10 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - fewer bogus warnings on MSWin32
+  - build/test fixes for netbsd / openbsd
+  - support older libarchives that don't have archive_read/write_free
+    (use archive_read/write_finish instead)
 
 0.05      2014-02-03 21:09:11 -0500
   - include fix to MSVC++ that got missed in previous release
