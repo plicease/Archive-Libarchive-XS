@@ -250,7 +250,7 @@ foreach my $name (qw( open skip close seek ))
     sub _my$name
     {
       my \$archive = shift;
-      my \$status = eval { \$callbacks{\$archive}->[CB_$uc_name]->(\$archive, \$callbacks{\$archive}->[CB_DATA],@_) };
+      my \$status = eval { \$callbacks{\$archive}->[CB_$uc_name]->(\$archive, \$callbacks{\$archive}->[CB_DATA],\@_) };
       if(\$\@)
       {
         warn \$\@;
