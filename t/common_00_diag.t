@@ -144,10 +144,13 @@ diag 'write formats:';
 foreach my $format (sort grep { s/^archive_write_set_format_// } keys %Archive::Libarchive::XS::)
 {
   next if $format =~ /^(program|by_name)$/;
-  if($format =~ /^(ar_bsd|ar_svr4|cpio|cpio_newc|mtree)$/ && $^O eq 'freebsd' && Archive::Libarchive::XS::archive_version_number() < 3000000 && "Archive::Libarchive::XS" =~ /ffi/i)
+  if(Archive::Libarchive::XS::archive_version_number() < 3000000 && "Archive::Libarchive::XS" =~ /ffi/i)
   {
-    diag sprintf "%-15s %s", $format, 'skip test';
-    next;
+    if(($format =~ /^(ar_bsd|ar_svr4|cpio|cpio_newc|mtree)$/ && $^O eq 'freebsd') || $^O eq 'netbsd')
+    {
+      diag sprintf "%-15s %s", $format, 'skip test';
+      next;
+    }
   }
   my $ok = 'no';
   my $error;
