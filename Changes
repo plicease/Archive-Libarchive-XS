@@ -1,6 +1,9 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.06      2014-02-05 15:11:38 -0500
+  - correctly escape @_ in callback generation
   - fewer bogus warnings on MSWin32
   - build/test fixes for netbsd / openbsd
   - support older libarchives that don't have archive_read/write_free
