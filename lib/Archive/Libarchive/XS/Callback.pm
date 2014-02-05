@@ -226,6 +226,7 @@ sub ARCHIVE_OK    ();
 sub archive_read_set_callback_data ($$)
 {
   my($archive, $data) = @_;
+  $archive = $$archive if ref $archive;
   $callbacks{$archive}->[CB_DATA] = $data;
   ARCHIVE_OK;
 }
@@ -300,6 +301,7 @@ sub _mywrite
 sub archive_read_open ($$$$$)
 {
   my($archive, $data, $opencb, $readcb, $closecb) = @_;
+  $archive = $$archive if ref $archive;
   $callbacks{$archive}->[CB_DATA]  = $data    if defined $data;
   $callbacks{$archive}->[CB_OPEN]  = $opencb  if defined $opencb;
   $callbacks{$archive}->[CB_READ]  = $readcb  if defined $readcb;
@@ -311,6 +313,7 @@ sub archive_read_open ($$$$$)
 sub archive_read_open2 ($$$$$$)
 {
   my($archive, $data, $opencb, $readcb, $skipcb, $closecb) = @_;
+  $archive = $$archive if ref $archive;
   $callbacks{$archive}->[CB_DATA]  = $data    if defined $data;
   $callbacks{$archive}->[CB_OPEN]  = $opencb  if defined $opencb;
   $callbacks{$archive}->[CB_READ]  = $readcb  if defined $readcb;
@@ -323,6 +326,7 @@ sub archive_read_open2 ($$$$$$)
 sub archive_write_open ($$$$$)
 {
   my($archive, $data, $opencb, $writecb, $closecb) = @_;
+  $archive = $$archive if ref $archive;
   $callbacks{$archive}->[CB_DATA]  = $data    if defined $data;
   $callbacks{$archive}->[CB_OPEN]  = $opencb  if defined $opencb;
   $callbacks{$archive}->[CB_WRITE] = $writecb if defined $writecb;
@@ -334,6 +338,7 @@ sub archive_write_open ($$$$$)
 sub archive_read_free ($)
 {
   my($archive) = @_;
+  $archive = $$archive if ref $archive;
   my $ret = _archive_read_free($archive);
   delete $callbacks{$archive};
   $ret;
@@ -342,6 +347,7 @@ sub archive_read_free ($)
 sub archive_write_free ($)
 {
   my($archive) = @_;
+  $archive = $$archive if ref $archive;
   my $ret = _archive_write_free($archive);
   delete $callbacks{$archive};
   $ret;
