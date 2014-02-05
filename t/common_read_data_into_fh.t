@@ -3,6 +3,7 @@ use warnings;
 use Test::More tests => 5;
 use Archive::Libarchive::XS qw( :all );
 use File::Basename qw( dirname );
+use File::Spec;
 
 my $r;
 my $a;
