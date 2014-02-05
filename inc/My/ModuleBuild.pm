@@ -211,7 +211,11 @@ int main(int argc, char **argv)
 {
   struct archive *a = archive_write_new();
   $symbol(a);
+#if ARCHIVE_VERSION_NUMBER < 3000000
+  archive_write_finish(a);
+#else
   archive_write_free(a);
+#endif
   return 0;
 }
 EOF1
