@@ -2,7 +2,6 @@ package Archive::Libarchive::XS;
 
 use strict;
 use warnings;
-use Alien::Libarchive;
 use Encode qw( decode );
 
 # note: this file is generated, the original
@@ -13,6 +12,12 @@ BEGIN {
 
 # ABSTRACT: Perl bindings to libarchive via XS
 # VERSION
+
+  unless($^O eq 'MSWin32')
+  {
+    require Alien::Libarchive;
+    Alien::Libarchive->import;
+  }
 
   require XSLoader;
   XSLoader::load('Archive::Libarchive::XS', $VERSION);
