@@ -3,8 +3,9 @@ use warnings;
 use Test::More tests => 1;
 use File::Basename qw( dirname );
 use File::Spec;
+use Archive::Libarchive::XS;
 
-use_ok 'Archive::Libarchive::XS';
+pass 'okay';
 
 my $fn;
 my $not_first;
