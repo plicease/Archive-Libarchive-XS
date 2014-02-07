@@ -3,17 +3,14 @@ use warnings;
 use Test::More tests => 1;
 use File::Basename qw( dirname );
 use File::Spec;
-use Archive::Libarchive::XS;
 
-pass 'okay';
+BEGIN { use_ok 'Archive::Libarchive::XS' }
 
 my $fn;
 my $not_first;
 
 $fn = File::Spec->catfile(
   dirname( __FILE__ ),
-  File::Spec->updir,
-  'inc',
   'constants.txt'
 );
 
@@ -40,8 +37,6 @@ if($not_first)
 
 $fn = File::Spec->catfile(
   dirname( __FILE__ ),
-  File::Spec->updir,
-  'inc',
   'functions.txt'
 );
 

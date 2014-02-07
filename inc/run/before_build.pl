@@ -11,10 +11,12 @@ my @macros = do { # constants
 
   # keep any new macros, even if we are doing a dzil build
   # against an old libarchive
-  my %macros = (map { chomp; $_ => 1 } file(__FILE__)->parent->parent->file('constants.txt')->slurp, grep { $_ ne 'ARCHIVE_VERSION_STRING' } grep { $_ !~ /H_INCLUDED$/ } $alien->_macro_list);
+  my %macros = (map { chomp; $_ => 1 } 
+    file(__FILE__)->parent->parent->parent->file(qw( t common constants.txt))->slurp, 
+    grep { $_ ne 'ARCHIVE_VERSION_STRING' } grep { $_ !~ /H_INCLUDED$/ } $alien->_macro_list);
   sort keys %macros;  
 };
-file(__FILE__)->parent->parent->file('constants.txt')->spew(join "\n", @macros);
+file(__FILE__)->parent->parent->parent->file(qw( t common constants.txt))->spew(join "\n", @macros);
 
 do { # xs
   my $file = file(__FILE__)->parent->parent->parent->file(qw( lib Archive Libarchive XS.xs ))->absolute;
@@ -282,7 +284,7 @@ do {
     $file->spew($pod);
   };
   
-  file(__FILE__)->parent->parent->file('functions.txt')->spew(join "\n", sort keys %functions);
+  file(__FILE__)->parent->parent->parent->file(qw( t common functions.txt ))->spew(join "\n", sort keys %functions);
 };
 
 my $count = 0;
