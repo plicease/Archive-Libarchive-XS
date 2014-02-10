@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.07      2014-02-10 18:51:41 -0500
   - preliminary support for libarchive 2.5.x
   - fix for MSWin32 build failure
   - improved test suite
