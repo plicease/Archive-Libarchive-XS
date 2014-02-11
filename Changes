@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - handle 64bit integers on older versions of libarchive (eg. 2.5.x)
+    (was intended for 0.07, but missed the release)
 
 0.07      2014-02-10 18:51:41 -0500
   - preliminary support for libarchive 2.5.x

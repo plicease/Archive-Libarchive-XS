@@ -9,6 +9,18 @@ int archive_perl_utf8_mode(void);
 
 #if ARCHIVE_VERSION_NUMBER < 3000000
 
+#if !defined(__LA_INT64_T)
+# if defined(_WIN32) && !defined(__CYGWIN__)
+#  define __LA_INT64_T    __int64
+# else
+#  if defined(_SCO_DS)
+#   define __LA_INT64_T    long long
+#  else
+#   define __LA_INT64_T    int64_t
+#  endif
+# endif
+#endif
+
 #define archive_read_support_filter_all(a)                                archive_read_support_compression_all(a)
 #define archive_read_support_filter_bzip2(a)                              archive_read_support_compression_bzip2(a)
 #define archive_read_support_filter_compress(a)                           archive_read_support_compression_compress(a)
