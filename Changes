@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.0800    2014-06-10 14:26:54 -0400
   - Documentation correction, return value for write callback
     (Archive::Libarchive::XS::Callback)
   - minor test diagnostic improvement
