@@ -6,6 +6,7 @@ Revision history for {{$dist->name}}
   - Documentation correction, return value for write callback
     (Archive::Libarchive::XS::Callback)
   - minor test diagnostic improvement
+  - Alien::Libarchive 0.18 compat
 
 0.0701    2014-02-10 19:16:56 -0500
   - handle 64bit integers on older versions of libarchive (eg. 2.5.x)
