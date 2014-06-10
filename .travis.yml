@@ -8,7 +8,6 @@ install:
   - cpanm -n Exporter::Tidy ExtUtils::CChecker Math::Int64
   - cpanm -n Mojolicious Pod::Abstract
   - cpanm -n Test::CPAN::Changes Test::EOL Test::Fixme Test::NoTabs Test::Pod::Spelling::CommonMistakes Test::Spelling Test::Strict Test::Version || true
-  - cpanm -n -v Alien::Libarchive
   - cpanm -n ExtUtils::CChecker
   ## workaround for gh#31
   #- cpanm -n http://cpan.metacpan.org/authors/id/R/RJ/RJBS/Mixin-Linewise-0.102.tar.gz
@@ -26,5 +25,7 @@ env:
   - ALIEN_LIBARCHIVE=share
   - ALIEN_LIBARCHIVE=system
 
-script: dzil test -v
+script:
+  - cpanm -n install https://dist.wdlabs.com/Alien-Libarchive-0.18_06.tar.gz
+  - dzil test -v
 
