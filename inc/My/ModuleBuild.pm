@@ -22,52 +22,55 @@ sub new
   $args{extra_linker_flags}   = $alien->libs;
   $args{c_source}             = 'xs';
 
-  if($^O eq 'MSWin32')
+  if($alien->isa('Alien::Base'))
   {
-    $args{extra_compiler_flags} .= ' -DLIBARCHIVE_STATIC';
-    $args{extra_linker_flags}    =~ s/-larchive\b/-larchive_static/;
-    $args{extra_linker_flags}    =~ s/\barchive\.lib\b/archive_static.lib/;
-  }
-  else
-  {
-    my $ctest = "#include <archive.h>\n" .
-                "int main(int argc, char *argv[]) {\n" .
-                "  struct archive *a = archive_read_new();\n" .
-                "  return 0;\n" .
-                "}\n";
-  
-    my $ok = 0;
-    require ExtUtils::CChecker;
-    my $cc = ExtUtils::CChecker->new;
-    
-    if($alien->install_type eq 'share')
+    if($^O eq 'MSWin32')
     {
+      $args{extra_compiler_flags} .= ' -DLIBARCHIVE_STATIC';
+      $args{extra_linker_flags}    =~ s/-larchive\b/-larchive_static/;
+      $args{extra_linker_flags}    =~ s/\barchive\.lib\b/archive_static.lib/;
+    }
+    else
+    {
+      my $ctest = "#include <archive.h>\n" .
+                  "int main(int argc, char *argv[]) {\n" .
+                  "  struct archive *a = archive_read_new();\n" .
+                  "  return 0;\n" .
+                  "}\n";
+  
+      my $ok = 0;
+      require ExtUtils::CChecker;
+      my $cc = ExtUtils::CChecker->new;
     
-      $ok = $cc->try_compile_run(
-        extra_compiler_flags => [ shellwords($args{extra_compiler_flags}) ],
-        extra_linker_flags   => [ '-Wl,-Bstatic', shellwords($args{extra_linker_flags}), '-Wl,-Bdynamic'],
-        source               => $ctest,
-      );
-      
-      if($ok)
+      if($alien->install_type eq 'share')
       {
-        $args{extra_linker_flags} = "-Wl,-Bstatic $args{extra_linker_flags} -Wl,-Bdynamic";
+    
+        $ok = $cc->try_compile_run(
+          extra_compiler_flags => [ shellwords($args{extra_compiler_flags}) ],
+          extra_linker_flags   => [ '-Wl,-Bstatic', shellwords($args{extra_linker_flags}), '-Wl,-Bdynamic'],
+          source               => $ctest,
+        );
+      
+        if($ok)
+        {
+          $args{extra_linker_flags} = "-Wl,-Bstatic $args{extra_linker_flags} -Wl,-Bdynamic";
+        }
+    
       }
     
+      unless($ok)
+      {
+    
+        $ok = $cc->try_compile_run(
+          extra_compiler_flags => [ shellwords($args{extra_compiler_flags}) ],
+          extra_linker_flags   => [ shellwords($args{extra_linker_flags}) ],
+          source               => $ctest,
+        );
+    
+      }
+    
+      die "unable to determine flags to compile / link against libarchive" unless $ok;
     }
-    
-    unless($ok)
-    {
-    
-      $ok = $cc->try_compile_run(
-        extra_compiler_flags => [ shellwords($args{extra_compiler_flags}) ],
-        extra_linker_flags   => [ shellwords($args{extra_linker_flags}) ],
-        source               => $ctest,
-      );
-    
-    }
-    
-    die "unable to determine flags to compile / link against libarchive" unless $ok;
   }
 
   my $self = $class->SUPER::new(%args);
@@ -106,7 +109,7 @@ sub ACTION_build_prep
 
   # TODO: can probably scan the dll on Windows 
   # for the symbols, which will save time
-  if($alien->install_type eq 'system' || $^O eq 'MSWin32' || $^O eq 'cygwin')
+  if($alien->install_type eq 'system' || $^O eq 'MSWin32' || $^O eq 'cygwin' || ! $alien->isa('Alien::Base'))
   {
     foreach my $symbol (sort @symbols)
     {
