@@ -22,6 +22,54 @@ sub new
   $args{extra_linker_flags}   = $alien->libs;
   $args{c_source}             = 'xs';
 
+  if($^O eq 'MSWin32')
+  {
+    $args{extra_compiler_flags} .= ' -DLIBARCHIVE_STATIC';
+    $args{extra_linker_flags}    =~ s/-larchive\b/-larchive_static/;
+    $args{extra_linker_flags}    =~ s/\barchive\.lib\b/archive_static.lib/;
+  }
+  else
+  {
+    my $ctest = "#include <archive.h>\n" .
+                "int main(int argc, char *argv[]) {\n" .
+                "  struct archive *a = archive_read_new();\n" .
+                "  return 0;\n" .
+                "}\n";
+  
+    my $ok = 0;
+    require ExtUtils::CChecker;
+    my $cc = ExtUtils::CChecker->new;
+    
+    if($alien->install_type eq 'share')
+    {
+    
+      $ok = $cc->try_compile_run(
+        extra_compiler_flags => [ shellwords($args{extra_compiler_flags}) ],
+        extra_linker_flags   => [ '-Wl,-Bstatic', shellwords($args{extra_linker_flags}), '-Wl,-Bdynamic'],
+        source               => $ctest,
+      );
+      
+      if($ok)
+      {
+        $args{extra_linker_flags} = "-Wl,-Bstatic $args{extra_linker_flags} -Wl,-Bdynamic";
+      }
+    
+    }
+    
+    unless($ok)
+    {
+    
+      $ok = $cc->try_compile_run(
+        extra_compiler_flags => [ shellwords($args{extra_compiler_flags}) ],
+        extra_linker_flags   => [ shellwords($args{extra_linker_flags}) ],
+        source               => $ctest,
+      );
+    
+    }
+    
+    die "unable to determine flags to compile / link against libarchive" unless $ok;
+  }
+
   my $self = $class->SUPER::new(%args);
   
   $self->add_to_cleanup(
@@ -56,17 +104,30 @@ sub ACTION_build_prep
   print $fh "#ifndef FUNC_H\n";
   print $fh "#define FUNC_H\n\n";
 
-  foreach my $symbol (sort @symbols)
+  # TODO: can probably scan the dll on Windows 
+  # for the symbols, which will save time
+  if($alien->install_type eq 'system' || $^O eq 'MSWin32' || $^O eq 'cygwin')
   {
-    if($symbol =~ /^archive_write_set_format_/ && $symbol !~ /^archive_write_set_format_(program|by_name)/)
+    foreach my $symbol (sort @symbols)
     {
-      print $fh "#define HAS_$symbol 1\n"
-        if $self->_test_write_format($symbol);
+      if($symbol =~ /^archive_write_set_format_/ && $symbol !~ /^archive_write_set_format_(program|by_name)/)
+      {
+        print $fh "#define HAS_$symbol 1\n"
+          if $self->_test_write_format($symbol);
+      }
+      else
+      {
+        print $fh "#define HAS_$symbol 1\n"
+          if $self->_test_symbol($symbol);
+      }
     }
-    else
+  }
+  else
+  {
+    foreach my $symbol (@symbols)
     {
       print $fh "#define HAS_$symbol 1\n"
-        if $self->_test_symbol($symbol);
+        if DynaLoader::dl_find_symbol_anywhere($symbol);
     }
   }
 
