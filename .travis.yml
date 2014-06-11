@@ -26,6 +26,6 @@ env:
   - ALIEN_LIBARCHIVE=system
 
 script:
-  - cpanm -n install https://dist.wdlabs.com/Alien-Libarchive-0.18_06.tar.gz
+  - cpanm -n -v Alien::Libarchive
   - dzil test -v
 
