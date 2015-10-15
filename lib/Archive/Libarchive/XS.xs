@@ -6515,7 +6515,7 @@ archive_write_set_format_zip(archive)
 
 =head2 archive_entry_set_gname
 
- my $status = archive_entry_set_gname
+ my $status = archive_entry_set_gname($entry, $string)
 
 Sets the gname for the archive entry object.
 
@@ -6578,7 +6578,7 @@ _archive_entry_gname(entry)
 
 =head2 archive_entry_set_hardlink
 
- my $status = archive_entry_set_hardlink
+ my $status = archive_entry_set_hardlink($entry, $string)
 
 Sets the hardlink for the archive entry object.
 
@@ -6641,7 +6641,7 @@ _archive_entry_hardlink(entry)
 
 =head2 archive_entry_set_pathname
 
- my $status = archive_entry_set_pathname
+ my $status = archive_entry_set_pathname($entry, $string)
 
 Sets the pathname for the archive entry object.
 
@@ -6704,7 +6704,7 @@ _archive_entry_pathname(entry)
 
 =head2 archive_entry_set_symlink
 
- my $status = archive_entry_set_symlink
+ my $status = archive_entry_set_symlink($entry, $string)
 
 Sets the symlink for the archive entry object.
 
@@ -6767,7 +6767,7 @@ _archive_entry_symlink(entry)
 
 =head2 archive_entry_set_uname
 
- my $status = archive_entry_set_uname
+ my $status = archive_entry_set_uname($entry, $string)
 
 Sets the uname for the archive entry object.
 
