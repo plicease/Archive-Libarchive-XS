@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.0901    2015-12-15 22:44:18 -0500
   - Remove accidental requirement for Perl 5.10
     Minimum required Perl is probably 5.8.x, though may work on 5.6.x
 
