@@ -8,7 +8,7 @@ addons:
       - libarchive-dev
 
 install:
-  - cpanm -n Dist::Zilla
+  - ./maint/travis-install-mods
   - dzil -I. authordeps --missing | grep -v inc::SeeAlso |cpanm -n
   - dzil -I. listdeps --missing | cpanm -n
 

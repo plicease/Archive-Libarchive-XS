@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Switch to Alien::Libarchive3
 
 0.0901    2015-12-15 22:44:18 -0500
   - Remove accidental requirement for Perl 5.10
