@@ -10,8 +10,6 @@ addons:
 install:
   - ./maint/travis-install-mods
   - dzil -I. authordeps --missing | grep -v inc::SeeAlso |cpanm -n
-  - perl inc/run/before_build.pl
-  - dzil -I. listdeps
   - dzil -I. listdeps --missing | cpanm -n
 
 perl:
@@ -31,5 +29,5 @@ matrix:
     - ALIEN_LIBARCHIVE=system
 
 script:
-  - dzil test -v
+  - dzil -I. test -v
 
