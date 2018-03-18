@@ -35,6 +35,8 @@ archive_entry_gname
 archive_entry_hardlink
 archive_entry_ino
 archive_entry_ino_is_set
+archive_entry_is_data_encrypted
+archive_entry_is_metadata_encrypted
 archive_entry_linkify
 archive_entry_linkresolver_free
 archive_entry_linkresolver_new
@@ -135,6 +137,7 @@ archive_match_path_unmatched_inclusions_next
 archive_match_time_excluded
 archive_perl_codeset
 archive_perl_utf8_mode
+archive_read_add_passphrase
 archive_read_append_filter
 archive_read_append_filter_program
 archive_read_append_filter_program_signature
@@ -165,6 +168,7 @@ archive_read_extract
 archive_read_extract2
 archive_read_extract_set_skip_file
 archive_read_free
+archive_read_has_encrypted_entries
 archive_read_header_position
 archive_read_new
 archive_read_next_header

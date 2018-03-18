@@ -391,6 +391,18 @@ This actually uses the libarchive C<archive_entry_set_ino64> function
 
 Returns true if the inode property for the entry has been set.
 
+=head2 archive_entry_is_data_encrypted
+
+  my $status = archive_entry_is_data_encrypted($entry);
+
+Test if (and in what way) the archive entry is encrypted.
+
+=head2 archive_entry_is_metadata_encrypted
+
+  my $status = archive_entry_is_metadata_encrypted($entry);
+
+Test if (and in what way) the archive entry I<metadata> is encrypted.
+
 =head2 archive_entry_linkify
 
  my $status = archive_entry_linkify($linkresolver, $entry1, $entry2)
@@ -1114,6 +1126,12 @@ UTF-8 or "ANSI_X3.4-1968" for ASCII) of the currently configured locale.
 
 Returns true if the internal "codeset" used by libarchive is UTF-8.
 
+=head2 archive_read_add_passphrase
+
+  my $status = archive_read_add_passphrase($archive, $passphrase);
+
+Set a passphrase for decrypting the archive.
+
 =head2 archive_read_append_filter
 
  my $status = archive_read_append_filter($archive, $code)
@@ -1354,6 +1372,12 @@ generally set to the dev/ino of the archive being read.
 
 Invokes L<archive_read_close|Archive::Libarchive::XS::Function#archive_read_close> if it was not invoked manually, then
 release all resources.
+
+=head2 archive_read_has_encrypted_entries
+
+  my $status = archive_read_has_encrypted_entries($archive);
+
+Test whether or not (and what kind of) encryption is on the archive entries.
 
 =head2 archive_read_header_position
 

@@ -514,6 +514,39 @@ which are not in the Perl bindings for libarchive.
 
 A convenience form of L<#archive_write_open> that accepts a reference to a scalar that will receive the archive.
 
+=head2 archive_read_add_passphrase
+
+  my $status = archive_read_add_passphrase($archive, $passphrase);
+
+Set a passphrase for decrypting the archive.
+
+=cut
+
+#if HAS_archive_read_add_passphrase
+
+int
+archive_read_add_passphrase(archive, passphrase)
+    struct archive *archive
+    const char     *passphrase
+
+#endif
+
+=head2 archive_read_has_encrypted_entries
+
+  my $status = archive_read_has_encrypted_entries($archive);
+
+Test whether or not (and what kind of) encryption is on the archive entries.
+
+=cut
+
+#if HAS_archive_read_has_encrypted_entries
+
+int
+archive_read_has_encrypted_entries(archive)
+    struct archive *archive
+
+#endif
+
 =head2 archive_read_new
 
  my $archive = archive_read_new();
@@ -4084,6 +4117,38 @@ Returns true if the inode property for the entry has been set.
 
 int
 archive_entry_ino_is_set(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_is_data_encrypted
+
+  my $status = archive_entry_is_data_encrypted($entry);
+
+Test if (and in what way) the archive entry is encrypted.
+
+=cut
+
+#if HAS_archive_entry_is_data_encrypted
+
+int
+archive_entry_is_data_encrypted(entry)
+    struct archive_entry *entry
+
+#endif
+
+=head2 archive_entry_is_metadata_encrypted
+
+  my $status = archive_entry_is_metadata_encrypted($entry);
+
+Test if (and in what way) the archive entry I<metadata> is encrypted.
+
+=cut
+
+#if HAS_archive_entry_is_metadata_encrypted
+
+int
+archive_entry_is_metadata_encrypted(entry)
     struct archive_entry *entry
 
 #endif
