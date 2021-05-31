@@ -5149,6 +5149,10 @@ _constant(name)
         else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_ENTRY_FILE_INHERIT"))
           RETVAL = ARCHIVE_ENTRY_ACL_ENTRY_FILE_INHERIT;
 #endif
+#ifdef ARCHIVE_ENTRY_ACL_ENTRY_INHERITED
+        else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_ENTRY_INHERITED"))
+          RETVAL = ARCHIVE_ENTRY_ACL_ENTRY_INHERITED;
+#endif
 #ifdef ARCHIVE_ENTRY_ACL_ENTRY_INHERIT_ONLY
         else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_ENTRY_INHERIT_ONLY"))
           RETVAL = ARCHIVE_ENTRY_ACL_ENTRY_INHERIT_ONLY;
@@ -5221,6 +5225,10 @@ _constant(name)
         else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_READ_NAMED_ATTRS"))
           RETVAL = ARCHIVE_ENTRY_ACL_READ_NAMED_ATTRS;
 #endif
+#ifdef ARCHIVE_ENTRY_ACL_STYLE_COMPACT
+        else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_STYLE_COMPACT"))
+          RETVAL = ARCHIVE_ENTRY_ACL_STYLE_COMPACT;
+#endif
 #ifdef ARCHIVE_ENTRY_ACL_STYLE_EXTRA_ID
         else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_STYLE_EXTRA_ID"))
           RETVAL = ARCHIVE_ENTRY_ACL_STYLE_EXTRA_ID;
@@ -5228,6 +5236,14 @@ _constant(name)
 #ifdef ARCHIVE_ENTRY_ACL_STYLE_MARK_DEFAULT
         else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_STYLE_MARK_DEFAULT"))
           RETVAL = ARCHIVE_ENTRY_ACL_STYLE_MARK_DEFAULT;
+#endif
+#ifdef ARCHIVE_ENTRY_ACL_STYLE_SEPARATOR_COMMA
+        else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_STYLE_SEPARATOR_COMMA"))
+          RETVAL = ARCHIVE_ENTRY_ACL_STYLE_SEPARATOR_COMMA;
+#endif
+#ifdef ARCHIVE_ENTRY_ACL_STYLE_SOLARIS
+        else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_STYLE_SOLARIS"))
+          RETVAL = ARCHIVE_ENTRY_ACL_STYLE_SOLARIS;
 #endif
 #ifdef ARCHIVE_ENTRY_ACL_SYNCHRONIZE
         else if(!strcmp(name, "ARCHIVE_ENTRY_ACL_SYNCHRONIZE"))
@@ -5437,6 +5453,10 @@ _constant(name)
         else if(!strcmp(name, "ARCHIVE_FILTER_XZ"))
           RETVAL = ARCHIVE_FILTER_XZ;
 #endif
+#ifdef ARCHIVE_FILTER_ZSTD
+        else if(!strcmp(name, "ARCHIVE_FILTER_ZSTD"))
+          RETVAL = ARCHIVE_FILTER_ZSTD;
+#endif
 #ifdef ARCHIVE_FORMAT_7ZIP
         else if(!strcmp(name, "ARCHIVE_FORMAT_7ZIP"))
           RETVAL = ARCHIVE_FORMAT_7ZIP;
@@ -5592,6 +5612,14 @@ _constant(name)
 #ifdef ARCHIVE_READDISK_MAC_COPYFILE
         else if(!strcmp(name, "ARCHIVE_READDISK_MAC_COPYFILE"))
           RETVAL = ARCHIVE_READDISK_MAC_COPYFILE;
+#endif
+#ifdef ARCHIVE_READDISK_NO_ACL
+        else if(!strcmp(name, "ARCHIVE_READDISK_NO_ACL"))
+          RETVAL = ARCHIVE_READDISK_NO_ACL;
+#endif
+#ifdef ARCHIVE_READDISK_NO_FFLAGS
+        else if(!strcmp(name, "ARCHIVE_READDISK_NO_FFLAGS"))
+          RETVAL = ARCHIVE_READDISK_NO_FFLAGS;
 #endif
 #ifdef ARCHIVE_READDISK_NO_TRAVERSE_MOUNTS
         else if(!strcmp(name, "ARCHIVE_READDISK_NO_TRAVERSE_MOUNTS"))
