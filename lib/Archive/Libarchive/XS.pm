@@ -47,7 +47,7 @@ extract archive
  archive_read_support_filter_all($archive);
  archive_read_support_format_all($archive);
  my $disk = archive_write_disk_new();
- archive_write_disk_set_options($disk, 
+ archive_write_disk_set_options($disk,
    ARCHIVE_EXTRACT_TIME   |
    ARCHIVE_EXTRACT_PERM   |
    ARCHIVE_EXTRACT_ACL    |
@@ -60,9 +60,9 @@ extract archive
  {
    my $r = archive_read_next_header($archive, my $entry);
    last if $r == ARCHIVE_EOF;
-   
+ 
    archive_write_header($disk, $entry);
-   
+ 
    while(1)
    {
      my $r = archive_read_data_block($archive, my $buffer, my $offset);
@@ -104,7 +104,7 @@ write archive
 =head1 DESCRIPTION
 
 This module provides a functional interface to libarchive.  libarchive is a
-C library that can read and write archives in a variety of formats and with a 
+C library that can read and write archives in a variety of formats and with a
 variety of compression filters, optimized in a stream oriented way.  A familiarity
 with the libarchive documentation would be helpful, but may not be necessary
 for simple tasks.  The documentation for this module is split into four separate
@@ -398,7 +398,7 @@ current POSIX locale.  Content data for files stored and retrieved from in
 raw bytes.
 
 The usual operational procedure in Perl is to convert everything on input
-into UTF-8, operate on the UTF-8 data and then convert (if necessary) 
+into UTF-8, operate on the UTF-8 data and then convert (if necessary)
 everything on output to the desired output format.
 
 In order to get useful string data out of libarchive, this module translates
@@ -471,7 +471,7 @@ you need to encode them
  
  archive_write_data($archive, encode('UTF-8', "привет.txt");
  # or
- archive_write_data($archive, encode('KOI8-R', "привет.txt"); 
+ archive_write_data($archive, encode('KOI8-R', "привет.txt");
 
 read:
 
@@ -495,10 +495,10 @@ file for traps, hints and pitfalls.
 =head1 CAVEATS
 
 Archive and entry objects are really pointers to opaque C structures
-and need to be freed using one of 
-L<archive_read_free|Archive::Libarchive::XS::Function#archive_read_free>, 
-L<archive_write_free|Archive::Libarchive::XS::Function#archive_write_free> or 
-L<archive_entry_free|Archive::Libarchive::XS::Function#archive_entry_free>, 
+and need to be freed using one of
+L<archive_read_free|Archive::Libarchive::XS::Function#archive_read_free>,
+L<archive_write_free|Archive::Libarchive::XS::Function#archive_write_free> or
+L<archive_entry_free|Archive::Libarchive::XS::Function#archive_entry_free>,
 in order to free the resources associated with those objects.
 
 Proper Unicode (or non-ASCII character support) depends on setting the
@@ -507,9 +507,9 @@ correct POSIX locale, which is system dependent.
 The documentation that comes with libarchive is not that great (by its own
 admission), being somewhat incomplete, and containing a few subtle errors.
 In writing the documentation for this distribution, I borrowed heavily (read:
-stole wholesale) from the libarchive documentation, making changes where 
-appropriate for use under Perl (changing C<NULL> to C<undef> for example, along 
-with the interface change to make that work).  I may and probably have introduced 
+stole wholesale) from the libarchive documentation, making changes where
+appropriate for use under Perl (changing C<NULL> to C<undef> for example, along
+with the interface change to make that work).  I may and probably have introduced
 additional subtle errors.  Patches to the documentation that match the
 implementation, or fixes to the implementation so that it matches the
 documentation (which ever is appropriate) would greatly appreciated.
